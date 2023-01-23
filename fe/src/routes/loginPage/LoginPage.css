@@ -1,0 +1,9 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.login-form > input {
+    width: inherit;
+}

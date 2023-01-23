@@ -1,0 +1,77 @@
+.url-container {
+    display: flex;
+    padding: 1em 0;
+}
+
+.qr-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+}
+
+.card {
+    margin-top: 2rem;
+    padding: 2em 0;
+}
+.short-url-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    width: 100%;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+}
+
+.short-url-inner-container {
+    display: flex;
+    padding: 1em;
+    flex-direction: column;
+    align-items: start;
+}
+
+.short-url-label {
+    font-weight: 500;
+}
+
+.short-url-link-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: .5em;
+}
+
+.short-url-btn-container {
+    display: flex;
+    margin-left: auto;
+    width: 25%;
+    justify-content: space-between;
+}
+
+.short-url-link-container>input[disabled] {
+    width: 60%;
+    cursor: default;
+    height: fit-content;
+}
+
+.short-url-btn-container>button,
+.short-url-link-container>button {
+    padding: 0.3em;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+}
+
+.short-url-btn-container>button[disabled],
+.short-url-link-container>button[disabled] {
+    opacity: .4;
+}
+
+.short-url-img-container {
+    width: 70%;
+}
+
+.short-url-img {
+    width: 7em;
+    height: 7em;
+}
