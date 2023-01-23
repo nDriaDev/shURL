@@ -22,7 +22,7 @@ export default class User {
         return bcrypt.hashSync(pwd,SALT_HASH_PASS);
     }
 
-    static comparePassword(hashedPwd, currentPwd) {
-        return bcrypt.compareSync(currentPwd, hashedPwd);
+    static async comparePassword(currentPwd, hashedPwd) {
+        return await bcrypt.compare(currentPwd, hashedPwd);
     }
 }

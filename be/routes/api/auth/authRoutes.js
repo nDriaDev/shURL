@@ -1,6 +1,7 @@
 import validatorMiddleware from "../../../middlewares/validatorMiddleware.js";
 import AuthValidator from "../../../validators/authValidator.js";
 import authController from "../../../controllers/authController.js";
+import authMiddleware from "../../../middlewares/authMiddleware.js";
 
 /**
  *
@@ -19,14 +20,19 @@ export default function authRoutes(primaryRouter, router, dbClient) {
 		.post(
 			'/signin',
 			validatorMiddleware(AuthValidator),
-			(req,res,next)=> res.status(200).send('/signin')
+			authController.signIn(dbClient)
+		)
+		.get(
+			'/prova',
+			authMiddleware(dbClient),
+			(req, res) => res.status(200).send(res.locals.user)
 		)
 		.get(
 			'/refresh',
-			(req,res,next)=> res.status(200).send('/refresh')
+			authController.refresh(dbClient)
 		)
 		.get(
 			'/logout',
-			(req,res,next)=> res.status(200).send('/logout')
+			authController.logout
 		);
 }

@@ -31,7 +31,7 @@ export default class DbClient {
         await this.client.createUser({ email, password });
     }
 
-    async findUser({ email, password }) {
-        return this.client.findUser({ email, password });
+    async findUser({ id, email, password }) {
+        return this.client.findUser({ id, email, password });
     }
 }

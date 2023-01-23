@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectID } from "mongodb";
 import DBError from "../../models/errors/DBError.js";
 import CONSTANTS from "../../utils/constants.js";
 
@@ -138,12 +138,14 @@ export default class MongoDbClient {
         }
     }
 
-    async findUser({email, password}) {
+    async findUser({id=null, email=null, password=null}) {
         console.log("MongoClient findUser start");
         try {
             const USER = this.client.db(this.DB).collection(this.USER);
             const result = await USER.findOne({
-                email,
+                ...(id ? {_id: ObjectID(id)}: {}),
+                ...(email ? { email} : {}),
+                ...(password ? {password} : {}),
                 active: true
             })
             console.log("MongoClient findUser result:", result);
