@@ -5,32 +5,42 @@ import authUtil from "../utils/authUtil.js";
 
 export default function authMiddleware(dbClient) {
     return async (req, res, next) => {
-        console.log("AuthMiddleware INIT");
+        console.log("AuthMiddleware START");
         try {
-            const {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.UNAUTHORIZED;
-            let unauthorizedError = new AppError({code, message: text});
-            let user_id, useRefresh = false;
-            console.log("AuthMiddleware AccessToken verifying...");
-            //TODO jwt verify not work for expired token (if send accessToken with cookie, when expired it not sent to BE)
-            if(req.cookies.access_token) {
-                let {access_token} = req.cookies;
-                user_id = authUtil.verifyToken({token: access_token, type: "access_token"});
-                if(!!!user_id || !!!user_id.id) {
-                    console.log("AuthMiddleware RefreshToken verifying...");
-                    let refresh_token = req.cookies.refresh_token;
-                    user_id = authUtil.verifyToken({token: refresh_token, type: "refresh_token"});
-                    if(!!!user_id || !!!user_id.id) {
+            let {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.UNAUTHORIZED,
+                unauthorizedError = new AppError({code, message: text}),
+                useRefresh = false,
+                access_token = req.headers.authorization,
+                refresh_token = req.cookies.refresh_token,
+                id,
+                result,
+                user;
+            //Check if authorization bearer is present
+            if(access_token && access_token.startsWith('Bearer')) {
+                access_token = access_token.split(' ')[1];
+                result = authUtil.verifyToken({token: access_token, type: "access_token"});
+                result.isValid && ({id}=result.payload);
+                //if user_id.id exist but refresh_token not, token is invalid
+                if((id && !refresh_token) || (!!!id && !refresh_token)) {
+                    return next(unauthorizedError);
+                } else if(!!!id) {
+                    //if user_id or user_id.id are undefined, check refreshToken validity
+                    result = authUtil.verifyToken({token: refresh_token, type: "refresh_token"});
+                    result.isValid && ({id}=result.payload);
+                    if(!!!id) {
                         return next(unauthorizedError);
                     } else {
                         useRefresh = true;
                     }
                 }
-                const user = await dbClient.findUser({id: user_id.id});
+                user = await dbClient.findUser({id});
+                //if user is undefined has been removed
                 if(!user) {
                     return next(new AppError({code, message: "User no longer exists"}));
                 }
+                //if it has been used refreshToken, refresh access_token and refresh_token
                 if(useRefresh) {
-                    const accessToken = authUtil.createToken({
+                    access_token = authUtil.createToken({
                         payload: {id: user._id.toString()},
                         type: "access_token"
                     })
@@ -39,14 +49,15 @@ export default function authMiddleware(dbClient) {
                         type: "refresh_token"
                     });
                     res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);
-                    res.cookie('access_token', accessToken, authUtil.accessTokenCookieOptions);
                 }
+                res.header('authorization', access_token);
                 res.locals.user = user;
                 return next();
             } else {
                 return next(unauthorizedError);
             }
         } catch (e) {
+            console.log("AuthMiddleware ERROR: ",e.message)
             next(e);
         } finally {
             console.log("AuthMiddleware FINISH");

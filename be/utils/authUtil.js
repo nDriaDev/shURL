@@ -1,20 +1,19 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import CONSTANTS from "./constants.js";
-import {Buffer} from "buffer";
 
 const API_JWT_SECRET = "This is my secret";
 const API_JWT_REFRESH_TOKEN = "This is my refresh secred";
 
 const authUtil = {
     accessTokenCookieOptions: {
-        expires: new Date(Date.now()+CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN),
-        maxAge: CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN,
+        expires: new Date(Date.now()+CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.ACCESS_TOKEN),
+        maxAge: CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.ACCESS_TOKEN,
         httpOnly: false,
     },
     refreshTokenCookieOptions: {
-        expires: new Date(Date.now()+CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN),
-        maxAge: CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN,
+        expires: new Date(Date.now()+CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.REFRESH_TOKEN),
+        maxAge: CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.REFRESH_TOKEN,
         httpOnly: true,
         sameSite: 'lax',
         ...(process.env.NODE_ENV === "production" ? {secure: true} : {})
@@ -27,7 +26,6 @@ const authUtil = {
      * @returns {*}
      */
     createToken: ({payload, type, expire=null}) => {
-        console.log(expire ?? type === "access_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN : CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN);
         return jwt.sign(
             payload,
             Buffer.from(
@@ -51,8 +49,18 @@ const authUtil = {
                 process.env[type==='access_token' ? "ACCESS_TOKEN_KEY_PUBLIC": "REFRESH_TOKEN_KEY_PUBLIC"],
                 'base64'
             ).toString('ascii');
-            return jwt.verify(token, key);
+            let payload = jwt.verify(token, key);
+            return {
+                isValid: true,
+                payload
+            }
         } catch (error) {
+            if(error instanceof jwt.JsonWebTokenError) {
+                return {
+                    isValid: false,
+                    payload: null
+                }
+            }
             throw error;
         }
     }

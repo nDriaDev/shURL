@@ -11,8 +11,8 @@ export default class DbClient {
         await this.client.disconnect();
     }
 
-    async hasUrl(url) {
-        return await this.client.hasUrl(url);
+    async findUrl(url) {
+        return await this.client.findUrl(url);
     }
 
     async updateUrl(url) {

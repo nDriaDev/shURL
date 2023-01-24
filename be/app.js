@@ -111,4 +111,14 @@ routing(app, express, dbClient);
 // 	res.sendFile(path.join(__dirname, '/../fe/dist', 'index.html'));
 // })
 
-app.listen(process.env.PORT, () => dbClient.connect().then(()=> Processor.schedule(()=>dbClient.disconnect())).catch(console.dir).finally(()=>console.log(`RUNNING on ${process.env.PORT}...`)));
+app.listen(process.env.PORT, () =>
+	dbClient.connect()
+		.then(()=>
+			Processor.schedule(()=>
+				dbClient.disconnect()
+			))
+		.catch(console.dir)
+		.finally(()=>
+			console.log(`RUNNING on ${process.env.PORT}...`)
+		)
+);

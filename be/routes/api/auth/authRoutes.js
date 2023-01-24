@@ -23,9 +23,9 @@ export default function authRoutes(primaryRouter, router, dbClient) {
 			authController.signIn(dbClient)
 		)
 		.get(
-			'/prova',
+			'/me',
 			authMiddleware(dbClient),
-			(req, res) => res.status(200).send(res.locals.user)
+			authController.me
 		)
 		.get(
 			'/refresh',

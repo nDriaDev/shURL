@@ -42,7 +42,7 @@ const authController = {
 				payload: {id: user._id.toString()},
 				type: 'refresh_token'
 			});
-			res.cookie('access_token', token, authUtil.accessTokenCookieOptions);
+			res.header('authorization', token);
 			res.cookie('refresh_token', refreshToken, authUtil.refreshTokenCookieOptions);
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
 		} catch (error) {
@@ -76,16 +76,22 @@ const authController = {
 				payload: {id: user._id.toString()},
 				type: "refresh_token"
 			});
-			res.cookie('access_token', accessToken, authUtil.accessTokenCookieOptions);
+			res.header('authorization', accessToken);
 			res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
 		} catch (e) {
 			next(e);
 		}
 	},
+	me: (req, res, next) => {
+		const user = res.locals.user;
+		delete user.password;
+		delete user.active;
+		delete user._id;
+		return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send(user);
+	},
 	logout: (req, res, next) => {
 		try {
-			res.cookie('access_token', '', {maxAge: 1});
 			res.cookie('refresh_token', '', { maxAge: 1 });
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
 		} catch (e) {

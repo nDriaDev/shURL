@@ -2,6 +2,7 @@ import feController from "../controllers/feController.js";
 import routeNotFoundController from "../controllers/routeNotFoundController.js";
 import errorController from "../controllers/errorController.js";
 import apiRoutes from "./api/apiRoutes.js";
+import shurlController from "../controllers/shurlController.js";
 
 /**
  *
@@ -10,6 +11,7 @@ import apiRoutes from "./api/apiRoutes.js";
  * @param {DbClient} dbClient
  */
 export default function routing(app, express, dbClient) {
+	app.get('/:code', shurlController.url(dbClient));
 	app.get('*', feController);
 	app.use('/api', apiRoutes(express, dbClient));
 	app.use(routeNotFoundController);

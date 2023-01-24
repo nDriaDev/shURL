@@ -1,4 +1,4 @@
-import { MongoClient, ObjectID } from "mongodb";
+import {MongoClient, ObjectId} from "mongodb";
 import DBError from "../../models/errors/DBError.js";
 import CONSTANTS from "../../utils/constants.js";
 
@@ -36,32 +36,19 @@ export default class MongoDbClient {
         }
     }
 
-    async hasUrl(url) {
-        console.log("MongoClient hasUrl start");
+    async findUrl(url) {
+        console.log("MongoClient findUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
-            const existedUrl = await URLS.findOne({
+            return await URLS.findOne({
                 ...(url.originalUrl !== '' ? {originalUrl: url.originalUrl} : {}),
                 ...(url.shortUrl !== '' ? {shortUrl: url.shortUrl} : {}),
                 ...(url.urlCode !== '' ? {urlCode: url.urlCode} : {})
             })
-
-            if (existedUrl) {
-                url.clicked = existedUrl.clicked;
-                url.originalUrl = existedUrl.originalUrl;
-                url.shortUrl = existedUrl.shortUrl;
-                url.urlCode = existedUrl.urlCode;
-                url.updateAt = existedUrl.updateAt;
-                url.created = existedUrl.created;
-                url.qrCode = existedUrl.qrCode;
-                return true;
-            }
-
-            return false;
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient hasUrl finish");
+            console.log("MongoClient findUrl finish");
         }
     }
 
@@ -69,15 +56,22 @@ export default class MongoDbClient {
         console.log("MongoClient updateUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
-            await URLS.updateOne({
+            const { matchedCount, modifiedCount } = await URLS.updateOne({
                 urlCode: url.urlCode,
             }, {
                 $set: {
                     clicked: url.clicked,
                     ...(url.qrCode !== '' && {qrCode: url.qrCode}),
+                    users: url.users,
                     updateAt: new Date().getTime()
                 }
             })
+            if(matchedCount === 0) {
+                throw(DBError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.NOT_FOUND.code, message: "Record not found"}));
+            }
+            if(matchedCount>0 && modifiedCount===0) {
+                throw(DBError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.BAD_REQUEST.code, message: "Record not updated"}));
+            }
         } catch (error) {
             throw error;
         } finally {
@@ -92,7 +86,7 @@ export default class MongoDbClient {
             const existedUrl = await URLS.findOne({
                 urlCode: code
             })
-            return existedUrl ? true : false;
+            return !!existedUrl;
         } catch (error) {
             throw error;
         } finally {
@@ -143,7 +137,7 @@ export default class MongoDbClient {
         try {
             const USER = this.client.db(this.DB).collection(this.USER);
             const result = await USER.findOne({
-                ...(id ? {_id: ObjectID(id)}: {}),
+                ...(id ? {_id: ObjectId(id)}: {}),
                 ...(email ? { email} : {}),
                 ...(password ? {password} : {}),
                 active: true

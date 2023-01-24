@@ -1,11 +1,21 @@
 export default class URLRecord {
-    constructor(url='') {
+    originalUrl="";
+    shortUrl="";
+    clicked=0;
+    created=null;
+    updateAt=null;
+    urlCode="";
+    qrCode="";
+    users = [];
+
+    constructor({url = '', urlCode = '', userId = null}={}) {
         this.originalUrl = url;
         this.shortUrl = '';
-        this.clicked = 0;
-        this.created = null;
-        this.updateAt = null;
-        this.urlCode = '';
-        this.qrCode = '';
+        this.urlCode = urlCode;
+        userId !== null && this.users.push(userId);
+    }
+
+    addUser(userId) {
+        this.users.push(userId);
     }
 }
