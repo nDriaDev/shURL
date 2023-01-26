@@ -1,7 +1,7 @@
 .profile-btn {
     border: 1px solid #1A1A1A;
-    border-radius: 4px;
+    border-radius: 8px;
     background-color: #1A1A1A;
     line-height: 0;
-    padding: 3px;
+    padding: .6em;
 }

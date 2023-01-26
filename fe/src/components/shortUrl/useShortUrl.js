@@ -16,7 +16,7 @@ const useShortUrl = () => {
     const setMe = useSetAtom(meAtom);
     const [mount, setMount] = useState(true);
 
-    const btnDisabled = useMemo(() => spinner, [spinner]);
+    const btnDisabled = useMemo(() => spinner || !!!url, [spinner, url]);
 
     const toggleQrCode = useCallback(() => setQrCode(q => !q), []);
 
@@ -50,7 +50,7 @@ const useShortUrl = () => {
         navigator.clipboard.writeText(shurl.shortUrl);
     }, [shurl]);
 
-    const generateUrl = useCallback(e => async (url, qrCode) => {
+    const generateUrl = useCallback(async e => {
         try {
             setErrorMessage();
             setSpinner(true);
@@ -67,6 +67,10 @@ const useShortUrl = () => {
             setSpinner(false);
         }
     }, [url, qrCode]);
+
+    const resetShurl = useCallback(e => {
+        setShurl({});
+    }, []);
 
     useEffect(() => {
         async function me() {
@@ -93,6 +97,7 @@ const useShortUrl = () => {
         qrCode,
         url,
         shurl,
+        resetShurl,
         btnDisabled,
         toggleQrCode,
         insertUrl,

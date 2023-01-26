@@ -1,6 +1,30 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 2em 0;
+}
+
 .url-container {
     display: flex;
-    padding: 1em 0;
+}
+
+.btn-url-container {
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.btn-url {
+    color: var(--color);
+    width: 50%;
+    min-width: fit-content;
+}
+
+.opt-container {
+    display: flex;
+    justify-content: space-between;
 }
 
 .qr-container {
@@ -10,16 +34,25 @@
     gap: .5em;
 }
 
-.card {
-    padding: 2em 0;
+.timer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
 }
+
+.timer-select {
+    height: 100%;
+}
+
 .short-url-container {
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
     width: 100%;
     background-color: #1a1a1a;
     border-radius: 12px;
+    position: relative;
+    box-shadow: 0px 8px 16px 0px rgb(26 26 26 / 70%);
 }
 
 .short-url-inner-container {
@@ -27,6 +60,22 @@
     padding: 1em;
     flex-direction: column;
     align-items: start;
+}
+
+.short-url-container-close-btn {
+    position: absolute;
+    padding: 1px 0px 4px 4px;
+    top: 0px;
+    right: 0px;
+    border: 1px solid white;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-radius: 0px 12px 0px 9px;
+}
+
+.short-url-container-close-btn:active,
+.short-url-container-close-btn:hover {
+    color: #646cff;
 }
 
 .short-url-label {

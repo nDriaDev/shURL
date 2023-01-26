@@ -1,4 +1,4 @@
-import {useSetAtom} from "jotai";
+import {useAtom, useSetAtom} from "jotai";
 import messagesAtom from "../../../store/messagesStore.js";
 import spinnerAtom from "../../../store/spinnerStore.js";
 import {useNavigate} from "react-router-dom";
@@ -12,7 +12,7 @@ import meAtom from "../../../store/meStore.js";
 const useProfileButton = () => {
 	const setMessage = useSetAtom(messagesAtom);
 	const setSpinner = useSetAtom(spinnerAtom);
-	const setMe = useSetAtom(meAtom);
+	const [me, setMe] = useAtom(meAtom);
 	const navigate = useNavigate();
 
 	const logout = useCallback(async e => {
@@ -34,6 +34,7 @@ const useProfileButton = () => {
 	}, []);
 
 	return {
+		me,
 		logout
 	}
 }

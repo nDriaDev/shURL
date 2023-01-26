@@ -10,6 +10,7 @@ const ShurlPage = ({}) => {
 		qrCode,
 		url,
 		shurl,
+		resetShurl,
 		btnDisabled,
 		toggleQrCode,
 		insertUrl,
@@ -25,14 +26,12 @@ const ShurlPage = ({}) => {
 	}
 
 	return (<>
-		<div className="d-flex justify-end">
-			<ProfileButton/>
-		</div>
 		<ShortUrl
 			url={url}
 			btnDisabled={btnDisabled}
 			copyShortUrl={copyShortUrl}
 			shurl={shurl}
+			resetShurl={resetShurl}
 			generateUrl={generateUrl}
 			insertUrl={insertUrl}
 			qrCode={qrCode}

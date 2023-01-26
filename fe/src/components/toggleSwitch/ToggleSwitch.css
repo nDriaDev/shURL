@@ -29,6 +29,14 @@
     border-color: #646cff;
 }
 
+input:disabled + .slider:hover {
+    border-color: field;
+}
+
+input:disabled + .slider:focus {
+    outline: unset;
+}
+
 .slider:focus {
     outline: 4px auto -webkit-focus-ring-color;
 }

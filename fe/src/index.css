@@ -60,6 +60,10 @@ button {
   transition: border-color 0.25s;
 }
 
+button:disabled {
+  opacity: .4;
+}
+
 input:hover:not([disabled]),
 button:hover:not([disabled]) {
   cursor: pointer;

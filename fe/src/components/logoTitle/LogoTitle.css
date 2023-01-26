@@ -1,29 +1,31 @@
 .logo-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     position: relative;
     width: 100%;
-  }
+    margin: 2em 0;
+}
 
-  .logo-container>h1 {
+.logo-container > h1 {
     margin: 0;
-  }
+}
 
-  .logo {
+.logo {
     width: 2em;
     height: 2em;
     vertical-align: text-top;
     will-change: filter;
-  }
+}
 
-  /* .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  } */
-  .logo-container:hover {
+/* .logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+} */
+.logo-container:hover {
     filter: drop-shadow(0 0 2em #61dafbaa);
-  }
+}
 
-  .text {
+.text {
     font-size: 3.2em;
     line-height: 1.1;
     display: block;
@@ -32,15 +34,15 @@
     font-weight: 100;
     opacity: 1;
     letter-spacing: 1px;
-  }
+}
 
-  .text.animate {
+.text.animate {
     letter-spacing: initial;
     animation: animate 1.5s ease-out forwards 1;
-  }
+}
 
-  /* For animation */
-  @keyframes animate {
+/* For animation */
+@keyframes animate {
     0% {
         letter-spacing: -20px;
     }
@@ -50,70 +52,77 @@
     }
 
     100% {
-      letter-spacing: 1px;
+        letter-spacing: 1px;
     }
-  }
+}
 
-  .hide-text {
+.hide-text {
     color: transparent;
-  }
+}
 
-  .hide-text.animate {
+.hide-text.animate {
     color: inherit;
     animation: trasp 0.3s ease-out forwards 1;
     animation-delay: 2.0s;
-  }
+}
 
-  @keyframes trasp {
+@keyframes trasp {
     100% {
-      color: transparent;
+        color: transparent;
     }
-  }
+}
 
-  .translate-text-1 {
+.translate-text-1 {
     margin-left: 1.3em;
-  }
+}
 
-  .translate-text-1.animate {
+.translate-text-1.animate {
     margin-left: 0;
     animation: trans-1 0.3s ease-out forwards 1;
     animation-delay: 2.0s;
-  }
+}
 
-  @keyframes trans-1 {
+@keyframes trans-1 {
     0% {
-      margin-left: 0;
+        margin-left: 0;
     }
 
     50% {
-      margin-left: 0.75em;
+        margin-left: 0.75em;
     }
 
     100% {
-      margin-left: 1.3em;
+        margin-left: 1.3em;
     }
-  }
+}
 
-  .translate-text-2 {
+.translate-text-2 {
     margin-left: -1.3em;
-  }
+}
 
-  .translate-text-2.animate {
+.translate-text-2.animate {
     margin-left: 0;
     animation: trans-2 0.3s ease-out forwards 1;
     animation-delay: 2.0s;
-  }
+}
 
-  @keyframes trans-2 {
+@keyframes trans-2 {
     0% {
-      margin-left: 0;
+        margin-left: 0;
     }
 
     50% {
-      margin-left: -0.75em;
+        margin-left: -0.75em;
     }
 
     100% {
-      margin-left: -1.3em;
+        margin-left: -1.3em;
     }
-  }
+}
+
+.nav-about {
+    font-size: 0.75rem;
+    margin-top: -3em;
+    display: flex;
+    gap: .3em;
+}

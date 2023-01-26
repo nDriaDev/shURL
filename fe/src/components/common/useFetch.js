@@ -40,7 +40,7 @@ const useFetch = async ({path, body=null, bodyType="json", method, headers=null}
 		);
 		let data = response.headers.get("Content-Type").startsWith("text") ? await response.text() : await response.json();
 		if(!response.ok) {
-			if(response.status === CONSTANTS.HTTP_CODE.UNAUTHORIZED) {
+			if(response.status === CONSTANTS.HTTP_CODE.UNAUTHORIZED && !window.location.pathname.includes(CONSTANTS.ROUTES.LOGIN)) {
 				window.location.replace(CONSTANTS.ROUTES.LOGIN);
 				return;
 			}

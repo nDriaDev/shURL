@@ -12,18 +12,22 @@ import ErrorRoutePage from "./routes/errorPage/ErrorRoutePage.jsx";
 import CONSTANTS from "./utils/constants.js";
 import Messages from "./components/messages/Messages.jsx";
 import messagesAtom from "./store/messagesStore.js";
+import ProfileButton from "./components/button/profileButton/ProfileButton.jsx";
 
 function App() {
 	const spinner = useAtomValue(spinnerAtom);
 	const messages = useAtomValue(messagesAtom);
 
 	return (
-		<div className="App">
-			<LogoTitle />
-			<div className="position-relative">
-				<Spinner show={spinner}/>
-				{/*<RouterProvider router={router}/>*/}
-				<BrowserRouter>
+		<BrowserRouter>
+			<div className="App">
+				<div className="d-flex justify-end">
+					<ProfileButton/>
+				</div>
+				<LogoTitle />
+				<div className="position-relative">
+					<Spinner show={spinner}/>
+					{/*<RouterProvider router={router}/>*/}
 					<Routes>
 						<Route
 							path={CONSTANTS.ROUTES.INITIAL}
@@ -44,12 +48,12 @@ function App() {
 							element={<Navigate to={CONSTANTS.ROUTES.ERROR}/>}
 						/>
 					</Routes>
-				</BrowserRouter>
-				<Messages
-					{...messages}
-				/>
+					<Messages
+						{...messages}
+					/>
+				</div>
 			</div>
-		</div>
+		</BrowserRouter>
 	)
 }
 
