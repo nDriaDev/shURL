@@ -1,6 +1,7 @@
 import {MongoClient, ObjectId} from "mongodb";
 import DBError from "../../models/errors/DBError.js";
 import CONSTANTS from "../../utils/constants.js";
+import LogUtil from "../../utils/logUtil.js";
 
 export default class MongoDbClient {
     // Connection URI
@@ -15,29 +16,29 @@ export default class MongoDbClient {
     }
 
     async connect() {
-        console.log("MongoClient connect start");
+        LogUtil.log("MongoClient connect start");
         try {
             await this.client.connect();
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient connect finish");
+            LogUtil.log("MongoClient connect finish");
         }
     }
 
     async disconnect() {
-        console.log("MongoClient disconnect start");
+        LogUtil.log("MongoClient disconnect start");
         try {
             await this.client.close();
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient disconnect finish");
+            LogUtil.log("MongoClient disconnect finish");
         }
     }
 
     async findUrl(url) {
-        console.log("MongoClient findUrl start");
+        LogUtil.log("MongoClient findUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
             return await URLS.findOne({
@@ -48,12 +49,12 @@ export default class MongoDbClient {
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient findUrl finish");
+            LogUtil.log("MongoClient findUrl finish");
         }
     }
 
     async updateUrl(url) {
-        console.log("MongoClient updateUrl start");
+        LogUtil.log("MongoClient updateUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
             const { matchedCount, modifiedCount } = await URLS.updateOne({
@@ -75,12 +76,12 @@ export default class MongoDbClient {
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient updateUrl finish");
+            LogUtil.log("MongoClient updateUrl finish");
         }
     }
 
     async hasCode(code) {
-        console.log("MongoClient hasCode start");
+        LogUtil.log("MongoClient hasCode start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
             const existedUrl = await URLS.findOne({
@@ -90,12 +91,12 @@ export default class MongoDbClient {
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient hasCode finish");
+            LogUtil.log("MongoClient hasCode finish");
         }
     }
 
     async createUrl(url) {
-        console.log("MongoClient createUrl start");
+        LogUtil.log("MongoClient createUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
             url.created = new Date().getTime();
@@ -104,12 +105,12 @@ export default class MongoDbClient {
         } catch (error) {
             throw error;
         } finally {
-            console.log("MongoClient createUrl finish");
+            LogUtil.log("MongoClient createUrl finish");
         }
     }
 
     async createUser({email, password}) {
-        console.log("MongoClient createUser start");
+        LogUtil.log("MongoClient createUser start");
         try {
             const USER = this.client.db(this.DB).collection(this.USER);
             const result = await USER.insertOne({
@@ -126,12 +127,12 @@ export default class MongoDbClient {
             }
             throw error;
         } finally {
-            console.log("MongoClient createUser finish");
+            LogUtil.log("MongoClient createUser finish");
         }
     }
 
     async findUser({id=null, email=null, password=null}) {
-        console.log("MongoClient findUser start");
+        LogUtil.log("MongoClient findUser start");
         try {
             const USER = this.client.db(this.DB).collection(this.USER);
             const result = await USER.findOne({
@@ -151,7 +152,7 @@ export default class MongoDbClient {
             }
             throw error;
         } finally {
-            console.log("MongoClient findUser finish");
+            LogUtil.log("MongoClient findUser finish");
         }
     }
 }

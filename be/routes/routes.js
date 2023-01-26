@@ -3,6 +3,8 @@ import routeNotFoundController from "../controllers/routeNotFoundController.js";
 import errorController from "../controllers/errorController.js";
 import apiRoutes from "./api/apiRoutes.js";
 import shurlController from "../controllers/shurlController.js";
+import CONSTANTS from "../utils/constants.js";
+import configSwagger from "../swagger/index.js";
 
 /**
  *
@@ -11,9 +13,10 @@ import shurlController from "../controllers/shurlController.js";
  * @param {DbClient} dbClient
  */
 export default function routing(app, express, dbClient) {
-	app.get('/:code', shurlController.url(dbClient));
-	app.get('*', feController);
-	app.use('/api', apiRoutes(express, dbClient));
+	app.get(CONSTANTS.PATHS.FE_ROOT_STATIC_FILE, shurlController.url(dbClient));
+	app.get(CONSTANTS.PATHS.WILDCARD, feController);
+	configSwagger(app);
+	app.use(CONSTANTS.PATHS.API, apiRoutes(express, dbClient));
 	app.use(routeNotFoundController);
 	app.use(errorController);
 }

@@ -9,6 +9,7 @@ specifiers:
   mongodb: ^4.13.0
   morgan: ^1.10.0
   qrcode: ^1.5.1
+  swagger-ui-express: ^4.6.0
 
 dependencies:
   bcrypt: 5.1.0
@@ -19,6 +20,7 @@ dependencies:
   mongodb: 4.13.0
   morgan: 1.10.0
   qrcode: 1.5.1
+  swagger-ui-express: 4.6.0_express@4.18.2
 
 packages:
 
@@ -1886,6 +1888,20 @@ packages:
     resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}
     dev: false
     optional: true
+
+  /swagger-ui-dist/4.15.5:
+    resolution: {integrity: sha512-V3eIa28lwB6gg7/wfNvAbjwJYmDXy1Jo1POjyTzlB6wPcHiGlRxq39TSjYGVjQrUSAzpv+a7nzp7mDxgNy57xA==}
+    dev: false
+
+  /swagger-ui-express/4.6.0_express@4.18.2:
+    resolution: {integrity: sha512-ZxpQFp1JR2RF8Ar++CyJzEDdvufa08ujNUJgMVTMWPi86CuQeVdBtvaeO/ysrz6dJAYXf9kbVNhWD7JWocwqsA==}
+    engines: {node: '>= v0.10.32'}
+    peerDependencies:
+      express: '>=4.0.0'
+    dependencies:
+      express: 4.18.2
+      swagger-ui-dist: 4.15.5
+    dev: false
 
   /tar/6.1.13:
     resolution: {integrity: sha512-jdIBIN6LTIe2jqzay/2vtYLlBHa3JF42ot3h1dW8Q0PaAG4v8rm0cvpVePtau5C6OKXGGcgO9q2AMNSWxiLqKw==}

@@ -1,6 +1,7 @@
 import URLRecord from "../models/URLRecord.js";
 import urlUtil from "../utils/urlUtil.js";
 import CONSTANTS from "../utils/constants.js";
+import LogUtil from "../utils/logUtil.js";
 
 const shurlController = {
 	/**
@@ -9,8 +10,9 @@ const shurlController = {
 	 */
 	generate: dbClient => async (req, res, next) => {
 		try {
-			console.log("shurlController generate: START")
+			LogUtil.log("shurlController generate: START")
 			let {url, qrCode} = req.body;
+			url = url.toLowerCase();
 			let urlRecord = new URLRecord({url});
 			urlRecord = await dbClient.findUrl(urlRecord);
 			if(!urlRecord) {
@@ -30,6 +32,9 @@ const shurlController = {
 					urlRecord.qrCode = await urlUtil.qrCode(urlRecord.shortUrl);
 					update = true;
 				}
+				if(!qrCode) {
+					urlRecord.qrCode = "";
+				}
 				if(!urlRecord.users.includes(res.locals.user._id.toString())) {
 					urlRecord.addUser(res.locals.user._id.toString());
 					update = true;
@@ -40,10 +45,10 @@ const shurlController = {
 			delete urlRecord._id;
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send(urlRecord);
 		} catch (e) {
-			console.log("shurlController generate: Error ", e.message);
+			LogUtil.log("shurlController generate: Error ", e.message);
 			next(e);
 		} finally {
-			console.log("shurlController generate: FINISH");
+			LogUtil.log("shurlController generate: FINISH");
 		}
 	},
 	/**
@@ -52,7 +57,7 @@ const shurlController = {
 	 */
 	url: dbClient => async (req, res, next) => {
 		try {
-			console.log("shurlController url: START");
+			LogUtil.log("shurlController url: START");
 			let urlRecord = await dbClient.findUrl(new URLRecord({urlCode:req.params.code}));
 			if(urlRecord) {
 				urlRecord.clicked++;
@@ -62,9 +67,9 @@ const shurlController = {
 				next();
 			}
 		} catch (e) {
-
+			next(e);
 		} finally {
-			console.log("shurlController url: FINISH");
+			LogUtil.log("shurlController url: FINISH");
 		}
 	}
 }

@@ -1,11 +1,11 @@
-import auth from "../utils/authUtil.js";
 import AppError from "../models/errors/AppError.js";
 import CONSTANTS from "../utils/constants.js";
 import authUtil from "../utils/authUtil.js";
+import LogUtil from "../utils/logUtil.js";
 
 export default function authMiddleware(dbClient) {
     return async (req, res, next) => {
-        console.log("AuthMiddleware START");
+        LogUtil.log("AuthMiddleware START");
         try {
             let {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.UNAUTHORIZED,
                 unauthorizedError = new AppError({code, message: text}),
@@ -40,7 +40,7 @@ export default function authMiddleware(dbClient) {
                 }
                 //if it has been used refreshToken, refresh access_token and refresh_token
                 if(useRefresh) {
-                    console.log("AuthMiddleware: refreshToken");
+                    LogUtil.log("AuthMiddleware: refreshToken");
                     access_token = authUtil.createToken({
                         payload: {id: user._id.toString()},
                         type: "access_token"
@@ -58,9 +58,9 @@ export default function authMiddleware(dbClient) {
                 return next(unauthorizedError);
             }
         } catch (e) {
-            console.log("AuthMiddleware ERROR: ",e.message)
+            LogUtil.log("AuthMiddleware ERROR: ",e.message)
             next(e);
         } finally {
-            console.log("AuthMiddleware FINISH");
+            LogUtil.log("AuthMiddleware FINISH");
         }
 }};

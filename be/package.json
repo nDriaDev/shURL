@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.13.0",
     "morgan": "^1.10.0",
-    "qrcode": "^1.5.1"
+    "qrcode": "^1.5.1",
+    "swagger-ui-express": "^4.6.0"
   }
 }

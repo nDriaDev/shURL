@@ -2,6 +2,7 @@ import {validationResult} from "express-validator";
 import CONSTANTS from "../utils/constants.js";
 import {UTILS} from "../utils/utils.js";
 import AppError from "../models/errors/AppError.js";
+import LogUtil from "../utils/logUtil.js";
 
 export default function validatorMiddleware(validators, {parallels = false} = {}) {
 	return async (req, res, next) => {
@@ -33,8 +34,8 @@ export default function validatorMiddleware(validators, {parallels = false} = {}
 			});
 			next(error);
 		} catch (e) {
-			console.error(e);
-			next(error);
+			LogUtil.error(e);
+			next(e);
 		}
 	}
 }

@@ -1,4 +1,23 @@
 const CONSTANTS = {
+	PATHS: {
+		WILDCARD: '*',
+		FE_ROOT_TO_SERVE: '/../../fe/dist',
+		FE_ROOT_STATIC_FILE: './../fe/dist',
+		SHURL_LINK: '/:code',
+		API: '/api',
+		SWAGGER: '/api-docs'
+	},
+	MONGO_ERROR: {
+		11000: 11000
+	},
+	EXPIRES_TOKEN_IN: {
+		ACCESS_TOKEN: '1m',
+		REFRESH_TOKEN: '59m'
+	},
+	EXPIRE_COOKIE_TOKEN_IN: {
+		ACCESS_TOKEN: 10*60*1000,
+		REFRESH_TOKEN: 59*60*1000
+	},
 	HTTP_CODE: {
 		INFORMATIONAL_RESPONSE: {
 			"CONTINUE": {code: 100, text: "Continue"},
@@ -74,17 +93,6 @@ const CONSTANTS = {
 			"NETWORK_AUTHENTICATION_REQUIRED": {code: 511, text: "Network Authentication Required"},
 		}
 	},
-	MONGO_ERROR: {
-		11000: 11000
-	},
-	EXPIRES_TOKEN_IN: {
-		ACCESS_TOKEN: '1m',
-		REFRESH_TOKEN: '59m'
-	},
-	EXPIRE_COOKIE_TOKEN_IN: {
-		ACCESS_TOKEN: 10*60*1000,
-		REFRESH_TOKEN: 59*60*1000
-	}
 }
 
 export default CONSTANTS;
