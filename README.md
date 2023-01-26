@@ -10,7 +10,8 @@ Easily shorten and track links for sharing on social media, video, email, print,
 
 - Shorten any type of url.
 - Create shorten url QrCode.
-- Track the effectiveness of your links with comprehensive analytics. (Work in progress)
+- Create temporary shorten url (**Work in progress**)
+- Track the effectiveness of your links with comprehensive analytics. (**Work in progress**)
 
 ## Try demo locally
 
