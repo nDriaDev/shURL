@@ -100,7 +100,6 @@ export default class MongoDbClient {
             const URLS = this.client.db(this.DB).collection(this.URLS);
             url.created = new Date().getTime();
             const result = await URLS.insertOne(url)
-            console.log("MongoClient createUrl result:", result);
             return true;
         } catch (error) {
             throw error;
@@ -119,7 +118,6 @@ export default class MongoDbClient {
                 created: new Date().getTime(),
                 active: true
             })
-            console.log("MongoClient createUser result:", result);
             return true;
         } catch (error) {
             if (error.code && error.code === CONSTANTS.MONGO_ERROR[11000]) {
@@ -142,7 +140,6 @@ export default class MongoDbClient {
                 ...(password ? {password} : {}),
                 active: true
             })
-            console.log("MongoClient findUser result:", result);
             if (result) {
                 return result;
             }

@@ -42,7 +42,7 @@ const authController = {
 				payload: {id: user._id.toString()},
 				type: 'refresh_token'
 			});
-			res.header('authorization', token);
+			res.header('Authorization', token);
 			res.cookie('refresh_token', refreshToken, authUtil.refreshTokenCookieOptions);
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
 		} catch (error) {
@@ -76,7 +76,7 @@ const authController = {
 				payload: {id: user._id.toString()},
 				type: "refresh_token"
 			});
-			res.header('authorization', accessToken);
+			res.header('Authorization', accessToken);
 			res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
 		} catch (e) {

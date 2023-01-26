@@ -40,6 +40,7 @@ export default function authMiddleware(dbClient) {
                 }
                 //if it has been used refreshToken, refresh access_token and refresh_token
                 if(useRefresh) {
+                    console.log("AuthMiddleware: refreshToken");
                     access_token = authUtil.createToken({
                         payload: {id: user._id.toString()},
                         type: "access_token"
@@ -50,7 +51,7 @@ export default function authMiddleware(dbClient) {
                     });
                     res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);
                 }
-                res.header('authorization', access_token);
+                res.header('Authorization', access_token);
                 res.locals.user = user;
                 return next();
             } else {
