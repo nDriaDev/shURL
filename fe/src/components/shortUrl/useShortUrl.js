@@ -1,11 +1,22 @@
-import { useState, useCallback, useMemo } from 'react';
+import {useState, useCallback, useMemo, useEffect} from 'react';
+import spinnerAtom from "../../store/spinnerStore.js";
+import {useAtom, useSetAtom} from "jotai";
+import messagesAtom from "../../store/messagesStore.js";
+import useFetch from "../common/useFetch.js";
+import ApiUtil from "../../utils/apiUtil.js";
+import meAtom from "../../store/meStore.js";
+import {MessageUtil} from "../../utils/messagesUtil.js";
 
-const useShortUrl = ({ data, generate, spinner }) => {
-    const URL_REGEX = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gm;
+const useShortUrl = () => {
+    const [spinner, setSpinner] = useAtom(spinnerAtom);
+    const setErrorMessage = useSetAtom(messagesAtom);
     const [qrCode, setQrCode] = useState(false);
     const [url, setUrl] = useState('');
+    const [shurl, setShurl] = useState({});
+    const setMe = useSetAtom(meAtom);
+    const [mount, setMount] = useState(true);
 
-    const btnDisabled = useMemo(() => !URL_REGEX.test(url) || spinner, [url, spinner]);
+    const btnDisabled = useMemo(() => spinner, [spinner]);
 
     const toggleQrCode = useCallback(() => setQrCode(q => !q), []);
 
@@ -16,34 +27,72 @@ const useShortUrl = ({ data, generate, spinner }) => {
         a.href = data.qrCode;
         a.download = "qrCode.png";
         a.click();
-    }, [data]);
+    }, [shurl]);
 
     const shareQrCode = useCallback(async e => {
-        const blob = await (await fetch(data.qrCode)).blob();
+        const blob = await (await fetch(shurl.qrCode)).blob();
         const file = new File([blob], 'qrCode.png', { type: blob.type });
         navigator.share({
         title: 'ShortUrl',
         text: 'Check out this image!',
         files: [file],
         })
-    }, [data]);
+    }, [shurl]);
 
     const shareShortUrl = useCallback(e => {
         navigator.share({
             title: 'ShortUrl',
-            text: data.shortUrl
+            text: shurl.shortUrl
         })
-    }, [data]);
+    }, [shurl]);
 
     const copyShortUrl = useCallback(e => {
-        navigator.clipboard.writeText(data.shortUrl);
-    }, [data]);
+        navigator.clipboard.writeText(shurl.shortUrl);
+    }, [shurl]);
 
-    const generateUrl = useCallback(e => generate(url, qrCode), [url, qrCode, generate]);
+    const generateUrl = useCallback(e => async (url, qrCode) => {
+        try {
+            setErrorMessage();
+            setSpinner(true);
+            const data = await useFetch({
+                path: ApiUtil.URLS.SHURL.GENERATE.PATH,
+                method: ApiUtil.URLS.SHURL.GENERATE.METHOD,
+                body: {url, qrCode},
+                bodyType: "json"
+            });
+            setShurl(data);
+        } catch (error) {
+            setErrorMessage(MessageUtil.resolveErrorMessage(error));
+        } finally {
+            setSpinner(false);
+        }
+    }, [url, qrCode]);
+
+    useEffect(() => {
+        async function me() {
+            setSpinner(true);
+            setErrorMessage();
+            try {
+                const data = await useFetch({
+                    path: ApiUtil.URLS.AUTH.ME.PATH,
+                    method: ApiUtil.URLS.AUTH.ME.METHOD
+                });
+                setMe(data);
+                setMount(false);
+            } catch (e) {
+                setErrorMessage(MessageUtil.resolveErrorMessage(e));
+            } finally {
+                setSpinner(false);
+            }
+        }
+        me();
+    }, []);
 
     return {
+        mount,
         qrCode,
         url,
+        shurl,
         btnDisabled,
         toggleQrCode,
         insertUrl,

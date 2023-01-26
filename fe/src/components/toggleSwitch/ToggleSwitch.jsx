@@ -8,7 +8,7 @@ const ToggleSwitch = ({ id, checked, onCheck, disabled, type }) => {
     return (
         <label className="switch">
             <input id={id} type="checkbox" role="switch" checked={checked} onChange={onCheck} disabled={disabled} />
-            <span className={sliderClasses} aria-hidden="true"/>
+            <span tabIndex="0" className={sliderClasses} aria-hidden="true"/>
         </label>
     )
 }

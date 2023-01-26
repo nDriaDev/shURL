@@ -22,6 +22,15 @@
     background-color: #3b3b3b;
     -webkit-transition: .4s;
     transition: .4s;
+    border:1px solid transparent;
+}
+
+.slider:hover:not(focus) {
+    border-color: #646cff;
+}
+
+.slider:focus {
+    outline: 4px auto -webkit-focus-ring-color;
 }
 
 input:disabled + .slider {

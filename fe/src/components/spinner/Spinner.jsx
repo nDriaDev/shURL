@@ -11,7 +11,9 @@ const Spinner = ({className, show}) => {
     }
 
     return (
-        <div className={classes}></div>
+        <div className="spinner-container">
+            <div className={classes}></div>
+        </div>
     )
 };
 

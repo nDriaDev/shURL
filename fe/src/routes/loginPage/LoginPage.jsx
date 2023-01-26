@@ -1,45 +1,50 @@
-import {useRef, useState} from "react";
+import {useRef} from "react";
 import { useCallback } from "react";
 import { memo } from "react";
-import Spinner from "../../components/spinner/Spinner.jsx";
 import {useNavigate} from "react-router-dom";
 import './LoginPage.css';
-const LoginPage = ({ }) => {
+import useFetch from "../../components/common/useFetch.js";
+import ApiUtil from "../../utils/apiUtil.js";
+import CONSTANTS from "../../utils/constants.js";
+import {useSetAtom} from "jotai";
+import spinnerAtom from "../../store/spinnerStore.js";
+import messagesAtom from "../../store/messagesStore.js";
+import {MessageUtil} from "../../utils/messagesUtil.js";
+
+const LoginPage = ({}) => {
+    const setSpinner = useSetAtom(spinnerAtom);
+    const setErrorMessage = useSetAtom(messagesAtom);
     const navigate = useNavigate();
-    const [spinner, setSpinner] = useState(false);
     const form = useRef({ email:'', password:'' });
     const onChange = useCallback(e => {
         form.current[e.target.name] = e.target.value;
     }, []);
 
     const login = useCallback(async e => {
+        e.preventDefault();
         setSpinner(true);
+        setErrorMessage();
         try {
-            const response = await fetch('/signin', {
-                method: 'POST',
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ ...form.current }),
-            });
-            const result = await response.json();
-            localStorage.setItem('accessToken', result.accessToken);
-            navigate('/');
+            const response = await useFetch({
+                path: ApiUtil.URLS.AUTH.SIGNIN.PATH,
+                method: ApiUtil.URLS.AUTH.SIGNIN.METHOD,
+                body: form.current,
+                bodyType: "json"
+            })
+            navigate(CONSTANTS.ROUTES.INITIAL);
         } catch (e) {
-            throw e;
+            setErrorMessage(MessageUtil.resolveErrorMessage(e));
         } finally {
             setSpinner(false);
         }
     }, []);
 
-    if(spinner) {
-        return <Spinner show={true}/>
-    }
-
     return (
-        <div className="login-form">
+        <form className="login-form">
             <input placeholder="Email" type="email" name="email" onChange={onChange}/>
             <input placeholder="Password" type="password" name="password" onChange={onChange} />
-            <button type="button" onClick={login}>Accedi</button>
-        </div>
+            <button type="submit" onClick={login}>Accedi</button>
+        </form>
     )
 };
 

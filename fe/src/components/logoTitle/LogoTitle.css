@@ -27,12 +27,15 @@
     font-size: 3.2em;
     line-height: 1.1;
     display: block;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: 100;
     opacity: 1;
+    letter-spacing: 1px;
+  }
+
+  .text.animate {
+    letter-spacing: initial;
     animation: animate 1.5s ease-out forwards 1;
   }
 
@@ -52,6 +55,10 @@
   }
 
   .hide-text {
+    color: transparent;
+  }
+
+  .hide-text.animate {
     color: inherit;
     animation: trasp 0.3s ease-out forwards 1;
     animation-delay: 2.0s;
@@ -64,6 +71,10 @@
   }
 
   .translate-text-1 {
+    margin-left: 1.3em;
+  }
+
+  .translate-text-1.animate {
     margin-left: 0;
     animation: trans-1 0.3s ease-out forwards 1;
     animation-delay: 2.0s;
@@ -84,6 +95,10 @@
   }
 
   .translate-text-2 {
+    margin-left: -1.3em;
+  }
+
+  .translate-text-2.animate {
     margin-left: 0;
     animation: trans-2 0.3s ease-out forwards 1;
     animation-delay: 2.0s;

@@ -3,53 +3,53 @@ import { useMemo } from "react";
 import { memo } from "react";
 import './Messages.css';
 
-const Messages = ({ defaultMessages, successMessages, warningMessages, errorMessages }) => {
-    const Default = useMemo(() => {
-        if (!defaultMessages) {
+const Messages = ({ info, success, warning, error }) => {
+    const Info = useMemo(() => {
+        if (!info) {
             return null;
         }
-        return defaultMessages.map((el, index) => (
-            <p key={"default"+index} className="text-default">
+        return info.map((el, index) => (
+            <p key={"default"+index} className="message text-default">
                 {el}
             </p>
         ));
-    }, [defaultMessages]);
+    }, [info]);
 
     const Success = useMemo(() => {
-        if (!successMessages) {
+        if (!success) {
             return null;
         }
-        return successMessages.map((el, index) => (
-            <p key={"success"+index} className="text-success">
+        return success.map((el, index) => (
+            <p key={"success"+index} className="message text-success">
                 {el}
             </p>
         ));
-    }, [successMessages]);
+    }, [success]);
 
     const Warning = useMemo(() => {
-        if (!warningMessages) {
+        if (!warning) {
             return null;
         }
-        return warningMessages.map((el, index) => (
-            <p key={"warning"+index} className="text-warning">
+        return warning.map((el, index) => (
+            <p key={"warning"+index} className="message text-warning">
                 {el}
             </p>
         ));
-    }, [warningMessages]);
+    }, [warning]);
 
     const Err = useMemo(() => {
-        if (!errorMessages) {
+        if (!error) {
             return null;
         }
-        return errorMessages.map((el, index) => (
-            <p key={"error"+index} className="text-error">
+        return error.map((el, index) => (
+            <p key={"error"+index} className="message text-error">
                 {el}
             </p>
         ));
-    }, [errorMessages]);
+    }, [error]);
 
     return (<>
-        {Default}
+        {Info}
         {Success}
         {Warning}
         {Err}
@@ -59,10 +59,10 @@ const Messages = ({ defaultMessages, successMessages, warningMessages, errorMess
 Messages.displayName = "Messages";
 
 Messages.propTypes = {
-    defaultMessages: arrayOf(string),
-    successMessages: arrayOf(string),
-    warningMessages: arrayOf(string),
-    errorMessages: arrayOf(string),
+    info: arrayOf(string),
+    success: arrayOf(string),
+    warning: arrayOf(string),
+    error: arrayOf(string),
 }
 
 export default memo(Messages);
