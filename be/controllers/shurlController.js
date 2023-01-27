@@ -2,6 +2,7 @@ import URLRecord from "../models/URLRecord.js";
 import urlUtil from "../utils/urlUtil.js";
 import CONSTANTS from "../utils/constants.js";
 import LogUtil from "../utils/logUtil.js";
+import AppError from "../models/errors/AppError.js";
 
 const shurlController = {
 	/**

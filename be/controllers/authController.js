@@ -31,7 +31,7 @@ const authController = {
 			LogUtil.log("authController signIn: START");
 			let { email, password } = req.body;
 			let user = await dbClient.findUser({ email });
-			const {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.UNAUTHORIZED;
+			const {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.NOT_FOUND;
 			if (!user) {
 				return next(new AppError({ code, message: "Utente non trovato." }));
 			}

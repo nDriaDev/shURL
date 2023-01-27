@@ -13,9 +13,9 @@ import configSwagger from "../swagger/index.js";
  * @param {DbClient} dbClient
  */
 export default function routing(app, express, dbClient) {
-	app.get(CONSTANTS.PATHS.FE_ROOT_STATIC_FILE, shurlController.url(dbClient));
-	app.get(CONSTANTS.PATHS.WILDCARD, feController);
 	configSwagger(app);
+	app.get(CONSTANTS.PATHS.SHURL_LINK, shurlController.url(dbClient));
+	app.get(CONSTANTS.PATHS.WILDCARD, feController);
 	app.use(CONSTANTS.PATHS.API, apiRoutes(express, dbClient));
 	app.use(routeNotFoundController);
 	app.use(errorController);
