@@ -1,0 +1,19 @@
+.message {
+    text-align: left;
+}
+
+.text-default {
+    color: #888;
+}
+
+.text-success {
+    color: rgb(58, 135, 20);
+}
+
+.text-error {
+    color: rgb(165, 26, 26);
+}
+
+.text-warning {
+    color: rgb(193, 146, 29);
+}

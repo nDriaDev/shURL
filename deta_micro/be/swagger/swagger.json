@@ -1,0 +1,388 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Shurl BE",
+		"description": "BE API REST",
+		"license": {
+			"name": "MIT",
+			"url": "https://opensource.org/licenses/MIT"
+		}
+	},
+	"host": "localhost:3000",
+	"basePath": "/api",
+	"tags": [
+		{
+			"name": "Status"
+		},
+		{
+			"name": "Auth"
+		},
+		{
+			"name": "Shurl"
+		}
+	],
+	"schemes": ["http", "https"],
+	"consumes": ["text/html","application/json"],
+	"produces": ["text/html","application/json"],
+	"securityDefinitions": {
+		"basicAuth": {
+			"type": "basic"
+		}
+	},
+	"paths": {
+		"/status": {
+			"get": {
+				"tags": ["Status"],
+				"summary": "Get current server status",
+				"responses": {
+					"200": {
+						"description": "Running",
+						"schema": {
+							"$ref": "#/definitions/Status"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/{code}": {
+			"parameters": [{
+				"name": "code",
+				"in": "path",
+				"required": true,
+				"description": "code that identifies original url",
+				"type": "string"
+			}],
+			"get": {
+				"description": "redirect to original url",
+				"tags": ["Shurl"],
+				"responses": {
+					"301": {
+						"description": "original url founded. Redirect to it"
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/shurl/generate": {
+			"post": {
+				"tags": ["Shurl"],
+				"description": "generate short url with optional qrcode",
+				"parameters": [
+					{
+						"in": "body",
+						"name": "url",
+						"description": "url to short",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "body",
+						"name": "qrCode",
+						"description": "generate qrcode",
+						"schema": {
+							"type": "boolean",
+							"default": false
+						}
+					}
+				],
+				"consumes": ["application/json"],
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "New short url was created",
+						"schema": {
+							"$ref": "#/definitions/URLRecord"
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/auth/signup": {
+			"post": {
+				"tags": ["Auth"],
+				"description": "create new user",
+				"parameters": [
+					{
+						"name": "email",
+						"in": "body",
+						"description": "user email",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "password",
+						"in": "body",
+						"description": "user password",
+						"type": "string",
+						"required": true
+					}
+				],
+				"produces": ["text/html"],
+				"responses": {
+					"200": {
+						"description": "New user was created",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/auth/signin": {
+			"post": {
+				"tags": ["Auth"],
+				"description": "authenticating",
+				"parameters": [
+					{
+						"name": "email",
+						"in": "body",
+						"description": "user email",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "password",
+						"in": "body",
+						"description": "user password",
+						"type": "string",
+						"required": true
+					}
+				],
+				"produces": ["text/html", "application/json"],
+				"responses": {
+					"200": {
+						"security": {
+							"basicAuth": []
+						},
+						"description": "User logged",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/auth/refresh": {
+			"get": {
+				"tags": ["Auth"],
+				"description": "refresh token session",
+				"produces": ["text/html", "application/json"],
+				"responses": {
+					"200": {
+						"security": {
+							"basicAuth": []
+						},
+						"description": "User logged",
+						"schema": {
+							"type": "string"
+						}
+					},
+					"400": {
+						"description": "Bad request",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"404": {
+						"description": "User not found",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/auth/me": {
+			"get": {
+				"tags": ["Auth"],
+				"description": "get user data",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"security": {
+							"basicAuth": []
+						},
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		},
+		"/auth/logout": {
+			"get": {
+				"tags": ["Auth"],
+				"description": "Logout user",
+				"produces": ["text/html"],
+				"responses": {
+					"200": {
+						"description": "User logged out",
+						"schema": {
+							"type": "string",
+							"default": "OK"
+						}
+					},
+					"500": {
+						"description": "Generic error",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Status": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "number"
+				},
+				"status": {
+					"type": "string"
+				}
+			}
+		},
+		"Error": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "number",
+					"default": 500
+				},
+				"message": {
+					"type": "string",
+					"default": "Internal Server Error"
+				}
+			}
+		},
+		"URLRecord": {
+			"type": "object",
+			"properties": {
+				"originalUrl": {
+					"type": "string"
+				},
+				"shortUrl": {
+					"type": "string"
+				},
+				"clicked": {
+					"type": "number"
+				},
+				"created": {
+					"type": "number"
+				},
+				"updateAt": {
+					"type": "number"
+				},
+				"urlCode": {
+					"type": "string"
+				},
+				"qrCode": {
+					"type": "string"
+				},
+				"users": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"User": {
+			"type": "object",
+			"properties": {
+				"email": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				},
+				"created": {
+					"type": "number"
+				},
+				"updateAt": {
+					"type": "number"
+				},
+				"active": {
+					"type": "boolean"
+				}
+			}
+		}
+	}
+}

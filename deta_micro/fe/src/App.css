@@ -1,0 +1,18 @@
+#root {
+  width: 365px;
+  margin: 0 auto;
+  /* padding: 2rem; */
+  text-align: center;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-end {
+  justify-content: end;
+}
