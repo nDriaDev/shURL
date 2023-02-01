@@ -10,13 +10,14 @@ import {useCallback, useMemo, useRef, useState} from "react";
 
 /**
  *
- * @returns {{formType: string, switchFormType: ((function(*): void)|*), submit: ((function(*): Promise<void>)|*), onChange: ((function(*): void)|*), FORM_TYPE: {REGISTER: string, FORGOT_PWD: string, LOGIN: string}}}
+ * @returns {{formType: string, switchFormType: ((function(*): void)|*), submit: ((function(*): Promise<void>)|*), onChange: ((function(*): void)|*), resetBtnRef: React.MutableRefObject<undefined>, FORM_TYPE: {REGISTER: string, FORGOT_PWD: string, LOGIN: string}}}
  */
 export default function useLogin() {
 	const setSpinner = useSetAtom(spinnerAtom);
-	const setErrorMessage = useSetAtom(messagesAtom);
+	const setMessage = useSetAtom(messagesAtom);
 	const navigate = useNavigate();
 	const form = useRef({ email:'', password:'' });
+	const resetBtnRef = useRef();
 	const FORM_TYPE = useMemo(() => ({
 		LOGIN: 'login',
 		REGISTER: 'register',
@@ -29,6 +30,9 @@ export default function useLogin() {
 	}, []);
 
 	const switchFormType = useCallback(e => {
+		setMessage();
+		resetBtnRef.current.click();
+		form.current = { email:'', password:'' };
 		if(e.target.name === FORM_TYPE.LOGIN) {
 			setFormType(ft => {
 				if(ft === FORM_TYPE.FORGOT_PWD) {
@@ -45,7 +49,7 @@ export default function useLogin() {
 	const submit = useCallback(async e => {
 		e.preventDefault();
 		setSpinner(true);
-		setErrorMessage();
+		setMessage();
 		try {
 			const {PATH: path, METHOD: method} = formType === FORM_TYPE.LOGIN ? ApiUtil.URLS.AUTH.SIGNIN : ApiUtil.URLS.AUTH.SIGNUP;
 			const response = await useFetch({
@@ -54,9 +58,15 @@ export default function useLogin() {
 				body: form.current,
 				bodyType: "json"
 			})
-			navigate(CONSTANTS.ROUTES.INITIAL);
+			if(formType === FORM_TYPE.LOGIN) {
+				navigate(CONSTANTS.ROUTES.INITIAL);
+			} else if(formType === FORM_TYPE.REGISTER) {
+				setMessage(MessageUtil.resolveSuccessMessage("Registrazione effettuata con successo"));
+			} else {
+				setMessage(MessageUtil.resolveSuccessMessage("Ti è stato inviato un link via email per effettuare il reset della password"));
+			}
 		} catch (e) {
-			setErrorMessage(MessageUtil.resolveErrorMessage(e));
+			setMessage(MessageUtil.resolveErrorMessage(e));
 		} finally {
 			setSpinner(false);
 		}
@@ -66,6 +76,7 @@ export default function useLogin() {
 		FORM_TYPE,
 		formType,
 		switchFormType,
+		resetBtnRef,
 		submit,
 		onChange
 	}

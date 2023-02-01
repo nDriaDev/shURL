@@ -3,12 +3,13 @@ import useLogin from "./useLogin.js";
 import './Login.css';
 
 const Login = ({}) => {
-	const {FORM_TYPE, formType, switchFormType, onChange, submit} = useLogin();
+	const {resetBtnRef, FORM_TYPE, formType, switchFormType, onChange, submit} = useLogin();
 	const submitBtnText = formType === FORM_TYPE.LOGIN ? "Login" : formType === FORM_TYPE.REGISTER ? "Registrati" : "Reset";
 	const loginRegisterBtnText = formType === FORM_TYPE.REGISTER ? 'Login' : 'Registrati';
 
 	return (
 		<form className="login-form">
+			<input type="reset" value="Reset" hidden ref={resetBtnRef}/>
 			<input placeholder="Email" type="email" name="email" onChange={onChange}/>
 			{
 				formType !== FORM_TYPE.FORGOT_PWD &&
