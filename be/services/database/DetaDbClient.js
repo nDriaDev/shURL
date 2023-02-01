@@ -48,7 +48,7 @@ export default class DetaDbClient {
 			query.length === 1 && (query = query[0]);
 
 			const {count, last, items } = await db.fetch(query);
-			return count === 0 ? null : items[0];
+			return !count || count === 0 ? null : items[0];
 		} catch (error) {
 			throw error;
 		} finally {
