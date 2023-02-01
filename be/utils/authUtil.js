@@ -43,10 +43,9 @@ const authUtil = {
      */
     verifyToken: ({token, type}) => {
         try {
-            const key = Buffer.from(
-                process.env[type==='access_token' ? "ACCESS_TOKEN_KEY_PUBLIC": "REFRESH_TOKEN_KEY_PUBLIC"],
-                'base64'
-            ).toString('ascii');
+            const key = type === "access_token" ?
+                process.env.ACCESS_TOKEN_SECRET:
+                Buffer.from(process.env.REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii');
             let payload = jwt.verify(token, key);
             return {
                 isValid: true,
