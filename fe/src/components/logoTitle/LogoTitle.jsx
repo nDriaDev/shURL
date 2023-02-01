@@ -12,7 +12,7 @@ const LogoTitle = () => {
 				<span className={classes.translateText1}>Sh</span>
 				<span className={classes.hideText}>ort</span>
 				<span className={classes.translateText2}>URL</span>
-				<img alt="Logo" src={logo} className="logo"/>
+				<img alt="Logo" fetchpriority="high" src={logo} className="logo"/>
 			</div>
             <div className="nav-about">
                 <a href="https://github.com/4ndr3wc0/shURL" target="_blank">Source</a>

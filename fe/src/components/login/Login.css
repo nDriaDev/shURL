@@ -26,7 +26,7 @@
 .btn-a {
     font-family: inherit;
     font-weight: 500;
-    color: #646cff;
+    color: var(--a-color);
     text-decoration: inherit;
     padding: unset;
     background-color: unset;
@@ -37,7 +37,7 @@
 }
 
 .btn-a:hover:not([disabled]) {
-    color: #535bf2;
+    color: var(--a-color-hover);
 }
 
 .btn-a:focus-visible:not([disabled]) {
