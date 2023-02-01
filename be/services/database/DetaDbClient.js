@@ -124,18 +124,18 @@ export default class DetaDbClient {
 			let result;
 			if(id) {
 				result = await db.get(id);
+				return User.mappingUserDBToUser(result);
 			} else {
 				let query = [];
 				email !== null && query.push({email});
 				password !== null && query.push({password});
 				query.push({active: true});
 				result = await db.fetch(query);
+				if (result.count === 1) {
+					return User.mappingUserDBToUser(result.items[0]);
+				}
+				return false;
 			}
-
-			if (result.count === 1) {
-				return User.mappingUserDBToUser(result.items[0]);
-			}
-			return false;
 		} catch (error) {
 			throw error;
 		} finally {
