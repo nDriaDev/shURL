@@ -1,16 +1,17 @@
 import morgan from 'morgan';
+import CONSTANTS from "./constants.js";
 
 const LogUtil = {
 	init: app => {
-		if (process.env.NODE_ENV === 'development') {
+		if ([CONSTANTS.ENVIRONMENT.DEV, CONSTANTS.ENVIRONMENT.DETA_SH].includes(process.env.NODE_ENV)) {
 			app.use(morgan('dev'));
 		}
 	},
 	log: (...args) => {
-		process.env.NODE_ENV === 'development' && console.log(...args);
+		[CONSTANTS.ENVIRONMENT.DEV, CONSTANTS.ENVIRONMENT.DETA_SH].includes(process.env.NODE_ENV) && console.log(...args);
 	},
 	error: (...args) => {
-		process.env.NODE_ENV === 'development' && console.error(...args);
+		[CONSTANTS.ENVIRONMENT.DEV, CONSTANTS.ENVIRONMENT.DETA_SH].includes(process.env.NODE_ENV) && console.error(...args);
 	}
 };
 

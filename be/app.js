@@ -12,8 +12,10 @@ import LogUtil from "./utils/logUtil.js";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const dbClient = new DbClient(new MongoDbClient());
 const Processor = new Process();
+const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
+const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? null : null;
+const dbClient = new DbClient(dbClientImpl);
 
 const app = express();
 
@@ -21,7 +23,10 @@ LogUtil.init(app);
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, CONSTANTS.PATHS.FE_ROOT_STATIC_FILE)));
+
+const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
+const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
+app.use(express.static(path.join(__dirname, pathStaticFile)));
 
 routing(app, express, dbClient);
 

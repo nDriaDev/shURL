@@ -12,7 +12,9 @@ export default function feController(req, res, next) {
 		if (pathname.startsWith(CONSTANTS.PATHS.API)) {
 			next();
 		} else {
-			return res.sendFile(path.join(__dirname, CONSTANTS.PATHS.FE_ROOT_TO_SERVE, 'index.html'));
+			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
+			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
+			return res.sendFile(path.join(__dirname, pathFE, 'index.html'));
 		}
 	} catch (e) {
 		next(e);

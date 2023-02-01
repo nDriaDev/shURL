@@ -1,8 +1,21 @@
 const CONSTANTS = {
+	ENVIRONMENT: {
+		DEV: 'dev',
+		PROD: 'prod',
+		DETA_SH: 'detash'
+	},
 	PATHS: {
 		WILDCARD: '*',
-		FE_ROOT_TO_SERVE: '/../../fe/dist',
-		FE_ROOT_STATIC_FILE: './../fe/dist',
+		FE_ROOT_TO_SERVE: {
+			DEV: './../../fe/dist',
+			PROD: './../../fe/dist',
+			DETA_SH: './../fe/dist',
+		},
+		FE_ROOT_STATIC_FILE: {
+			DEV: './../fe/dist',
+			PROD: './../fe/dist',
+			DETA_SH: './fe/dist',
+		},
 		SHURL_LINK: '/:code',
 		API: '/api',
 		SWAGGER: '/api-docs'

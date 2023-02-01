@@ -15,7 +15,7 @@ const authUtil = {
         maxAge: CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.REFRESH_TOKEN,
         httpOnly: true,
         sameSite: 'lax',
-        ...(process.env.NODE_ENV === "production" ? {secure: true} : {})
+        ...([CONSTANTS.ENVIRONMENT.PROD, CONSTANTS.ENVIRONMENT.DETA_SH].includes(process.env.NODE_ENV) ? {secure: true} : {})
     },
     /**
      * @param {Object} obj
