@@ -8,12 +8,13 @@ import Process from "./common/Process.js";
 import routing from "./routes/routes.js";
 import CONSTANTS from "./utils/constants.js";
 import LogUtil from "./utils/logUtil.js";
+import DetaDbClient from "./services/database/DetaDbClient.js";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
-const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? null : null;
+const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? new DetaDbClient() : null;
 const dbClient = new DbClient(dbClientImpl);
 
 const app = express();

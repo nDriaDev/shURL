@@ -4,7 +4,7 @@ import CONSTANTS from "../../utils/constants.js";
 import LogUtil from "../../utils/logUtil.js";
 
 export default class MongoDbClient {
-    // Connection URI
+    client;
     uri = process.env.MONGO_DB_URI;
     DB = process.env.DB;
     URLS = process.env.TABLE_URL;
