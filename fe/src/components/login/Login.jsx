@@ -10,10 +10,10 @@ const Login = ({}) => {
 	return (
 		<form className="login-form">
 			<input type="reset" value="Reset" hidden ref={resetBtnRef}/>
-			<input placeholder="Email" type="email" name="email" onChange={onChange}/>
+			<input placeholder="Email" type="email" name="email" onPaste={onChange} onChange={onChange}/>
 			{
 				formType !== FORM_TYPE.FORGOT_PWD &&
-				<input placeholder="Password" type="password" name="password" onChange={onChange} />
+				<input placeholder="Password" type="password" name="password" onPaste={onChange} onChange={onChange} />
 			}
 			<button type="submit" onClick={submit}>{submitBtnText}</button>
 			<div className="btn-container">
