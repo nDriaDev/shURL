@@ -65,7 +65,7 @@ export default class DetaDbClient {
 				users: url.users,
 				updateAt: new Date().getTime()
 			};
-			await db.update(updates, urlDB.key);
+			await db.update(updates, urlDB.id);
 		} catch (error) {
 			throw error;
 		} finally {
