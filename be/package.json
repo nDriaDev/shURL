@@ -11,8 +11,8 @@
   "scripts": {
     "dev": " env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --watch app.js",
     "prod": " env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node app.js",
-    "build:fe": "cd ./../fe && pnpm run build:prod && cd ./../be",
-    "build:be": "rm -rf $(find ./../deta_micro/ -maxdepth 1 -name '*' ! -name '.deta' ! -name '.' ! -name '..' ! -name 'deta_micro') && mkdir ./../deta_micro/fe && cp -r ./../fe/dist ./../deta_micro/fe/dist && node ./../script_detash.js",
+    "build:fe": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deta_micro/fe) && mkdir ./../deta_micro/fe && cp -r ./../fe/dist ./../deta_micro/fe/dist && cd ./../be",
+    "build:be": "rm -rf $(find ./../deta_micro/ -maxdepth 1 -name '*' ! -name '.deta' ! -name '.' ! -name '..' ! -name 'deta_micro' ! -name 'fe') && node ./../script_detash.js",
     "deploy:deta": "pnpm run build:fe && pnpm run build:be && cd ./../deta_micro && deta update -e config/.env.detash && deta deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,7 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
+    "deta": "^1.1.0",
     "express": "^4.18.2",
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^9.0.0",
