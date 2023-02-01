@@ -1,9 +1,7 @@
 import { Deta } from 'deta';
 import LogUtil from "../../utils/logUtil.js";
-import DBError from "../../models/errors/DBError.js";
-import CONSTANTS from "../../utils/constants.js";
 import URLRecord from "../../models/URLRecord.js";
-import {ObjectId} from "mongodb";
+import User from "../../models/User.js";
 
 export default class DetaDbClient {
 	client;
@@ -48,7 +46,7 @@ export default class DetaDbClient {
 			query.length === 1 && (query = query[0]);
 
 			const {count, last, items } = await db.fetch(query);
-			return !count || count === 0 ? null : items[0];
+			return !count || count === 0 ? null :  URLRecord.mappingURLDBToURLRecord(items[0]);
 		} catch (error) {
 			throw error;
 		} finally {
@@ -91,7 +89,7 @@ export default class DetaDbClient {
 		LogUtil.log("DetaClient createUrl start");
 		try {
 			const db = this.client.Base(this.URLS);
-			url.created = new Date().getTime();
+			url.createdAt = new Date().getTime();
 			const result = await db.put(url)
 			return true;
 		} catch (error) {
@@ -108,7 +106,7 @@ export default class DetaDbClient {
 			const result = await db.put({
 				email,
 				password,
-				created: new Date().getTime(),
+				createdAt: new Date().getTime(),
 				active: true
 			})
 			return true;
@@ -135,7 +133,7 @@ export default class DetaDbClient {
 			}
 
 			if (result.count === 1) {
-				return result.items[0];
+				return User.mappingUserDBToUser(result.items[0]);
 			}
 			return false;
 		} catch (error) {

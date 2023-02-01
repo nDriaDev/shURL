@@ -40,11 +40,11 @@ const authController = {
 				return next(new AppError({ code, message: "La password non è corretta." }));
 			}
 			let token = authUtil.createToken({
-				payload: {id: user._id.toString()},
+				payload: {id: user.id},
 				type: "access_token"
 			});
 			let refreshToken = authUtil.createToken({
-				payload: {id: user._id.toString()},
+				payload: {id: user.id},
 				type: 'refresh_token'
 			});
 			res.header('Authorization', token);
@@ -77,11 +77,11 @@ const authController = {
 				return next(noRefreshError);
 			}
 			const accessToken = authUtil.createToken({
-				payload: {id: user._id.toString()},
+				payload: {id: user.id},
 				type: "access_token"
 			})
 			const newRefreshToken = authUtil.createToken({
-				payload: {id: user._id.toString()},
+				payload: {id: user.id},
 				type: "refresh_token"
 			});
 			res.header('Authorization', accessToken);
@@ -99,7 +99,7 @@ const authController = {
 			const user = res.locals.user;
 			delete user.password;
 			delete user.active;
-			delete user._id;
+			delete user.id;
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send(user);
 		} catch (e) {
 			next(e);

@@ -1,14 +1,16 @@
 export default class URLRecord {
+    id="";
     originalUrl="";
     shortUrl="";
     clicked=0;
-    created=null;
+    createdAt=null;
     updateAt=null;
     urlCode="";
     qrCode="";
     users = [];
 
-    constructor({url = '', urlCode = '', userId = null}={}) {
+    constructor({id = '', url = '', urlCode = '', userId = null}={}) {
+        this.id = id;
         this.originalUrl = url;
         this.shortUrl = '';
         this.urlCode = urlCode;
@@ -17,5 +19,19 @@ export default class URLRecord {
 
     addUser(userId) {
         this.users.push(userId);
+    }
+
+    static mappingURLDBToURLRecord(obj) {
+        let url = new URLRecord();
+        url.id = obj.key || obj?._id?.toString() || "";
+        url.qrCode = obj.qrCode || "";
+        url.shortUrl = obj.shortUrl || "";
+        url.originalUrl = obj.originalUrl || "";
+        url.urlCode = obj.urlCode || "";
+        url.users = obj.users || [];
+        url.clicked = obj.clicked || 0;
+        url.createdAt = obj.createdAt || null;
+        url.updateAt = obj.updateAt || null;
+        return url;
     }
 }

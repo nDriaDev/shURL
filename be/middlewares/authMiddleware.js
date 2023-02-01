@@ -42,11 +42,11 @@ export default function authMiddleware(dbClient) {
                 if(useRefresh) {
                     LogUtil.log("AuthMiddleware: refreshToken");
                     access_token = authUtil.createToken({
-                        payload: {id: user._id.toString()},
+                        payload: {id: user.id},
                         type: "access_token"
                     })
                     const newRefreshToken = authUtil.createToken({
-                        payload: {id: user._id.toString()},
+                        payload: {id: user.id},
                         type: "refresh_token"
                     });
                     res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);

@@ -2,6 +2,8 @@ import {MongoClient, ObjectId} from "mongodb";
 import DBError from "../../models/errors/DBError.js";
 import CONSTANTS from "../../utils/constants.js";
 import LogUtil from "../../utils/logUtil.js";
+import User from "../../models/User.js";
+import URLRecord from "../../models/URLRecord.js";
 
 export default class MongoDbClient {
     client;
@@ -41,11 +43,11 @@ export default class MongoDbClient {
         LogUtil.log("MongoClient findUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
-            return await URLS.findOne({
+            return URLRecord.mappingURLDBToURLRecord(await URLS.findOne({
                 ...(url.originalUrl !== '' ? {originalUrl: url.originalUrl} : {}),
                 ...(url.shortUrl !== '' ? {shortUrl: url.shortUrl} : {}),
                 ...(url.urlCode !== '' ? {urlCode: url.urlCode} : {})
-            })
+            }));
         } catch (error) {
             throw error;
         } finally {
@@ -99,7 +101,7 @@ export default class MongoDbClient {
         LogUtil.log("MongoClient createUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
-            url.created = new Date().getTime();
+            url.createdAt = new Date().getTime();
             const result = await URLS.insertOne(url)
             return true;
         } catch (error) {
@@ -116,7 +118,7 @@ export default class MongoDbClient {
             const result = await USER.insertOne({
                 email,
                 password,
-                created: new Date().getTime(),
+                createdAt: new Date().getTime(),
                 active: true
             })
             return true;
@@ -142,7 +144,7 @@ export default class MongoDbClient {
                 active: true
             })
             if (result) {
-                return result;
+                return User.mappingUserDBToUser(result);
             }
             return false;
         } catch (error) {

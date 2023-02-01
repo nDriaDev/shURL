@@ -25,7 +25,7 @@ const shurlController = {
 				urlRecord.urlCode = code;
 				urlRecord.shortUrl = urlUtil.shortUrl(req, code);
 				qrCode && (urlRecord.qrCode = await urlUtil.qrCode(urlRecord.shortUrl));
-				urlRecord.addUser(res.locals.user._id.toString());
+				urlRecord.addUser(res.locals.user.id);
 				await dbClient.createUrl(urlRecord);
 			} else {
 				let update = false;
@@ -36,14 +36,14 @@ const shurlController = {
 				if(!qrCode) {
 					urlRecord.qrCode = "";
 				}
-				if(!urlRecord.users.includes(res.locals.user._id.toString())) {
-					urlRecord.addUser(res.locals.user._id.toString());
+				if(!urlRecord.users.includes(res.locals.user.id)) {
+					urlRecord.addUser(res.locals.user.id);
 					update = true;
 				}
 				update && await dbClient.updateUrl(urlRecord);
 			}
 			delete urlRecord.users;
-			delete urlRecord._id;
+			delete urlRecord.id;
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send(urlRecord);
 		} catch (e) {
 			LogUtil.log("shurlController generate: Error ", e.message);
