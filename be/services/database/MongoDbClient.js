@@ -43,11 +43,12 @@ export default class MongoDbClient {
         LogUtil.log("MongoClient findUrl start");
         try {
             const URLS = this.client.db(this.DB).collection(this.URLS);
-            return URLRecord.mappingURLDBToURLRecord(await URLS.findOne({
+            let urlDB = await URLS.findOne({
                 ...(url.originalUrl !== '' ? {originalUrl: url.originalUrl} : {}),
                 ...(url.shortUrl !== '' ? {shortUrl: url.shortUrl} : {}),
                 ...(url.urlCode !== '' ? {urlCode: url.urlCode} : {})
-            }));
+            });
+            return urlDB ? URLRecord.mappingURLDBToURLRecord(urlDB) : null;
         } catch (error) {
             throw error;
         } finally {
