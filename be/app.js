@@ -12,7 +12,6 @@ import LogUtil from "./utils/logUtil.js";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const Processor = new Process();
 const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
 const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? null : null;
 const dbClient = new DbClient(dbClientImpl);
@@ -30,14 +29,22 @@ app.use(express.static(path.join(__dirname, pathStaticFile)));
 
 routing(app, express, dbClient);
 
-app.listen(process.env.PORT, () =>
-	dbClient.connect()
-		.then(()=>
-			Processor.schedule(()=>
-				dbClient.disconnect()
-			))
-		.catch(LogUtil.error)
-		.finally(()=>
-			LogUtil.log(`RUNNING on ${process.env.PORT}...`)
-		)
-);
+if(process.env.NODE_ENV === DEV) {
+	const Processor = new Process();
+
+	app.listen(process.env.PORT, () =>
+		dbClient.connect()
+			.then(()=>
+				Processor.schedule(()=>
+					dbClient.disconnect()
+				))
+			.catch(LogUtil.error)
+			.finally(()=>
+				LogUtil.log(`RUNNING on ${process.env.PORT}...`)
+			)
+	);
+}
+
+if(process.env.NODE_ENV === DETA_SH) {
+	module.exports = app;
+}
