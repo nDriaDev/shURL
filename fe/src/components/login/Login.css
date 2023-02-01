@@ -1,0 +1,45 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.login-form > input {
+    width: inherit;
+}
+
+.btn-container {
+    display: block;
+    font-size: 0.875em;
+}
+
+.btn-container > .btn-a:first-child {
+    float: left;
+    width: fit-content;
+}
+
+.btn-container > .btn-a:last-child {
+    float: right;
+    width: fit-content;
+}
+
+.btn-a {
+    font-family: inherit;
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+    padding: unset;
+    background-color: unset;
+    border-radius: unset;
+    border: none;
+    transition:none;
+    font-size: inherit;
+}
+
+.btn-a:hover:not([disabled]) {
+    color: #535bf2;
+}
+
+.btn-a:focus-visible:not([disabled]) {
+    outline-offset: 1px;
+}
