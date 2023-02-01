@@ -8,8 +8,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 export default function feController(req, res, next) {
 	try {
 		LogUtil.log("feController: START");
-		let pathname = new URL(req.originalUrl, import.meta.url).pathname;
-		if (pathname.startsWith(CONSTANTS.PATHS.API)) {
+		if (req.originalUrl.startsWith(CONSTANTS.PATHS.API)) {
 			next();
 		} else {
 			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
