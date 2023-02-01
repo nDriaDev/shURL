@@ -1,6 +1,6 @@
 import {validationResult} from "express-validator";
 import CONSTANTS from "../utils/constants.js";
-import {UTILS} from "../utils/utils.js";
+import UTILS from "../utils/utils.js";
 import AppError from "../models/errors/AppError.js";
 import LogUtil from "../utils/logUtil.js";
 
