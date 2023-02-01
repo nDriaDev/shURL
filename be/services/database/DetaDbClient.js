@@ -12,7 +12,7 @@ export default class DetaDbClient {
 	USER = process.env.TABLE_USER;
 
 	constructor() {
-		this.client = Deta();
+		this.client = Deta(process.env.PROJECT_KEY);
 	}
 
 	async connect() {
