@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import CONSTANTS from "./constants.js";
 
@@ -28,13 +27,12 @@ const authUtil = {
     createToken: ({payload, type, expire=null}) => {
         return jwt.sign(
             payload,
-            Buffer.from(
-                process.env[type === 'access_token' ? "ACCESS_TOKEN_KEY_PRIVATE" : "REFRESH_TOKEN_KEY_PRIVATE"],
-                'base64'
-            ).toString('ascii'),
+            type === "access_token" ?
+                process.env.ACCESS_TOKEN_SECRET:
+                Buffer.from(process.env.REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii'),
             {
                 expiresIn: expire ?? type === "access_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN : CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN,
-                algorithm: 'RS256'
+                ...(type=== "access_token" ? {} : {algorithm: 'RS256'})
             }
         )
     },
