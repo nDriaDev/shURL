@@ -39,8 +39,7 @@ MONGO_DB_URI=<your uri>
 DB=URL_SHORTNER
 TABLE_URL=URL
 TABLE_USER=USER
-ACCESS_TOKEN_KEY_PRIVATE=<base64 access token private key>
-ACCESS_TOKEN_KEY_PUBLIC=<base64 access token public key>
+ACCESS_TOKEN_SECRET=<base64 access token secret>
 REFRESH_TOKEN_KEY_PRIVATE=<base64 refresh token private key>
 REFRESH_TOKEN_KEY_PUBLIC=<base64 refresh token public key>
 ```

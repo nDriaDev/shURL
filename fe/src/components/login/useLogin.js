@@ -6,7 +6,7 @@ import useFetch from "../common/useFetch.js";
 import ApiUtil from "../../utils/apiUtil.js";
 import CONSTANTS from "../../utils/constants.js";
 import {MessageUtil} from "../../utils/messagesUtil.js";
-import {useCallback, useMemo, useRef, useState} from "react";
+import {useCallback, useLayoutEffect, useMemo, useRef, useState} from "react";
 
 /**
  *

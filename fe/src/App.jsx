@@ -3,7 +3,6 @@ import LogoTitle from './components/logoTitle/LogoTitle';
 import ErrorPage from './routes/errorPage/ErrorPage';
 import {Route, BrowserRouter, Routes, Navigate, redirect} from 'react-router-dom';
 import ShurlPage from './routes/shurlPage/ShurlPage';
-import LoginPage from './routes/loginPage/LoginPage';
 import RestrictedRoute from "./components/auth/RestrictedRoute.jsx";
 import { useAtomValue } from "jotai";
 import spinnerAtom from "./store/spinnerStore.js";
@@ -13,6 +12,7 @@ import CONSTANTS from "./utils/constants.js";
 import Messages from "./components/messages/Messages.jsx";
 import messagesAtom from "./store/messagesStore.js";
 import ProfileButton from "./components/button/profileButton/ProfileButton.jsx";
+import LoginWrapper from "./components/login/LoginWrapper.jsx";
 
 function App() {
 	const spinner = useAtomValue(spinnerAtom);
@@ -36,7 +36,7 @@ function App() {
 						/>
 						<Route
 							path={CONSTANTS.ROUTES.LOGIN}
-							element={<LoginPage/>}
+							element={<LoginWrapper/>}
 							errorElement={<ErrorPage/>}
 						/>
 						<Route

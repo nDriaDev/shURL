@@ -6,6 +6,7 @@ import useFetch from "../common/useFetch.js";
 import ApiUtil from "../../utils/apiUtil.js";
 import meAtom from "../../store/meStore.js";
 import {MessageUtil} from "../../utils/messagesUtil.js";
+import {ErrorUtil} from "../../utils/errorUtil.js";
 
 const useShortUrl = () => {
     const [spinner, setSpinner] = useAtom(spinnerAtom);
@@ -61,10 +62,9 @@ const useShortUrl = () => {
                 bodyType: "json"
             });
             setShurl(data);
-        } catch (error) {
-            setErrorMessage(MessageUtil.resolveErrorMessage(error));
-        } finally {
             setSpinner(false);
+        } catch (error) {
+            ErrorUtil.handlingError(error, setErrorMessage, setSpinner);
         }
     }, [url, qrCode]);
 
@@ -83,10 +83,9 @@ const useShortUrl = () => {
                 });
                 setMe(data);
                 setMount(false);
-            } catch (e) {
-                setErrorMessage(MessageUtil.resolveErrorMessage(e));
-            } finally {
                 setSpinner(false);
+            } catch (e) {
+                ErrorUtil.handlingError(e, setErrorMessage, setSpinner);
             }
         }
         me();

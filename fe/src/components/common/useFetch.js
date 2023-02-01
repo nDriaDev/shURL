@@ -41,8 +41,8 @@ const useFetch = async ({path, body=null, bodyType="json", method, headers=null}
 		let data = response.headers.get("Content-Type").startsWith("text") ? await response.text() : await response.json();
 		if(!response.ok) {
 			if(response.status === CONSTANTS.HTTP_CODE.UNAUTHORIZED && !window.location.pathname.includes(CONSTANTS.ROUTES.LOGIN)) {
-				window.location.replace(CONSTANTS.ROUTES.LOGIN);
-				return;
+				console.error("Unauthorized");
+				throw Error(CONSTANTS.HTTP_CODE.UNAUTHORIZED);
 			}
 			let mess = data.message ? (Array.isArray(data.message) ? data.message.join("\n") : data.message) : response.statusText;
 			console.error(data.code || response.status +": "+mess);
