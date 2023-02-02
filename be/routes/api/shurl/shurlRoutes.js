@@ -16,7 +16,7 @@ export default function shurlRoutes(primaryRouter, router, dbClient) {
 		.post(
 			'/generate',
 			authMiddleware(dbClient),
-			sanitizerMiddleware({fields: ["expireIn"], type: "body"}),
+			sanitizerMiddleware({fields: ["expireIn", "urlCode"], type: "body"}),
 			validatorMiddleware(ShurlGenValidator),
 			shurlController.generate(dbClient)
 		)

@@ -13,14 +13,23 @@ const shurlController = {
 	generate: dbClient => async (req, res, next) => {
 		try {
 			LogUtil.log("shurlController generate: START")
-			let {url, qrCode, expireIn} = req.body;
+			let {url, qrCode, expireIn, urlCode} = req.body;
 			url = url.toLowerCase();
-			let urlRecord = expireIn ? new URLTempRecord({url}) : new URLRecord({url});
+			let urlRecord = expireIn ? new URLTempRecord({url, ...(urlCode ? {urlCode} : {})}) : new URLRecord({url, ...(urlCode ? {urlCode} : {})});
 			urlRecord = expireIn ? await dbClient.findTempUrl(urlRecord) : await dbClient.findUrl(urlRecord);
 			if(!urlRecord) {
-				let code = urlUtil.randomID();
-				while(await dbClient.hasCode(code)) {
+				let code;
+				if(urlCode) {
+					if(!await dbClient.hasCode(urlCode)) {
+						code = urlCode;
+					} else {
+						return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.CONFLICT, message: "Url code già esistente"}));
+					}
+				} else {
 					code = urlUtil.randomID();
+					while(await dbClient.hasCode(code)) {
+						code = urlUtil.randomID();
+					}
 				}
 				urlRecord = expireIn ? new URLTempRecord({url}) : new URLRecord({url});
 				urlRecord.urlCode = code;

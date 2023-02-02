@@ -36,7 +36,7 @@ export default function authMiddleware(dbClient) {
                 user = await dbClient.findUser({id});
                 //if user is undefined has been removed
                 if(!user) {
-                    return next(new AppError({code, message: "User no longer exists"}));
+                    return next(new AppError({code, message: "User no longer exists."}));
                 }
                 //if it has been used refreshToken, refresh access_token and refresh_token
                 if(useRefresh) {

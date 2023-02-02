@@ -10,6 +10,8 @@ const ShurlPage = ({}) => {
 		qrCode,
 		url,
 		shurl,
+		urlCode,
+		insertUrlCode,
 		resetShurl,
 		expireIn,
 		insertExpireIn,
@@ -45,6 +47,8 @@ const ShurlPage = ({}) => {
 			shareQrCode={shareQrCode}
 			downloadQrCode={downloadQrCode}
 			toggleQrCode={toggleQrCode}
+			urlCode={urlCode}
+			insertUrlCode={insertUrlCode}
 		/>
 	</>)
 };

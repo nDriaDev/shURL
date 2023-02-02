@@ -9,7 +9,10 @@ const ShurlGenValidator = [
 		.isBoolean({strict:true}).withMessage("valore non valido").bail(),
 	check('expireIn')
 		.optional({nullable: true})
-		.custom((value, { req }) => Object.values(CONSTANTS.EXPIRE_URL_IN).includes(Number(value))).withMessage("durata non valida").bail()
+		.custom((value, { req }) => Object.values(CONSTANTS.EXPIRE_URL_IN).includes(Number(value))).withMessage("durata non valida").bail(),
+	check('urlCode')
+		.optional({checkFalsy: true, nullable: true})
+		.isAlphanumeric().trim().withMessage("valore non valido").bail()
 ];
 
 export default ShurlGenValidator;

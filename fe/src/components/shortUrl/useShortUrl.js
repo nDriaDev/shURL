@@ -14,6 +14,7 @@ const useShortUrl = () => {
     const setErrorMessage = useSetAtom(messagesAtom);
     const [qrCode, setQrCode] = useState(false);
     const [url, setUrl] = useState('');
+    const [urlCode, setUrlCode] = useState('');
     const [shurl, setShurl] = useState({});
     const [expireIn, setExpireIn] = useState("");
     const setMe = useSetAtom(meAtom);
@@ -24,6 +25,8 @@ const useShortUrl = () => {
     const toggleQrCode = useCallback(() => setQrCode(q => !q), []);
 
     const insertUrl = useCallback(e => setUrl(e.target.value), []);
+
+    const insertUrlCode = useCallback(e => setUrlCode(e.target.value), []);
 
     const insertExpireIn = useCallback(val => setExpireIn(val), []);
 
@@ -61,10 +64,11 @@ const useShortUrl = () => {
         try {
             setErrorMessage();
             setSpinner(true);
+            setShurl({});
             const data = await useFetch({
                 path: ApiUtil.URLS.SHURL.GENERATE.PATH,
                 method: ApiUtil.URLS.SHURL.GENERATE.METHOD,
-                body: {url, qrCode, expireIn},
+                body: {url, qrCode, urlCode, expireIn},
                 bodyType: "json"
             });
             setShurl(data);
@@ -72,7 +76,7 @@ const useShortUrl = () => {
         } catch (error) {
             ErrorUtil.handlingError(error, setErrorMessage, setSpinner);
         }
-    }, [url, qrCode, expireIn]);
+    }, [url, qrCode, expireIn, urlCode]);
 
     const resetShurl = useCallback(e => {
         setShurl({});
@@ -102,6 +106,8 @@ const useShortUrl = () => {
         qrCode,
         url,
         shurl,
+        urlCode,
+        insertUrlCode,
         resetShurl,
         expireIn,
         insertExpireIn,

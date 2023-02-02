@@ -4,10 +4,10 @@ import './ShortUrl.css';
 import { BiCopy, BiShareAlt, BiDownload } from 'react-icons/bi';
 import ToggleSwitch from './../toggleSwitch/ToggleSwitch';
 import useShortUrl from './useShortUrl';
-import {CiTimer, IoQrCode, SlSettings, VscClose} from "react-icons/all.js";
+import {CiTimer, IoQrCode, RiCodeSSlashFill, SlSettings, VscClose} from "react-icons/all.js";
 import Select from "../select/Select.jsx";
 
-const ShortUrl = ({url, insertUrl, generateUrl, btnDisabled, qrCode, toggleQrCode, shurl, resetShurl, expireIn, insertExpireIn, expireOptionsList, copyShortUrl, shareShortUrl, downloadQrCode, shareQrCode}) => {
+const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisabled, qrCode, toggleQrCode, shurl, resetShurl, expireIn, insertExpireIn, expireOptionsList, copyShortUrl, shareShortUrl, downloadQrCode, shareQrCode}) => {
     return (<>
         <div className="card">
             <div className="url-container">
@@ -19,6 +19,10 @@ const ShortUrl = ({url, insertUrl, generateUrl, btnDisabled, qrCode, toggleQrCod
                 />
             </div>
             <div className="opt-container">
+                <div className="code-container">
+                    <RiCodeSSlashFill title="urlCode" style={{ height: '1.5em', width:'3em', verticalAlign: 'middle' }}/>
+                    <input type="text" placeholder="Url code" value={urlCode} onChange={insertUrlCode}/>
+                </div>
                 <div className="qr-container">
                     <IoQrCode title="Qrcode" size="1.5em" style={{ verticalAlign: 'middle' }}/>
                     <ToggleSwitch
@@ -96,6 +100,8 @@ ShortUrl.displayName = "ShortUrl";
 ShortUrl.propTypes = {
     url: string.isRequired,
     insertUrl: func.isRequired,
+    urlCode: string.isRequired,
+    insertUrlCode: func.isRequired,
     generateUrl: func.isRequired,
     btnDisabled: bool.isRequired,
     qrCode: bool.isRequired,
