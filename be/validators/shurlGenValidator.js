@@ -8,8 +8,7 @@ const ShurlGenValidator = [
 	check('qrCode')
 		.isBoolean({strict:true}).withMessage("valore non valido").bail(),
 	check('expireIn')
-		.optional().bail()
-		.isNumeric().withMessage("valore non valido").bail()
+		.optional({nullable: true})
 		.custom((value, { req }) => Object.values(CONSTANTS.EXPIRE_URL_IN).includes(value)).withMessage("durata non valida").bail()
 ];
 
