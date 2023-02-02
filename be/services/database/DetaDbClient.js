@@ -7,6 +7,7 @@ export default class DetaDbClient {
 	client;
 	DB = process.env.DB;
 	URLS = process.env.TABLE_URL;
+	URLS_TEMP = process.env.TABLE_URL_TEMPORARY;
 	USER = process.env.TABLE_USER;
 
 	constructor() {
@@ -31,6 +32,32 @@ export default class DetaDbClient {
 			throw error;
 		} finally {
 			LogUtil.log("DetaClient disconnect finish");
+		}
+	}
+
+	async hasCode(code) {
+		LogUtil.log("DetaClient hasCode start");
+		try {
+			const existedUrl = await this.findUrl(new URLRecord({urlCode: code}));
+			return !!existedUrl;
+		} catch (error) {
+			throw error;
+		} finally {
+			LogUtil.log("DetaClient hasCode finish");
+		}
+	}
+
+	async createUrl(url) {
+		LogUtil.log("DetaClient createUrl start");
+		try {
+			const db = this.client.Base(this.URLS);
+			url.createdAt = new Date().getTime();
+			const result = await db.put(url)
+			return true;
+		} catch (error) {
+			throw error;
+		} finally {
+			LogUtil.log("DetaClient createUrl finish");
 		}
 	}
 
@@ -70,32 +97,6 @@ export default class DetaDbClient {
 			throw error;
 		} finally {
 			LogUtil.log("DetaClient updateUrl finish");
-		}
-	}
-
-	async hasCode(code) {
-		LogUtil.log("DetaClient hasCode start");
-		try {
-			const existedUrl = await this.findUrl(new URLRecord({urlCode: code}));
-			return !!existedUrl;
-		} catch (error) {
-			throw error;
-		} finally {
-			LogUtil.log("DetaClient hasCode finish");
-		}
-	}
-
-	async createUrl(url) {
-		LogUtil.log("DetaClient createUrl start");
-		try {
-			const db = this.client.Base(this.URLS);
-			url.createdAt = new Date().getTime();
-			const result = await db.put(url)
-			return true;
-		} catch (error) {
-			throw error;
-		} finally {
-			LogUtil.log("DetaClient createUrl finish");
 		}
 	}
 

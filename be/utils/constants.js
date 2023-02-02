@@ -21,8 +21,13 @@ const CONSTANTS = {
 		SWAGGER: '/api-docs'
 	},
 	MONGO_ERROR: {
-		11000: 11000
+		11000: 11000,
+		26: {
+			code: 26,
+			text: "NamespaceNotFound"
+		}
 	},
+	EXPIRE_URL_IN: [0.1,0.30,2,4,8,12,24],
 	EXPIRES_TOKEN_IN: {
 		ACCESS_TOKEN: '1m',
 		REFRESH_TOKEN: '59m'

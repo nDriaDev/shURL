@@ -11,6 +11,14 @@ export default class DbClient {
         await this.client.disconnect();
     }
 
+    async hasCode(code) {
+        return await this.client.hasCode(code);
+    }
+
+    async createUrl(url) {
+        await this.client.createUrl(url);
+    }
+
     async findUrl(url) {
         return await this.client.findUrl(url);
     }
@@ -19,12 +27,12 @@ export default class DbClient {
         await this.client.updateUrl(url);
     }
 
-    async hasCode(code) {
-        return await this.client.hasCode(code);
+    async createTempUrl(url, expireIn) {
+        await this.client.createTempUrl(url, expireIn);
     }
 
-    async createUrl(url) {
-        await this.client.createUrl(url);
+    async findTempUrl(url) {
+        return await this.client.findTempUrl(url);
     }
 
     async createUser({ email, password }) {
