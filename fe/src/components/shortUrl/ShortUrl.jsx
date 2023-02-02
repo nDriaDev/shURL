@@ -1,12 +1,13 @@
-import {func, object, bool, string} from 'prop-types';
+import {func, object, bool, string, number, array} from 'prop-types';
 import { memo } from 'react';
 import './ShortUrl.css';
 import { BiCopy, BiShareAlt, BiDownload } from 'react-icons/bi';
 import ToggleSwitch from './../toggleSwitch/ToggleSwitch';
 import useShortUrl from './useShortUrl';
 import {CiTimer, IoQrCode, SlSettings, VscClose} from "react-icons/all.js";
+import Select from "../select/Select.jsx";
 
-const ShortUrl = ({url, insertUrl, generateUrl, btnDisabled, qrCode, toggleQrCode, shurl, resetShurl, copyShortUrl, shareShortUrl, downloadQrCode, shareQrCode, }) => {
+const ShortUrl = ({url, insertUrl, generateUrl, btnDisabled, qrCode, toggleQrCode, shurl, resetShurl, expireIn, insertExpireIn, expireOptionsList, copyShortUrl, shareShortUrl, downloadQrCode, shareQrCode}) => {
     return (<>
         <div className="card">
             <div className="url-container">
@@ -30,14 +31,12 @@ const ShortUrl = ({url, insertUrl, generateUrl, btnDisabled, qrCode, toggleQrCod
                 </div>
                 <div className="timer-container">
                     <CiTimer title="Durata" size="1.5em" style={{ verticalAlign: 'middle' }}/>
-                    <select className="timer-select" disabled>
-                        <option>Sempre attivo</option>
-                        <option>1h</option>
-                        <option>2h</option>
-                        <option>6h</option>
-                        <option>12h</option>
-                        <option>24h</option>
-                    </select>
+                    <Select
+                        className="timer-select"
+                        value={expireIn}
+                        list={expireOptionsList}
+                        onChange={insertExpireIn}
+                    />
                 </div>
             </div>
             <div className="btn-url-container">
@@ -100,6 +99,9 @@ ShortUrl.propTypes = {
     generateUrl: func.isRequired,
     btnDisabled: bool.isRequired,
     qrCode: bool.isRequired,
+    expireIn: string.isRequired,
+    insertExpireIn: func.isRequired,
+    expireOptionsList: array.isRequired,
     toggleQrCode: func.isRequired,
     shurl: object.isRequired,
     resetShurl: func.isRequired,

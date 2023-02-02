@@ -14,8 +14,12 @@ const CONSTANTS = {
 	},
 	EXPIRE_URL_IN: [
 		{
+			label: "Sempre attivo",
+			value: ""
+		},
+		{
 			label: "30 minuti",
-			value: 0.30
+			value: 0.5
 		},
 		{
 			label: "2 ore",

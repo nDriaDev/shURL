@@ -11,6 +11,9 @@ const ShurlPage = ({}) => {
 		url,
 		shurl,
 		resetShurl,
+		expireIn,
+		insertExpireIn,
+		expireOptionsList,
 		btnDisabled,
 		toggleQrCode,
 		insertUrl,
@@ -32,6 +35,9 @@ const ShurlPage = ({}) => {
 			copyShortUrl={copyShortUrl}
 			shurl={shurl}
 			resetShurl={resetShurl}
+			expireIn={expireIn}
+			insertExpireIn={insertExpireIn}
+			expireOptionsList={expireOptionsList}
 			generateUrl={generateUrl}
 			insertUrl={insertUrl}
 			qrCode={qrCode}
