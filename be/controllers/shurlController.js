@@ -71,12 +71,12 @@ const shurlController = {
 			if(urlRecord) {
 				urlRecord.clicked++;
 				await dbClient.updateUrl(urlRecord);
-				res.header("Cache-Control", "no-cache");
+				res.setHeader("Cache-Control", "no-cache");
 				return res.redirect(CONSTANTS.HTTP_CODE.REDIRECTION.MOVED_PERMANENTLY.code, urlRecord.originalUrl);
 			}
 			urlRecord = await dbClient.findTempUrl(new URLTempRecord({urlCode:req.params.code}));
 			if(urlRecord) {
-				res.header("Cache-Control", "no-cache");
+				res.setHeader("Cache-Control", "no-cache");
 				return res.redirect(CONSTANTS.HTTP_CODE.REDIRECTION.MOVED_PERMANENTLY.code, urlRecord.originalUrl);
 			} else {
 				next();

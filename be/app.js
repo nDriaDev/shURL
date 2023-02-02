@@ -10,6 +10,7 @@ import routing from "./routes/routes.js";
 import CONSTANTS from "./utils/constants.js";
 import LogUtil from "./utils/logUtil.js";
 import DetaDbClient from "./services/database/DetaDbClient.js";
+import HeadersUtils from "./utils/headersUtils.js";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -22,13 +23,19 @@ const app = express();
 
 LogUtil.init(app);
 app.use(compression());
-app.use(express.json());
+app.use(express.json({type: [
+		'application/json',
+		'application/csp-report',
+		'application/reports+json',
+	]}));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
 const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
-app.use(express.static(path.join(__dirname, pathStaticFile)));
+app.use(express.static(path.join(__dirname, pathStaticFile), {
+	setHeaders: HeadersUtils.setCspHeader
+}));
 
 routing(app, express, dbClient);
 

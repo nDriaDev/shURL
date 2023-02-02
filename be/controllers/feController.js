@@ -2,6 +2,7 @@ import * as url from 'url';
 import path from "path";
 import CONSTANTS from "../utils/constants.js";
 import LogUtil from "../utils/logUtil.js";
+import HeadersUtils from "../utils/headersUtils.js";
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -14,12 +15,11 @@ export default function feController(req, res, next) {
 			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
 			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
 
-			//set header for content security policy
-			res.header('Content-Security-Policy', "default-src 'self'; script-src 'self'; object-src 'none'");
+			HeadersUtils.setCspHeader(res, null, null, req);
 
 			//set header noindex for all routes that not are mapped in fe router
 			//so crawler not indexing error page
-			!["/","/login"].includes(req.originalUrl) && res.header("X-Robots-Tag", "noindex");
+			!["/login"].includes(req.originalUrl) && res.setHeader("X-Robots-Tag", "noindex");
 
 			return res.sendFile(path.join(__dirname, pathFE, 'index.html'));
 		}

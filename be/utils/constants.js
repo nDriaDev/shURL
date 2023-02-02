@@ -18,7 +18,8 @@ const CONSTANTS = {
 		},
 		SHURL_LINK: '/:code',
 		API: '/api',
-		SWAGGER: '/api-docs'
+		SWAGGER: '/api-docs',
+		CSP: '/csp'
 	},
 	MONGO_ERROR: {
 		11000: 11000,

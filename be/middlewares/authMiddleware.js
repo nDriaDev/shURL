@@ -51,7 +51,7 @@ export default function authMiddleware(dbClient) {
                     });
                     res.cookie('refresh_token', newRefreshToken, authUtil.refreshTokenCookieOptions);
                 }
-                res.header('Authorization', access_token);
+                res.setHeader('Authorization', access_token);
                 res.locals.user = user;
                 return next();
             } else {

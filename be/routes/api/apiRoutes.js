@@ -1,6 +1,6 @@
 import authRoutes from "./auth/authRoutes.js";
 import shurlRoutes from "./shurl/shurlRoutes.js";
-import statusRoutes from "../status/statusRoutes.js";
+import statusRoutes from "./status/statusRoutes.js";
 
 /**
  *
