@@ -148,9 +148,9 @@ await
                 dt.setHours(dt.getHours()+expireIn);
                 url.expireAt = dt;
             } else {
-                let splitExpire = expireIn.toString().split('.');
+                let hours=0, minutes=Number(expireIn)*60;
                 let dt = new Date();
-                dt.setHours(dt.getHours()+Number(splitExpire[0]), dt.getMinutes()+Number(splitExpire[1]));
+                dt.setHours(dt.getHours()+hours, dt.getMinutes()+minutes);
                 url.expireAt = dt;
             }
             let urlDB = URLTempRecord.mappingURLTempRecordToURLTempDB(url);
