@@ -2,6 +2,7 @@ import { Deta } from 'deta';
 import LogUtil from "../../utils/logUtil.js";
 import URLRecord from "../../models/URLRecord.js";
 import User from "../../models/User.js";
+import URLTempRecord from "../../models/URLTempRecord.js";
 
 export default class DetaDbClient {
 	client;
@@ -97,6 +98,51 @@ export default class DetaDbClient {
 			throw error;
 		} finally {
 			LogUtil.log("DetaClient updateUrl finish");
+		}
+	}
+
+	async createTempUrl(url, expireIn) {
+		LogUtil.log("DetaClient createTempUrl START");
+		try {
+			const db = this.client.Base(this.URLS_TEMP);
+			url.createdAt = new Date().getTime();
+			if(Number.isInteger(expireIn)) {
+				let dt = new Date();
+				dt.setHours(dt.getHours()+expireIn);
+				url.expireAt = dt;
+			} else {
+				let hours=0, minutes=Number(expireIn)*60;
+				let dt = new Date();
+				dt.setHours(dt.getHours()+hours, dt.getMinutes()+minutes);
+				url.expireAt = dt;
+			}
+			let urlDB = URLTempRecord.mappingURLTempRecordToURLTempDB(url);
+			const result = await db.put(urlDB, null, {expireAt:url.expireAt});
+			return true;
+		} catch (e) {
+			throw e;
+		} finally {
+			LogUtil.log("DetaClient createTempUrl FINISH");
+		}
+	}
+
+	async findTempUrl(url) {
+		LogUtil.log("DetaClient findTempUrl START");
+		try {
+			const db = this.client.Base(this.URLS_TEMP);
+			let query = [];
+			let {originalUrl, shortUrl, urlCode} = url;
+			originalUrl !== '' && query.push({originalUrl});
+			shortUrl !== '' && query.push({shortUrl});
+			urlCode !== '' && query.push({urlCode});
+			query.length === 1 && (query = query[0]);
+
+			const {count, last, items } = await db.fetch(query);
+			return !count || count === 0 ? null :  URLTempRecord.mappingURLTempDBToURLTempRecord(items[0]);
+		} catch (error) {
+			throw error;
+		} finally {
+			LogUtil.log("DetaClient findTempUrl FINISH");
 		}
 	}
 
