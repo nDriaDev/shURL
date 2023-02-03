@@ -82,7 +82,7 @@
 
 .short-url-container-close-btn:active,
 .short-url-container-close-btn:hover {
-    color: #646cff;
+    color: var(--a-color);
 }
 
 .short-url-label {

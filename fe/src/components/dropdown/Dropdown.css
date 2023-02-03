@@ -33,7 +33,7 @@
 }
 
 .dropdown-item:hover {
-    border-color: #646cff;
+    border-color: var(--a-color);
     cursor:pointer;
 }
 

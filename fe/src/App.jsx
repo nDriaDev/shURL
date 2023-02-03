@@ -27,7 +27,6 @@ function App() {
 				<LogoTitle />
 				<div className="position-relative">
 					<Spinner show={spinner}/>
-					{/*<RouterProvider router={router}/>*/}
 					<Routes>
 						<Route
 							path={CONSTANTS.ROUTES.INITIAL}

@@ -15,8 +15,8 @@ export default function feController(req, res, next) {
 			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
 			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
 
-			HeadersUtils.setCspHeader(res, null, null, req);
-
+			HeadersUtils.setRelAndReportToHeaders(res, req.originalUrl, null, req);
+			["/login"].includes(req.originalUrl) && res.setHeader("rel", "canonical");
 			//set header noindex for all routes that not are mapped in fe router
 			//so crawler not indexing error page
 			!["/login"].includes(req.originalUrl) && res.setHeader("X-Robots-Tag", "noindex");

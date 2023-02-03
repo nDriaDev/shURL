@@ -8,32 +8,25 @@ const HeadersUtils = {
 	 * @param {Object | null} stat
 	 * @param {Http.Request | null} req
 	 */
-	setCspHeader: (res, path = null, stat = null, req = null) => {
+	setRelAndReportToHeaders: (res, path = null, stat = null, req = null) => {
 		if(path && path.includes("index.html")) {
 			let urlCspReport = res.req.protocol + "://" + res.req.headers.host + CONSTANTS.PATHS.CSP + "/report";
 			res.setHeader(
 				'Report-To',
 				`{"group":"csp-endpoint","max_age":10886400,"endpoints":[{"url":"${urlCspReport}"}],"include_subdomains":true}`
 			);
-			res.setHeader(
-				'Content-Security-Policy',
-				"default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
-			);
+			res.setHeader("rel", "canonical");
 			return;
 		}
-		if(req) {
+		if(req && path === "/login") {
 			let urlCspReport = req.protocol + "://" + req.headers.host + CONSTANTS.PATHS.CSP + "/report";
 			res.setHeader(
 				'Report-To',
 				`{"group":"csp-endpoint","max_age":10886400,"endpoints":[{"url":"${urlCspReport}"}],"include_subdomains":true}`
 			);
-			res.setHeader(
-				'Content-Security-Policy',
-				"default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
-			);
+			res.setHeader("rel", "canonical");
 			return;
 		}
-
 	}
 };
 

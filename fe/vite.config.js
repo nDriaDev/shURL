@@ -1,7 +1,19 @@
+import { dependencies } from './package.json';
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import ApiUtil from "./src/utils/apiUtil.js";
+
+function renderChunks(deps) {
+	let chunks = {};
+	Object.keys(deps).forEach((key) => {
+		if (['react', 'react-router-dom', 'react-dom', 'jotai', 'react-icons'].includes(key)) {
+			return;
+		}
+		chunks[key] = [key];
+	});
+	return chunks;
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +21,7 @@ export default defineConfig({
 		react(),
 		process.env.NODE_ENV === "development" ? basicSsl() : null
 	],
-	...(process.env.NODE_ENV === "development" ? {
+	...(process.env.NODE_ENV === "development" && {
 		server: {
 			host: true,
 			proxy: {
@@ -20,5 +32,18 @@ export default defineConfig({
 				[ApiUtil.URLS.AUTH.LOGOUT.PATH]: 'http://localhost:3000',
 			}
 		}
-	} : {})
+	}),
+	...(process.env.NODE_ENV === "production" && {
+		build: {
+			sourcemap: false,
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						vendor: ['react', 'react-router-dom', 'react-dom', 'jotai', 'react-icons'],
+						...renderChunks(dependencies),
+					},
+				},
+			},
+		},
+	})
 })
