@@ -14,18 +14,28 @@ const shurlController = {
 		try {
 			LogUtil.log("shurlController generate: START")
 			let {url, qrCode, expireIn, urlCode} = req.body;
-			url = url.toLowerCase();
+			if(urlCode && await dbClient.hasCode(urlCode)) {
+				return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.CONFLICT, message: "Url code already exist."}));
+			}
 			let urlRecord = expireIn ? new URLTempRecord({url, ...(urlCode ? {urlCode} : {})}) : new URLRecord({url, ...(urlCode ? {urlCode} : {})});
 			urlRecord = expireIn ? await dbClient.findTempUrl(urlRecord) : await dbClient.findUrl(urlRecord);
-			if(!urlRecord) {
-				let code;
-				if(urlCode) {
-					if(!await dbClient.hasCode(urlCode)) {
-						code = urlCode;
-					} else {
-						return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.CONFLICT, message: "Url code già esistente"}));
-					}
-				} else {
+			if(urlRecord && !expireIn) {
+				let update = false;
+				if(qrCode && urlRecord.qrCode === '') {
+					urlRecord.qrCode = await urlUtil.qrCode(urlRecord.shortUrl);
+					update = true;
+				}
+				if(!qrCode) {
+					urlRecord.qrCode = "";
+				}
+				if(!urlRecord.users.includes(res.locals.user.id)) {
+					urlRecord.addUser(res.locals.user.id);
+					update = true;
+				}
+				update && await dbClient.updateUrl(urlRecord);
+			} else {
+				let code = urlCode;
+				if(!code) {
 					code = urlUtil.randomID();
 					while(await dbClient.hasCode(code)) {
 						code = urlUtil.randomID();
@@ -37,24 +47,6 @@ const shurlController = {
 				qrCode && (urlRecord.qrCode = await urlUtil.qrCode(urlRecord.shortUrl));
 				!expireIn && urlRecord.addUser(res.locals.user.id);
 				expireIn ? await dbClient.createTempUrl(urlRecord, expireIn) : await dbClient.createUrl(urlRecord);
-			} else {
-				if(expireIn) {
-					return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.CONFLICT.code, message: "Esiste già un short url temporaneo per lo stesso url."}));
-				} else {
-					let update = false;
-					if(qrCode && urlRecord.qrCode === '') {
-						urlRecord.qrCode = await urlUtil.qrCode(urlRecord.shortUrl);
-						update = true;
-					}
-					if(!qrCode) {
-						urlRecord.qrCode = "";
-					}
-					if(!urlRecord.users.includes(res.locals.user.id)) {
-						urlRecord.addUser(res.locals.user.id);
-						update = true;
-					}
-					update && await dbClient.updateUrl(urlRecord);
-				}
 			}
 			delete urlRecord.users;
 			delete urlRecord.id;

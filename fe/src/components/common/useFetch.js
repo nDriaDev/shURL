@@ -40,7 +40,7 @@ const useFetch = async ({path, body=null, bodyType="json", method, headers=null}
 		);
 		let data = response.headers.get("Content-Type").startsWith("text") ? await response.text() : await response.json();
 		if(!response.ok) {
-			if(response.status === CONSTANTS.HTTP_CODE.UNAUTHORIZED && !window.location.pathname.includes(CONSTANTS.ROUTES.LOGIN)) {
+			if(response.status === CONSTANTS.HTTP_CODE.UNAUTHORIZED && !window.location.pathname.includes(CONSTANTS.ROUTES.SIGNIN)) {
 				console.error("Unauthorized");
 				throw Error(CONSTANTS.HTTP_CODE.UNAUTHORIZED);
 			}
@@ -53,6 +53,7 @@ const useFetch = async ({path, body=null, bodyType="json", method, headers=null}
 			return data;
 		}
 	} catch (e) {
+		window.scrollTo(0,0);
 		throw e;
 	}
 };

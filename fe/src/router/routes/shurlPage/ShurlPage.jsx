@@ -1,10 +1,14 @@
 import {memo} from "react";
-import ShortUrl from "../../components/shortUrl/ShortUrl";
-import ProfileButton from "../../components/button/profileButton/ProfileButton.jsx";
-import useShortUrl from "../../components/shortUrl/useShortUrl.js";
+import ShortUrl from "../../../components/shortUrl/ShortUrl.jsx";
+import useShortUrl from "../../../components/shortUrl/useShortUrl.js";
+import useTitle from "../../../components/common/useTitle.js";
+import useMetaDescription from "../../../components/common/useMetaDescription.js";
 
 
 const ShurlPage = ({}) => {
+	useTitle("ShURL - Generate");
+	useMetaDescription("Generate short url");
+
 	const {
 		mount,
 		qrCode,

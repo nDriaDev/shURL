@@ -1,4 +1,4 @@
-import {Fragment, memo, useCallback, useId, useMemo, useState} from "react";
+import {Fragment, memo, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState} from "react";
 import './Dropdown.css';
 import {bool, object, oneOf, string} from "prop-types";
 
@@ -42,7 +42,7 @@ DropdownList.propTypes = {
 	style: object,
 }
 
-const Di = ({className, style, onClick, children}) => {
+const Di = ({className, style, onClick, disabled, children}) => {
 	const classes = "dropdown-item " + (className || "");
 	const styles = style || {};
 	const clickHandler = useMemo(() => {
@@ -52,8 +52,16 @@ const Di = ({className, style, onClick, children}) => {
 			return {onClick}
 		}
 	}, [onClick]);
+
+	const clickCaptureHandler = useCallback(e => {
+		if(disabled) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+	}, [disabled]);
+
 	return (
-		<div className={classes} style={styles} {...clickHandler}>
+		<div className={classes} style={styles} onClickCapture={clickCaptureHandler} {...clickHandler} {...disabled ? {disabled:true} : {}}>
 			{children}
 		</div>
 	)
@@ -63,7 +71,8 @@ const DropDownItem = memo(Di);
 DropDownItem.displayName = "DropdownItem";
 DropDownItem.propTypes = {
 	className: string,
-	style: object
+	style: object,
+	disabled: bool
 }
 
 const Dc = ({type, className, style, children}) => {
@@ -76,6 +85,8 @@ const Dc = ({type, className, style, children}) => {
 	if(children[1].type.displayName !== DropdownList.displayName) {
 		throw Error("DropdownContainer child not is DropdownList")
 	}
+
+	const dropRef = useRef();
 
 	const styles = style || {};
 	const [clicked, setClicked] = useState(false);
@@ -96,8 +107,24 @@ const Dc = ({type, className, style, children}) => {
 		return type === "hover" ? {} : {onClick: openDropDown}
 	}, [type]);
 
+	useLayoutEffect(() => {
+		function onClick(e) {
+			if(!dropRef.current.contains(e.target)) {
+				setClicked(false);
+			}
+		}
+
+		if(type !== "hover") {
+			document.body.addEventListener('click',onClick, {capture: true});
+		}
+
+		return () => {
+			document.body.removeEventListener('click', onClick, {capture: true});
+		}
+	}, []);
+
 	return (
-		<div className={classes} style={styles} {...onClick}>
+		<div ref={dropRef} className={classes} style={styles} {...onClick}>
 			{children}
 		</div>
 	)

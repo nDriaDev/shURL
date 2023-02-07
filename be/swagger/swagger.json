@@ -97,6 +97,15 @@
 							"type": "boolean",
 							"default": false
 						}
+					},
+					{
+						"in": "body",
+						"name": "expireIn",
+						"description": "generate temp url",
+						"schema": {
+							"type": "number",
+							"default": null
+						}
 					}
 				],
 				"consumes": ["application/json"],
@@ -347,20 +356,11 @@
 				"created": {
 					"type": "number"
 				},
-				"updateAt": {
-					"type": "number"
-				},
 				"urlCode": {
 					"type": "string"
 				},
 				"qrCode": {
 					"type": "string"
-				},
-				"users": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					}
 				}
 			}
 		},

@@ -2,14 +2,14 @@ import {check} from "express-validator";
 
 const AuthValidator = [
 	check('email')
-		.exists({checkFalsy: true, checkNull: true}).withMessage("valore obbligatorio").bail()
-		.isEmail().withMessage("formato non valido").bail()
+		.exists({checkFalsy: true, checkNull: true}).withMessage("required value").bail()
+		.isEmail().withMessage("invalid format").bail()
 		.normalizeEmail({all_lowercase: true}),
 	check('password')
-		.exists({checkFalsy: true, checkNull: true}).withMessage("valore obbligatorio").bail()
+		.exists({checkFalsy: true, checkNull: true}).withMessage("required value").bail()
 		.trim()
-		.isLength({min: 8}).withMessage("lunghezza minima 8 caratteri").bail()
-		.isStrongPassword({minSymbols:1, minUppercase:1, minNumbers: 1}).withMessage("deve contenere almeno un simbolo una maiuscola una minuscola e un numero").bail()
+		.isLength({min: 8}).withMessage("min length 8 characters").bail()
+		.isStrongPassword({minSymbols:1, minUppercase:1, minNumbers: 1}).withMessage("it must contain at least one symbol, an uppercase, a lowercase and a number").bail()
 ];
 
 export default AuthValidator;

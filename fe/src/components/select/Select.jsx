@@ -9,7 +9,7 @@ const Select = ({className, style, value, disabled, onChange, list, firstEmptyOp
 	), []);
 
 	const firstPlaceholderOpt = useMemo(() => (
-		<opt value="" disabled={true}>{placeholder}</opt>
+		<option key="first-empt-opt" disabled={true} value="">{placeholder}</option>
 	), [placeholder]);
 
 	const options = useMemo(() => {

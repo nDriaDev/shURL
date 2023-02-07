@@ -1,25 +1,24 @@
-.login-form {
+.form {
     display: flex;
     flex-direction: column;
     gap: 1em;
 }
 
-.login-form > input {
+.form > input {
     width: inherit;
 }
 
 .btn-container {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     font-size: 0.875em;
 }
 
 .btn-container > .btn-a:first-child {
-    float: left;
     width: fit-content;
 }
 
 .btn-container > .btn-a:last-child {
-    float: right;
     width: fit-content;
 }
 

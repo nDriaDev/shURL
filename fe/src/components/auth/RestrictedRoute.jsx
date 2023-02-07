@@ -8,7 +8,7 @@ const RestrictedRoute = ({redirectTo, element})=> {
 		const Component = element;
 		return (<Component/>);
 	} else {
-		return <Navigate to={redirectTo ? redirectTo : CONSTANTS.ROUTES.LOGIN} replace={true}/>
+		return <Navigate to={redirectTo ? redirectTo : CONSTANTS.ROUTES.SIGNIN} replace={true}/>
 	}
 };
 

@@ -5,6 +5,15 @@ const CONSTANTS = {
 		DETA_SH: 'detash'
 	},
 	PATHS: {
+		FE: {
+			WILDCARD: '*',
+			INITIAL: '/',
+			GENERATE: '/generate',
+			SIGNIN: '/signIn',
+			SIGNUP: '/signUp',
+			FRG_PWD: '/forgotPassword',
+			ERROR: '/error',
+		},
 		WILDCARD: '*',
 		FE_ROOT_TO_SERVE: {
 			DEV: './../../fe/dist',
@@ -28,7 +37,7 @@ const CONSTANTS = {
 			text: "NamespaceNotFound"
 		}
 	},
-	EXPIRE_URL_IN: [0.5,2,4,8,12,24],
+	EXPIRE_URL_IN: [0.5,4,12,24,168],
 	EXPIRES_TOKEN_IN: {
 		ACCESS_TOKEN: '1m',
 		REFRESH_TOKEN: '59m'

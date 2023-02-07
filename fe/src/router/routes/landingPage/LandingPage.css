@@ -1,0 +1,25 @@
+.landing-description {
+	font-size: 1.8em;
+	font-weight: 100;
+}
+
+.action-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.landing-animation {
+	opacity: 0;
+	animation: land-description 1s 1 ease-out forwards;
+	animation-delay: 1.3s;
+}
+
+@keyframes land-description {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}

@@ -3,10 +3,26 @@ import CONSTANTS from "../utils/constants.js";
 import authUtil from "../utils/authUtil.js";
 import LogUtil from "../utils/logUtil.js";
 
-export default function authMiddleware(dbClient) {
+/**
+ *
+ * @param {DbClient} dbClient
+ * @param {(function(req:Http.Request, res:Http.Response, next:Express.Next): Promise<boolean> | boolean) | boolean} execute
+ */
+export default function authMiddleware(dbClient, execute=null) {
     return async (req, res, next) => {
         LogUtil.log("AuthMiddleware START");
         try {
+            if(execute) {
+                if(typeof execute === "function") {
+                    if(!await execute(req, res, next)) {
+                        return next();
+                    }
+                } else {
+                    if(!execute) {
+                        return next();
+                    }
+                }
+            }
             let {code, text} = CONSTANTS.HTTP_CODE.CLIENT_ERRORS.UNAUTHORIZED,
                 unauthorizedError = new AppError({code, message: text}),
                 useRefresh = false,

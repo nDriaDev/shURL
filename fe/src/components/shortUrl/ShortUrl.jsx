@@ -1,7 +1,7 @@
 import {func, object, bool, string, number, array} from 'prop-types';
 import { memo } from 'react';
 import './ShortUrl.css';
-import { BiCopy, BiShareAlt, BiDownload } from 'react-icons/bi';
+import {BiCopy, BiShareAlt, BiDownload, BiLink} from 'react-icons/bi';
 import ToggleSwitch from './../toggleSwitch/ToggleSwitch';
 import useShortUrl from './useShortUrl';
 import {CiTimer, IoQrCode, RiCodeSSlashFill, SlSettings, VscClose} from "react-icons/all.js";
@@ -21,7 +21,13 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
             <div className="opt-container">
                 <div className="code-container">
                     <RiCodeSSlashFill title="urlCode" style={{ height: '1.5em', width:'3em', verticalAlign: 'middle' }}/>
-                    <input type="text" placeholder="Url code" value={urlCode} onChange={insertUrlCode}/>
+                    <input
+                        type="text"
+                        placeholder="Url code"
+                        value={urlCode}
+                        onChange={insertUrlCode}
+                        disabled={url===""}
+                    />
                 </div>
                 <div className="qr-container">
                     <IoQrCode title="Qrcode" size="1.5em" style={{ verticalAlign: 'middle' }}/>
@@ -30,7 +36,7 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                         checked={qrCode}
                         onCheck={toggleQrCode}
                         type="squared"
-                        disabled={btnDisabled}
+                        disabled={url===""}
                     />
                 </div>
                 <div className="timer-container">
@@ -40,6 +46,9 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                         value={expireIn}
                         list={expireOptionsList}
                         onChange={insertExpireIn}
+                        firstEmptyOption={true}
+                        placeholder="Period"
+                        disabled={url===""}
                     />
                 </div>
             </div>
@@ -49,8 +58,8 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                     onClick={generateUrl}
                     disabled={btnDisabled}
                 >
-                    <SlSettings size="1.3em" style={{ verticalAlign: 'middle', paddingRight: 4 }} />
-                    Genera
+                    <BiLink size="1.2em" style={{ verticalAlign: 'sub', paddingRight: 4 }}/>
+                    Generate
                 </button>
             </div>
         </div>

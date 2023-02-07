@@ -14,12 +14,12 @@ export default function feController(req, res, next) {
 		} else {
 			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
 			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
+			const {INITIAL, GENERATE, SIGNIN, SIGNUP, FRG_PWD} = CONSTANTS.PATHS.FE;
 
 			HeadersUtils.setRelAndReportToHeaders(res, req.originalUrl, null, req);
-			["/login"].includes(req.originalUrl) && res.setHeader("rel", "canonical");
 			//set header noindex for all routes that not are mapped in fe router
 			//so crawler not indexing error page
-			!["/login"].includes(req.originalUrl) && res.setHeader("X-Robots-Tag", "noindex");
+			![INITIAL, GENERATE, SIGNIN, SIGNUP, FRG_PWD].includes(req.originalUrl) && res.setHeader("X-Robots-Tag", "noindex");
 
 			return res.sendFile(path.join(__dirname, pathFE, 'index.html'));
 		}

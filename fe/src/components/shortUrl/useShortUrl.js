@@ -4,10 +4,10 @@ import {useAtom, useSetAtom} from "jotai";
 import messagesAtom from "../../store/messagesStore.js";
 import useFetch from "../common/useFetch.js";
 import ApiUtil from "../../utils/apiUtil.js";
-import meAtom from "../../store/meStore.js";
-import {MessageUtil} from "../../utils/messagesUtil.js";
 import {ErrorUtil} from "../../utils/errorUtil.js";
 import CONSTANTS from "../../utils/constants.js";
+import {authAtom} from "../../store/authStore.js";
+import {MessageUtil} from "../../utils/messagesUtil.js";
 
 const useShortUrl = () => {
     const [spinner, setSpinner] = useAtom(spinnerAtom);
@@ -17,10 +17,12 @@ const useShortUrl = () => {
     const [urlCode, setUrlCode] = useState('');
     const [shurl, setShurl] = useState({});
     const [expireIn, setExpireIn] = useState("");
-    const setMe = useSetAtom(meAtom);
+    const [me, setMe] = useAtom(authAtom);
     const [mount, setMount] = useState(true);
 
-    const btnDisabled = useMemo(() => spinner || !!!url, [spinner, url]);
+    const btnDisabled = useMemo(() => spinner || !!!url || expireIn === "", [spinner, url, expireIn]);
+
+    const isLogged = useMemo(() => !!sessionStorage.getItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN), [])
 
     const toggleQrCode = useCallback(() => setQrCode(q => !q), []);
 
@@ -28,7 +30,13 @@ const useShortUrl = () => {
 
     const insertUrlCode = useCallback(e => setUrlCode(e.target.value), []);
 
-    const insertExpireIn = useCallback(val => setExpireIn(val), []);
+    const insertExpireIn = useCallback(val => {
+        setErrorMessage();
+        if(val === "-1" && (!isLogged || !me)) {
+            setErrorMessage(MessageUtil.resolveErrorMessage(CONSTANTS.MESSAGES.ALL_TIME_ERROR));
+        }
+        setExpireIn(val);
+    }, [isLogged, me]);
 
     const expireOptionsList = useMemo(() => CONSTANTS.EXPIRE_URL_IN, []);
 
@@ -40,20 +48,28 @@ const useShortUrl = () => {
     }, [shurl]);
 
     const shareQrCode = useCallback(async e => {
-        const blob = await (await fetch(shurl.qrCode)).blob();
-        const file = new File([blob], 'qrCode.png', { type: blob.type });
-        navigator.share({
-        title: 'ShortUrl',
-        text: 'Check out this image!',
-        files: [file],
-        })
+       try {
+           const blob = await (await fetch(shurl.qrCode)).blob();
+           const file = new File([blob], 'qrCode.png', { type: blob.type });
+           navigator.share({
+               title: 'ShortUrl',
+               text: 'Check out this image!',
+               files: [file],
+           })
+       } catch (e) {
+           setErrorMessage(MessageUtil.resolveErrorMessage(e));
+       }
     }, [shurl]);
 
     const shareShortUrl = useCallback(e => {
-        navigator.share({
-            title: 'ShortUrl',
-            text: shurl.shortUrl
-        })
+        try {
+            navigator.share({
+                title: 'ShortUrl',
+                text: shurl.shortUrl
+            })
+        } catch (e) {
+            setErrorMessage(MessageUtil.resolveErrorMessage(e));
+        }
     }, [shurl]);
 
     const copyShortUrl = useCallback(e => {
@@ -74,7 +90,7 @@ const useShortUrl = () => {
             setShurl(data);
             setSpinner(false);
         } catch (error) {
-            ErrorUtil.handlingError(error, setErrorMessage, setSpinner);
+            MessageUtil.resolveErrorMessage(error);
         }
     }, [url, qrCode, expireIn, urlCode]);
 
@@ -84,8 +100,12 @@ const useShortUrl = () => {
 
     useEffect(() => {
         async function me() {
-            setSpinner(true);
             setErrorMessage();
+            if(!isLogged) {
+                setMount(false);
+                return;
+            }
+            setSpinner(true);
             try {
                 const data = await useFetch({
                     path: ApiUtil.URLS.AUTH.ME.PATH,
@@ -95,11 +115,12 @@ const useShortUrl = () => {
                 setMount(false);
                 setSpinner(false);
             } catch (e) {
-                ErrorUtil.handlingError(e, setErrorMessage, setSpinner);
+                // ErrorUtil.handlingError(e, setErrorMessage, setSpinner);
+                MessageUtil.resolveErrorMessage(e);
             }
         }
         me();
-    }, []);
+    }, [isLogged]);
 
     return {
         mount,

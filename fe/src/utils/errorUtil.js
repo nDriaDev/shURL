@@ -11,7 +11,7 @@ export const ErrorUtil = {
 	handlingError: (error, messageFunc, spinnerFunc=null) => {
 		if(error.message === CONSTANTS.HTTP_CODE.UNAUTHORIZED.toString()) {
 			sessionStorage.removeItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN);
-			window.location.replace(CONSTANTS.ROUTES.LOGIN);
+			window.location.replace(CONSTANTS.ROUTES.SIGNIN);
 		} else {
 			messageFunc(MessageUtil.resolveErrorMessage(error));
 			spinnerFunc !== null && spinnerFunc(false);

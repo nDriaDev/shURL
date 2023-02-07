@@ -32,7 +32,11 @@
     border: 1px solid transparent;
 }
 
-.dropdown-item:hover {
+.dropdown-item:is([disabled]) {
+    opacity: .4;
+}
+
+.dropdown-item:hover:not([disabled]) {
     border-color: var(--a-color);
     cursor:pointer;
 }

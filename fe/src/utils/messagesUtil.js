@@ -15,10 +15,15 @@ const resolveBeMessages = ({error, message, type}) => {
 export const MessageUtil = {
     /**
      *
-     * @param {Error} error
+     * @param {Error | string} error
      * @returns {{message: (*|string), type}}
      */
-    resolveErrorMessage: error => resolveBeMessages({error, type: "error"}),
+    resolveErrorMessage: error => {
+        if(typeof error === "string") {
+            return resolveBeMessages({message:error, type:'error'});
+        }
+        return resolveBeMessages({error, type: "error"})
+    },
     /**
      *
      * @param {string} msg
