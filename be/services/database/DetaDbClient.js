@@ -66,11 +66,12 @@ export default class DetaDbClient {
 		LogUtil.log("DetaClient findUrl start");
 		try {
 			const db = this.client.Base(this.URLS);
-			let query = [];
 			let {originalUrl, shortUrl, urlCode} = url;
-			originalUrl !== '' && query.push({originalUrl});
-			shortUrl !== '' && query.push({shortUrl});
-			urlCode !== '' && query.push({urlCode});
+			let query = {
+				...(originalUrl !== '' && {originalUrl}),
+				...(shortUrl !== '' && {shortUrl}),
+				...(urlCode !== '' && {urlCode}),
+			};
 			query.length === 1 && (query = query[0]);
 
 			const {count, last, items} = await db.fetch(query);
@@ -130,11 +131,12 @@ export default class DetaDbClient {
 		LogUtil.log("DetaClient findTempUrl START");
 		try {
 			const db = this.client.Base(this.URLS_TEMP);
-			let query = [];
 			let {originalUrl, shortUrl, urlCode} = url;
-			originalUrl !== '' && query.push({originalUrl});
-			shortUrl !== '' && query.push({shortUrl});
-			urlCode !== '' && query.push({urlCode});
+			let query = {
+				...(originalUrl !== '' && {originalUrl}),
+				...(shortUrl !== '' && {shortUrl}),
+				...(urlCode !== '' && {urlCode}),
+			};
 			query.length === 1 && (query = query[0]);
 
 			const {count, last, items} = await db.fetch(query);
@@ -195,10 +197,11 @@ export default class DetaDbClient {
 				result = await db.get(id);
 				return User.mappingUserDBToUser(result);
 			} else {
-				let query = [];
-				email !== null && query.push({email});
-				password !== null && query.push({password});
-				query.push({active});
+				let query = {
+					...(email !== null && {email}),
+					...(password !== null && {password}),
+					active
+				};
 				result = await db.fetch(query);
 				if (result.count === 1) {
 					return User.mappingUserDBToUser(result.items[0]);
