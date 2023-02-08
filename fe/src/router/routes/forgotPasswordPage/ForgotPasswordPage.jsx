@@ -7,7 +7,7 @@ import useMetaDescription from "../../../components/common/useMetaDescription.js
 const ForgotPasswordPage = ({}) => {
     useTitle("ShURL - Forgot password");
     useMetaDescription("Reset password");
-    
+
     return (
         <Form type={CONSTANTS.FORM_TYPE.FORGOT_PWD}/>
     )

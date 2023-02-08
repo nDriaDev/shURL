@@ -12,6 +12,8 @@ import SignInPage from "./routes/signInPage/SignInPage.jsx";
 import SignUpPage from "./routes/signUpPage/SignUpPage.jsx";
 import signUpPageLoader from "./routes/signUpPage/signUpPageLoader.js";
 import ForgotPasswordPage from "./routes/forgotPasswordPage/ForgotPasswordPage.jsx";
+import ActivateUserPage from "./routes/activeUserPage/ActivateUserPage.jsx";
+import activateUserPageLoader from "./routes/activeUserPage/activateUserPageLoader.js";
 
 const Router = ({}) => {
 	const router = createBrowserRouter([
@@ -23,6 +25,13 @@ const Router = ({}) => {
 					index: true,
 					element: <LandingPage/>,
 					errorElement: <ErrorPage/>
+				},
+				{
+					path: CONSTANTS.ROUTES.ACTIVATE_USER,
+					caseSensitive: true,
+					element: <ActivateUserPage/>,
+					errorElement: <ErrorPage/>,
+					loader: activateUserPageLoader
 				},
 				{
 					path: CONSTANTS.ROUTES.GENERATE,

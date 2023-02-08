@@ -67,9 +67,9 @@ export default function useForm(formType) {
 				bodyType: "json"
 			})
 			if(formType === CONSTANTS.FORM_TYPE.SIGN_IN) {
-				navigate(CONSTANTS.ROUTES.GENERATE, {replace: true});
+				navigate(CONSTANTS.ROUTES.GENERATE);
 			} else if(formType === CONSTANTS.FORM_TYPE.SIGN_UP) {
-				setMessage(MessageUtil.resolveSuccessMessage(CONSTANTS.MESSAGES.SIGN_UP_COMPLETED));
+				setMessage(MessageUtil.resolveSuccessMessage("Thanks for signing in!\nAn email with an activation link has been sent to your address.\nIt expires in 2 hours."))
 			} else {
 				setMessage(MessageUtil.resolveSuccessMessage(CONSTANTS.MESSAGES.RESET_PWD));
 			}

@@ -6,6 +6,10 @@ const API_PATHS={
 const ApiUtil = {
 	URLS: {
 		AUTH: {
+			ACTIVATE_USER: {
+				PATH:API_BASE_PATH+API_PATHS.AUTH + `/activate`,
+				METHOD: 'GET'
+			},
 			FRG_PWD: {
 				PATH:API_BASE_PATH+API_PATHS.AUTH + '/forgotPassword',
 				METHOD: 'POST'

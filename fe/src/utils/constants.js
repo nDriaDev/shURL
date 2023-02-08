@@ -3,6 +3,7 @@ const CONSTANTS = {
 		WILDCARD: '*',
 		INITIAL: '/',
 		GENERATE: '/generate',
+		ACTIVATE_USER: '/activate',
 		SIGNIN: '/signIn',
 		SIGNUP: '/signUp',
 		FRG_PWD: '/forgotPassword',

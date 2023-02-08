@@ -29,6 +29,8 @@ export default defineConfig({
 				[ApiUtil.URLS.AUTH.SIGNUP.PATH]: 'http://localhost:3000',
 				[ApiUtil.URLS.AUTH.SIGNIN.PATH]: 'http://localhost:3000',
 				[ApiUtil.URLS.AUTH.ME.PATH]: 'http://localhost:3000',
+				[ApiUtil.URLS.AUTH.ACTIVATE_USER.PATH]: 'http://localhost:3000',
+				[ApiUtil.URLS.AUTH.FRG_PWD.PATH]: 'http://localhost:3000',
 				[ApiUtil.URLS.AUTH.LOGOUT.PATH]: 'http://localhost:3000',
 			}
 		}

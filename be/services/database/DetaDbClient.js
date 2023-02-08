@@ -1,4 +1,4 @@
-import { Deta } from 'deta';
+import {Deta} from 'deta';
 import LogUtil from "../../utils/logUtil.js";
 import URLRecord from "../../models/URLRecord.js";
 import User from "../../models/User.js";
@@ -73,8 +73,8 @@ export default class DetaDbClient {
 			urlCode !== '' && query.push({urlCode});
 			query.length === 1 && (query = query[0]);
 
-			const {count, last, items } = await db.fetch(query);
-			return !count || count === 0 ? null :  URLRecord.mappingURLDBToURLRecord(items[0]);
+			const {count, last, items} = await db.fetch(query);
+			return !count || count === 0 ? null : URLRecord.mappingURLDBToURLRecord(items[0]);
 		} catch (error) {
 			throw error;
 		} finally {
@@ -106,18 +106,18 @@ export default class DetaDbClient {
 		try {
 			const db = this.client.Base(this.URLS_TEMP);
 			url.createdAt = new Date().getTime();
-			if(Number.isInteger(expireIn)) {
+			if (Number.isInteger(expireIn)) {
 				let dt = new Date();
-				dt.setHours(dt.getHours()+expireIn);
+				dt.setHours(dt.getHours() + expireIn);
 				url.expireAt = dt;
 			} else {
-				let hours=0, minutes=Number(expireIn)*60;
+				let hours = 0, minutes = Number(expireIn) * 60;
 				let dt = new Date();
-				dt.setHours(dt.getHours()+hours, dt.getMinutes()+minutes);
+				dt.setHours(dt.getHours() + hours, dt.getMinutes() + minutes);
 				url.expireAt = dt;
 			}
 			let urlDB = URLTempRecord.mappingURLTempRecordToURLTempDB(url);
-			const result = await db.put(urlDB, null, {expireAt:url.expireAt});
+			const result = await db.put(urlDB, null, {expireAt: url.expireAt});
 			return true;
 		} catch (e) {
 			throw e;
@@ -137,8 +137,8 @@ export default class DetaDbClient {
 			urlCode !== '' && query.push({urlCode});
 			query.length === 1 && (query = query[0]);
 
-			const {count, last, items } = await db.fetch(query);
-			return !count || count === 0 ? null :  URLTempRecord.mappingURLTempDBToURLTempRecord(items[0]);
+			const {count, last, items} = await db.fetch(query);
+			return !count || count === 0 ? null : URLTempRecord.mappingURLTempDBToURLTempRecord(items[0]);
 		} catch (error) {
 			throw error;
 		} finally {
@@ -146,14 +146,36 @@ export default class DetaDbClient {
 		}
 	}
 
-	async createUser({email, password}) {
+	async createTempUser(user) {
+		LogUtil.log("DetaClient createTempUser START");
+		try {
+			const db = this.client.Base(this.USER);
+			let dt = new Date();
+			let userDB = {
+				email: user.email,
+				password: user.password,
+				createdAt: new Date().getTime(),
+				active: false,
+			};
+			const result = await db.put(userDB, null, {expireAt: dt.setHours(dt.getHours() + 2),});
+			return true;
+		} catch (e) {
+			throw e;
+		} finally {
+			LogUtil.log("DetaClient createTempUser FINISH");
+		}
+	}
+
+	async createUser(userTempDB) {
 		LogUtil.log("DetaClient createUser start");
 		try {
 			const db = this.client.Base(this.USER);
+			await db.delete(userTempDB.id);
 			const result = await db.put({
-				email,
-				password,
-				createdAt: new Date().getTime(),
+				email: userTempDB.email,
+				password: userTempDB.password,
+				createdAt: userTempDB.createdAt,
+				updateAt: new Date().getTime(),
 				active: true
 			})
 			return true;
@@ -164,19 +186,19 @@ export default class DetaDbClient {
 		}
 	}
 
-	async findUser({id=null, email=null, password=null}) {
+	async findUser({id = null, email = null, password = null, active = true}) {
 		LogUtil.log("DetaClient findUser start");
 		try {
 			const db = this.client.Base(this.USER);
 			let result;
-			if(id) {
+			if (id) {
 				result = await db.get(id);
 				return User.mappingUserDBToUser(result);
 			} else {
 				let query = [];
 				email !== null && query.push({email});
 				password !== null && query.push({password});
-				query.push({active: true});
+				query.push({active});
 				result = await db.fetch(query);
 				if (result.count === 1) {
 					return User.mappingUserDBToUser(result.items[0]);
@@ -189,4 +211,27 @@ export default class DetaDbClient {
 			LogUtil.log("DetaClient findUser finish");
 		}
 	}
+
+	/**
+	 *
+	 * @param {User} user
+	 * @returns {Promise<void>}
+	 */
+	async updateUser(user) {
+		LogUtil.log("DetaClient updateUser start");
+		try {
+			const db = this.client.Base(this.USER);
+			const userDB = await this.findUrl(user);
+			const updates = {
+				active: user.active,
+				updateAt: new Date().getTime()
+			};
+			await db.update(updates, userDB.id);
+		} catch (error) {
+			throw error;
+		} finally {
+			LogUtil.log("DetaClient updateUser finish");
+		}
+	}
+
 }

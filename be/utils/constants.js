@@ -8,6 +8,7 @@ const CONSTANTS = {
 		FE: {
 			WILDCARD: '*',
 			INITIAL: '/',
+			ACTIVATE_USER: '/activate',
 			GENERATE: '/generate',
 			SIGNIN: '/signIn',
 			SIGNUP: '/signUp',
@@ -39,6 +40,7 @@ const CONSTANTS = {
 	},
 	EXPIRE_URL_IN: [0.5,4,12,24,168],
 	EXPIRES_TOKEN_IN: {
+		ACTIVATE_TOKEN: '2h',
 		ACCESS_TOKEN: '1m',
 		REFRESH_TOKEN: '59m'
 	},

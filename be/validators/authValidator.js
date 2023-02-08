@@ -3,8 +3,9 @@ import {check} from "express-validator";
 const AuthValidator = [
 	check('email')
 		.exists({checkFalsy: true, checkNull: true}).withMessage("required value").bail()
-		.isEmail().withMessage("invalid format").bail()
-		.normalizeEmail({all_lowercase: true}),
+		.trim()
+		.toLowerCase()
+		.isEmail().withMessage("invalid format").bail(),
 	check('password')
 		.exists({checkFalsy: true, checkNull: true}).withMessage("required value").bail()
 		.trim()

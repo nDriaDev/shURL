@@ -35,11 +35,24 @@ export default class DbClient {
         return await this.client.findTempUrl(url);
     }
 
-    async createUser({ email, password }) {
-        await this.client.createUser({ email, password });
+    async createTempUser({ email, password }) {
+        await this.client.createTempUser({ email, password });
     }
 
-    async findUser({ id, email, password }) {
-        return this.client.findUser({ id, email, password });
+    async createUser(user) {
+        await this.client.createUser(user);
+    }
+
+    async findUser({ id, email, password, active }) {
+        return this.client.findUser({ id, email, password, active });
+    }
+
+    /**
+     *
+     * @param {User} user
+     * @returns {Promise<*>}
+     */
+    async updateUser(user) {
+        return this.client.updateUser(user);
     }
 }

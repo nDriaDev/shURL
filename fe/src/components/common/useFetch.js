@@ -9,10 +9,10 @@ import CONSTANTS from "../../utils/constants.js";
  * @param {Object} [obj.headers]
  * @returns {Promise<string|Object>}
  */
-const useFetch = async ({path, body=null, bodyType="json", method, headers=null}={}) => {
+const useFetch = async ({path, body=null, bodyType="json", method, headers=null, authenticated=true}={}) => {
 	try {
 		let headersToSend = {
-			"Authorization": `Bearer ${sessionStorage.getItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN)}`,
+			...(authenticated ? {"Authorization": `Bearer ${sessionStorage.getItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN)}`} : {}),
 			...(headers ? headers : {}),
 			...(body ? {"Content-Type": bodyType === "json" ? "application/json" : "application/x-www-form-urlencoded;charset=UTF-8"} : {})
 		};
