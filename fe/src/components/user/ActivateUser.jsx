@@ -20,7 +20,7 @@ const ActivateUser = ({}) => {
 			<h2 className="acu-default-text">
 				Now you can sign in.
 			</h2>
-			<Link to={CONSTANTS.ROUTES.SIGNIN} onClick={clearMessages}>
+			<Link to={CONSTANTS.ROUTES.SIGNIN} onClick={clearMessages} replace={true}>
 				<button type="button">
 					<IoMdLogIn size="1.2em" style={{ verticalAlign: 'sub', paddingRight: 4 }}/>
 					Sign in
