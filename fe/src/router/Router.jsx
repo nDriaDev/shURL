@@ -14,6 +14,7 @@ import signUpPageLoader from "./routes/signUpPage/signUpPageLoader.js";
 import ForgotPasswordPage from "./routes/forgotPasswordPage/ForgotPasswordPage.jsx";
 import ActivateUserPage from "./routes/activeUserPage/ActivateUserPage.jsx";
 import activateUserPageLoader from "./routes/activeUserPage/activateUserPageLoader.js";
+import ResetPasswordPage from "./routes/resetPasswordPage/ResetPasswordPage.jsx";
 
 const Router = ({}) => {
 	const router = createBrowserRouter([
@@ -58,6 +59,13 @@ const Router = ({}) => {
 					caseSensitive: true,
 					element: <ForgotPasswordPage/>,
 					errorElement: <ErrorPage/>,
+				},
+				{
+					path: CONSTANTS.ROUTES.RESET_PWD,
+					caseSensitive: true,
+					element: <ResetPasswordPage/>,
+					errorElement: <ErrorPage/>,
+					loader: activateUserPageLoader
 				},
 				{
 					caseSensitive: true,

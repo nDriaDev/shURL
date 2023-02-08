@@ -23,7 +23,7 @@ const ProfileButton = ({}) => {
 					</button>
 				</Dropdown.DropdownLabel>
 				<Dropdown.DropdownList alignRight={true}>
-					<Dropdown.DropDownItem style={{textAlign: 'end'}} onClick={resetPassword} disabled={true}>
+					<Dropdown.DropDownItem style={{textAlign: 'end'}} onClick={resetPassword}>
 						<BiReset size="1.2em" style={{ verticalAlign: 'sub', paddingRight: 4 }}/>
 						Reset password
 					</Dropdown.DropDownItem>

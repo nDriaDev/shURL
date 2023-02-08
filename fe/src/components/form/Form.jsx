@@ -5,35 +5,31 @@ import CONSTANTS from "../../utils/constants.js";
 import {oneOf} from "prop-types";
 
 const Form = ({type}) => {
-	const {resetBtnRef, switchFormType, onChange, submit, submitBtnText, btnTextAndName} = useForm(type);
+	const {emailRef, emailPlaceholder, passwordPlaceholder, resetBtnRef, switchFormType, onChange, submit, submitBtnText, btnTextAndName} = useForm(type);
 
 	return (
 		<form className="form">
 			<input type="reset" value="Reset" hidden ref={resetBtnRef}/>
-			<input placeholder="Email" type="email" name="email" onPaste={onChange} onChange={onChange}/>
+			<input type="email" name="email" ref={emailRef} placeholder={emailPlaceholder} onPaste={onChange} onChange={onChange}/>
 			{
 				type !== CONSTANTS.FORM_TYPE.FORGOT_PWD &&
-				<input placeholder="Password" type="password" name="password" onPaste={onChange} onChange={onChange} />
+				<input type="password" name="password" placeholder={passwordPlaceholder} onPaste={onChange} onChange={onChange} />
 			}
 			<button type="submit" onClick={submit}>{submitBtnText}</button>
-			{
-
-				<div className="btn-container">
-					<button name={btnTextAndName.name} type="button" className="btn-a" onClick={switchFormType}>{btnTextAndName.text}</button>
-					{
-						type !== CONSTANTS.FORM_TYPE.FORGOT_PWD &&
-						<button
-							name={CONSTANTS.FORM_TYPE.FORGOT_PWD}
-							type="button"
-							className="btn-a"
-							onClick={switchFormType}
-							disabled
-						>
-							Forgot password?
-						</button>
-					}
-				</div>
-			}
+			<div className="btn-container">
+				<button name={btnTextAndName.name} type="button" className="btn-a" onClick={switchFormType}>{btnTextAndName.text}</button>
+				{
+					![CONSTANTS.FORM_TYPE.FORGOT_PWD, CONSTANTS.FORM_TYPE.RESET_PWD].includes(type) &&
+					<button
+						name={CONSTANTS.FORM_TYPE.FORGOT_PWD}
+						type="button"
+						className="btn-a"
+						onClick={switchFormType}
+					>
+						Forgot password?
+					</button>
+				}
+			</div>
 		</form>
 	)
 };

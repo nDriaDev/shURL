@@ -4,6 +4,8 @@ import authController from "../../../controllers/authController.js";
 import authMiddleware from "../../../middlewares/authMiddleware.js";
 import ActivateUserValidator from "../../../validators/activateUserValidator.js";
 import MailClient from "../../../services/email/mailClient.js";
+import ForgotPasswordValidator from "../../../validators/forgotPasswordValidator.js";
+import ResetPasswordValidator from "../../../validators/ResetPasswordValidator.js";
 
 /**
  *
@@ -25,6 +27,16 @@ export default function authRoutes(primaryRouter, router, dbClient) {
 			'/signin',
 			validatorMiddleware(AuthValidator),
 			authController.signIn(dbClient)
+		)
+		.post(
+			'/forgotPassword',
+			validatorMiddleware(ForgotPasswordValidator),
+			authController.forgotPassword(dbClient, mailClient)
+		)
+		.post(
+			'/resetPassword',
+			validatorMiddleware(ResetPasswordValidator),
+			authController.resetPassword(dbClient)
 		)
 		.get('/activate',
 			validatorMiddleware(ActivateUserValidator),

@@ -35,7 +35,29 @@ const useProfileButton = () => {
 	}, []);
 
 	const resetPassword = useCallback(() => {
-		//TODO implement api request to reset password
+		setSpinner(true);
+		setMessage();
+		try {
+			const data = useFetch({
+				path: ApiUtil.URLS.AUTH.LOGOUT.PATH,
+				method: ApiUtil.URLS.AUTH.LOGOUT.METHOD,
+			});
+			sessionStorage.removeItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN);
+			setMe(null);
+			navigate(
+				CONSTANTS.ROUTES.FRG_PWD,
+				{
+					replace: true,
+					state: {
+						email: me.email
+					}
+				}
+			);
+		} catch (e) {
+			setMessage(MessageUtil.resolveErrorMessage(e))
+		} finally {
+			setSpinner(false);
+		}
 	}, [me]);
 
 	const clearMessages = useCallback(() => {

@@ -4,8 +4,8 @@ import AppError from "../models/errors/AppError.js";
 import authUtil from "../utils/authUtil.js";
 import LogUtil from "../utils/logUtil.js";
 import activationUserTemplate from "../services/email/template/activationUserTemplate.js";
-import {App} from "deta";
 import urlUtil from "../utils/urlUtil.js";
+import forgotPasswordTemplate from "../services/email/template/forgotPasswordTemplate.js";
 
 const authController = {
 	/**
@@ -28,12 +28,13 @@ const authController = {
 				},
 				type: "activation_token"
 			})
+			let linkRef = urlUtil.activateUserUrl(req, token);
 			await mailClient.sendMail({
 				to: email,
 				subject: "ShURL - activation user",
-				text: "Thanks for signing in!\nPlease click on follow link to activate your account:\nhttps://shurl.ndria.dev/activeUser?token="+token,
+				text: `Thanks for signing in!\nPlease click on follow link to activate your account:\n${linkRef}`,
 				html: activationUserTemplate({
-					linkRef: urlUtil.activateUserUrl(req, token),
+					linkRef,
 				})
 			})
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send('ok');
@@ -139,6 +140,10 @@ const authController = {
 			LogUtil.log("authController logout: FINISH");
 		}
 	},
+	/**
+	 *
+	 * @param {DbClient} dbClient
+	 */
 	activateUser: dbClient => async (req, res, next) => {
 		try {
 			LogUtil.log("authController activeUser: START");
@@ -158,6 +163,61 @@ const authController = {
 			next(e);
 		} finally {
 			LogUtil.log("authController activeUser: FINISH");
+		}
+	},
+	/**
+	 *
+	 * @param {DbClient} dbClient
+	 */
+	forgotPassword: (dbClient, mailClient) => async (req, res, next) => {
+		try {
+			LogUtil.log("authController forgotPassword: START");
+			const {email} = req.body;
+			if(!await dbClient.findUser({email})) {
+				return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.NOT_FOUND.code, message: "Email not found."}));
+			}
+			const token = await authUtil.createToken({
+				payload: {
+					email
+				},
+				type: "activation_token"
+			})
+			let linkRef = urlUtil.forgotPasswordUrl(req, token);
+			await mailClient.sendMail({
+				to: email,
+				subject: "ShURL - Forgot Password",
+				text: `Reset password\nPlease click on follow link to reset your password:\n${linkRef}`,
+				html: forgotPasswordTemplate({
+					linkRef,
+				})
+			})
+			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send('ok');
+		} catch (e) {
+			 next(e);
+		} finally {
+			LogUtil.log("authController forgotPassword: FINISH");
+		}
+	},
+	/**
+	 *
+	 * @param {DbClient} dbClient
+	 */
+	resetPassword: dbClient => async(req, res, next) => {
+		try {
+			LogUtil.log("authController resetPassword: START");
+			const { token, password} = req.body;
+			const result = authUtil.verifyToken({token, type: "activation_token"});
+			if(!result.isValid) {
+				return next(new AppError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.FORBIDDEN.code, message: "Token expired. Repeat reset password process."}));
+			}
+			const userEmail = result.payload.email;
+			const userPassword = User.hashPassword(password);
+			await dbClient.updatePwdUser({email: userEmail, password: userPassword});
+			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send("OK");
+		} catch (e) {
+			next(e);
+		} finally {
+			LogUtil.log("authController resetPassword: FINISH");
 		}
 	}
 }

@@ -10,6 +10,10 @@ const ApiUtil = {
 				PATH:API_BASE_PATH+API_PATHS.AUTH + `/activate`,
 				METHOD: 'GET'
 			},
+			RESET_PWD: {
+				PATH:API_BASE_PATH+API_PATHS.AUTH + '/resetPassword',
+				METHOD: 'POST'
+			},
 			FRG_PWD: {
 				PATH:API_BASE_PATH+API_PATHS.AUTH + '/forgotPassword',
 				METHOD: 'POST'

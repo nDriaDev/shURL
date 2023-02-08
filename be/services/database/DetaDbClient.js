@@ -3,6 +3,8 @@ import LogUtil from "../../utils/logUtil.js";
 import URLRecord from "../../models/URLRecord.js";
 import User from "../../models/User.js";
 import URLTempRecord from "../../models/URLTempRecord.js";
+import DBError from "../../models/errors/DBError.js";
+import CONSTANTS from "../../utils/constants.js";
 
 export default class DetaDbClient {
 	client;
@@ -224,7 +226,7 @@ export default class DetaDbClient {
 		LogUtil.log("DetaClient updateUser start");
 		try {
 			const db = this.client.Base(this.USER);
-			const userDB = await this.findUrl(user);
+			const userDB = await this.findUser(user);
 			const updates = {
 				active: user.active,
 				updateAt: new Date().getTime()
@@ -234,6 +236,23 @@ export default class DetaDbClient {
 			throw error;
 		} finally {
 			LogUtil.log("DetaClient updateUser finish");
+		}
+	}
+
+	async updatePwdUser({email, password}) {
+		LogUtil.log("MongoClient updatePwdUser START");
+		try {
+			const db = this.client.Base(this.USER);
+			const userDB = await this.findUser({email});
+			const updates = {
+				password,
+				updateAt: new Date().getTime()
+			};
+			await db.update(updates, userDB.id);
+		} catch (error) {
+			throw error;
+		} finally {
+			LogUtil.log("MongoClient updatePwdUser FINISH");
 		}
 	}
 

@@ -282,4 +282,29 @@ await
         }
     }
 
+    async updatePwdUser({email, password}) {
+        LogUtil.log("MongoClient updatePwdUser START");
+        try {
+            const USERS = this.client.db(this.DB).collection(this.USER);
+            const { matchedCount, modifiedCount } = await USERS.updateOne({
+                email,
+            }, {
+                $set: {
+                    password,
+                    updateAt: new Date().getTime()
+                }
+            })
+            if(matchedCount === 0) {
+                throw(DBError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.NOT_FOUND.code, message: "User not found"}));
+            }
+            if(matchedCount>0 && modifiedCount===0) {
+                throw(DBError({code: CONSTANTS.HTTP_CODE.CLIENT_ERRORS.BAD_REQUEST.code, message: "User not updated"}));
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            LogUtil.log("MongoClient updatePwdUser FINISH");
+        }
+    }
+
 }

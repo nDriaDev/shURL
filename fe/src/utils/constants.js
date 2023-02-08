@@ -4,6 +4,7 @@ const CONSTANTS = {
 		INITIAL: '/',
 		GENERATE: '/generate',
 		ACTIVATE_USER: '/activate',
+		RESET_PWD: '/resetPassword',
 		SIGNIN: '/signIn',
 		SIGNUP: '/signUp',
 		FRG_PWD: '/forgotPassword',
@@ -45,11 +46,13 @@ const CONSTANTS = {
 	FORM_TYPE: {
 		SIGN_IN: 'sign-in',
 		SIGN_UP: 'sign-up',
-		FORGOT_PWD: 'forgot-pwd'
+		FORGOT_PWD: 'forgot-pwd',
+		RESET_PWD: 'reset-pwd'
 	},
 	MESSAGES: {
-		SIGN_UP_COMPLETED: "Thanks for signing up!\nAn email has been sent to your address to activate your account.",
-		RESET_PWD: "An email has been sent to your address with a link to reset password.",
+		SIGN_UP_COMPLETED: "Thanks for signing in!\nAn email with an activation link has been sent to your address.\nIt expires in 2 hours.",
+		FORGOT_PWD: "An email has been sent to your address with a link to reset password.\nIt expires in 2 hours.",
+		RESET_PWD: "Password has been successfully reset.\nNow you can sign in.",
 		ALL_TIME_ERROR: "You must be logged in to generate permanent short urls."
 	}
 };

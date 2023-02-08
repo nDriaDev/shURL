@@ -9,6 +9,7 @@ const CONSTANTS = {
 			WILDCARD: '*',
 			INITIAL: '/',
 			ACTIVATE_USER: '/activate',
+			RESET_PWD: '/resetPassword',
 			GENERATE: '/generate',
 			SIGNIN: '/signIn',
 			SIGNUP: '/signUp',
