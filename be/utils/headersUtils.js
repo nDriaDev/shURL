@@ -18,7 +18,7 @@ const HeadersUtils = {
 			res.setHeader("rel", "canonical");
 			return;
 		}
-		if(req && ![CONSTANTS.PATHS.FE.ERROR, CONSTANTS.PATHS.FE.FRG_PWD, CONSTANTS.PATHS.FE.ACTIVATE_USER].includes(path)) {
+		if(req) {
 			let urlCspReport = req.protocol + "://" + req.headers.host + CONSTANTS.PATHS.CSP + "/report";
 			res.setHeader(
 				'Report-To',

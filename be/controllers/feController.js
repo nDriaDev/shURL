@@ -19,7 +19,7 @@ export default function feController(req, res, next) {
 			HeadersUtils.setRelAndReportToHeaders(res, req.originalUrl, null, req);
 			//set header noindex for all routes that not are mapped in fe router
 			//so crawler not indexing error page
-			![INITIAL, GENERATE, SIGNIN, SIGNUP].includes(req.originalUrl) && res.setHeader("X-Robots-Tag", "noindex");
+			[INITIAL, GENERATE, SIGNIN, SIGNUP].includes(req.originalUrl) ? res.setHeader("X-Robots-Tag", "index, follow") : res.setHeader("X-Robots-Tag", "noindex");
 
 			return res.sendFile(path.join(__dirname, pathFE, 'index.html'));
 		}
