@@ -11,19 +11,7 @@
     </url>
 
     <url>
-        <loc>https://shurl.ndria.dev/signin</loc>
-        <changefreq>daily</changefreq>
-        <lastmod>2023-02-08</lastmod>
-    </url>
-
-    <url>
         <loc>https://shurl.ndria.dev/generate</loc>
-        <changefreq>daily</changefreq>
-        <lastmod>2023-02-08</lastmod>
-    </url>
-
-    <url>
-        <loc>https://shurl.ndria.dev/signup</loc>
         <changefreq>daily</changefreq>
         <lastmod>2023-02-08</lastmod>
     </url>

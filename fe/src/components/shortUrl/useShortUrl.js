@@ -11,7 +11,7 @@ import {MessageUtil} from "../../utils/messagesUtil.js";
 
 const useShortUrl = () => {
     const [spinner, setSpinner] = useAtom(spinnerAtom);
-    const setErrorMessage = useSetAtom(messagesAtom);
+    const setMessage = useSetAtom(messagesAtom);
     const [qrCode, setQrCode] = useState(false);
     const [url, setUrl] = useState('');
     const [urlCode, setUrlCode] = useState('');
@@ -31,9 +31,9 @@ const useShortUrl = () => {
     const insertUrlCode = useCallback(e => setUrlCode(e.target.value), []);
 
     const insertExpireIn = useCallback(val => {
-        setErrorMessage();
+        setMessage();
         if(val === "-1" && (!isLogged || !me)) {
-            setErrorMessage(MessageUtil.resolveErrorMessage(CONSTANTS.MESSAGES.ALL_TIME_ERROR));
+            setMessage(MessageUtil.resolveErrorMessage(CONSTANTS.MESSAGES.ALL_TIME_ERROR));
         }
         setExpireIn(val);
     }, [isLogged, me]);
@@ -41,10 +41,16 @@ const useShortUrl = () => {
     const expireOptionsList = useMemo(() => CONSTANTS.EXPIRE_URL_IN, []);
 
     const downloadQrCode = useCallback(e => {
-        let a = document.createElement("a");
-        a.href = data.qrCode;
-        a.download = "qrCode.png";
-        a.click();
+        try {
+            let a = document.createElement("a");
+            a.href = data.qrCode;
+            a.download = "qrCode.png";
+            a.click();
+            setMessage(MessageUtil.resolveSuccessMessage("Qrcode download will start shortly!"))
+            setTimeout(() => setMessage(), 2000);
+        } catch (e) {
+            setMessage(MessageUtil.resolveErrorMessage(e));
+        }
     }, [shurl]);
 
     const shareQrCode = useCallback(async e => {
@@ -57,7 +63,7 @@ const useShortUrl = () => {
                files: [file],
            })
        } catch (e) {
-           setErrorMessage(MessageUtil.resolveErrorMessage(e));
+           setMessage(MessageUtil.resolveErrorMessage(e));
        }
     }, [shurl]);
 
@@ -68,17 +74,19 @@ const useShortUrl = () => {
                 text: shurl.shortUrl
             })
         } catch (e) {
-            setErrorMessage(MessageUtil.resolveErrorMessage(e));
+            setMessage(MessageUtil.resolveErrorMessage(e));
         }
     }, [shurl]);
 
     const copyShortUrl = useCallback(e => {
         navigator.clipboard.writeText(shurl.shortUrl);
+        setMessage(MessageUtil.resolveSuccessMessage("Shurl copied to clipboard!"))
+        setTimeout(() => setMessage(), 2000);
     }, [shurl]);
 
     const generateUrl = useCallback(async e => {
         try {
-            setErrorMessage();
+            setMessage();
             setSpinner(true);
             setShurl({});
             const data = await useFetch({
@@ -100,7 +108,7 @@ const useShortUrl = () => {
 
     useEffect(() => {
         async function me() {
-            setErrorMessage();
+            setMessage();
             if(!isLogged) {
                 setMount(false);
                 return;
@@ -115,7 +123,7 @@ const useShortUrl = () => {
                 setMount(false);
                 setSpinner(false);
             } catch (e) {
-                // ErrorUtil.handlingError(e, setErrorMessage, setSpinner);
+                // ErrorUtil.handlingError(e, setMessage, setSpinner);
                 MessageUtil.resolveErrorMessage(e);
             }
         }
