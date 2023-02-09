@@ -17,9 +17,9 @@ const LogoTitle = () => {
             <div className="nav-about">
                 <a href="https://github.com/4ndr3wc0/shURL" target="_blank">Source</a>
                 /
-                <a href="https://github.com/4ndr3wC0" target="_blank">Author</a>
+                <a href="https://ndria.dev" target="_blank">Author</a>
                 /
-                <a href="https://ndria.dev" target="_blank">Projects</a>
+                <a href="https://github.com/4ndr3wc0?tab=repositories" target="_blank">Projects</a>
             </div>
 		</div>
 	)
