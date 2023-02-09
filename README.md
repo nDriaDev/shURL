@@ -17,20 +17,16 @@ Easily shorten and track links for sharing on social media, video, email, print,
 
 shURL requires [Node.js](https://nodejs.org/) v18+ and [MongoDB](https://www.mongodb.com/) to run locally.
 
+I used pnpm as package manager, so if you don't have it, you will need to change the run scripts in the package.json of the be and fe folders.
+
 Install the dependencies in _be_ and _fe_ directory, build and start the server.
 
-### For front-end project
-```sh
-cd fe
-npm i
-npm run build
-```
-
-### For back-end project
+- go into be folder.
 - create public/private key for refresh token and access token.
 - generate base64 from keys.
 - create in your mongodb local a collection with name _URL_SHORTNER_
 - create a table _URL_ and _USER_
+- setting an email provider, otherwise sign in not working
 - create a .env.dev file in config dir at root project, with these options
 ```
 NODE_ENV=development
@@ -42,9 +38,14 @@ TABLE_USER=USER
 ACCESS_TOKEN_SECRET=<base64 access token secret>
 REFRESH_TOKEN_KEY_PRIVATE=<base64 refresh token private key>
 REFRESH_TOKEN_KEY_PUBLIC=<base64 refresh token public key>
+MAIL_EMAIL_SENDER=
+MAIL_CLIENT_ID=
+MAIL_CLIENT_SECRET=
+MAIL_OAUTH_URL=
+MAIL_REFRESH_TOKEN=
 ```
 - Run project
 ```sh
-npm run dev
+pnpm run start
 ```
 - open http://localhost:3000

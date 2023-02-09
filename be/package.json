@@ -13,6 +13,7 @@
     "prod": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node app.js",
     "build:fe": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deta_micro/fe) && mkdir ./../deta_micro/fe && cp -r ./../fe/dist ./../deta_micro/fe/dist && cd ./../be",
     "build:be": "rm -rf $(find ./../deta_micro/ -maxdepth 1 -name '*' ! -name '.deta' ! -name '.' ! -name '..' ! -name 'deta_micro' ! -name 'fe') && node ./../script_detash.js",
+    "start": "pnpm run build:fe && pnpm run dev",
     "deploy:deta": "pnpm run build:fe && pnpm run build:be && cd ./../deta_micro && deta update -e config/.env.detash && deta deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
