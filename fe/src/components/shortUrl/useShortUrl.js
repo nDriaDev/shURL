@@ -43,7 +43,7 @@ const useShortUrl = () => {
     const downloadQrCode = useCallback(e => {
         try {
             let a = document.createElement("a");
-            a.href = data.qrCode;
+            a.href = shurl.qrCode;
             a.download = "qrCode.png";
             a.click();
             setMessage(MessageUtil.resolveSuccessMessage("Qrcode download will start shortly!"))

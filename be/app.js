@@ -31,7 +31,13 @@ app.use(express.json({type: [
 	]}));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(helmet());
+app.use(helmet({
+	contentSecurityPolicy: {
+		directives: {
+			defaultSrc: ['self', "data:"]
+		}
+	}
+}));
 
 const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
 const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
