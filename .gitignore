@@ -5,3 +5,5 @@ deta_micro/
 node_modules
 .env.*
 *.code-workspace
+
+.space

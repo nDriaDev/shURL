@@ -64,5 +64,7 @@ if(process.env.NODE_ENV === DEV) {
 }
 
 if(process.env.NODE_ENV === DETA_SH) {
-	module.exports = app;
+	app.listen(process.env.PORT, () =>
+		LogUtil.log(`RUNNING on ${process.env.PORT}...`)
+	)
 }

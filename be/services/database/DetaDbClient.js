@@ -14,7 +14,7 @@ export default class DetaDbClient {
 	USER = process.env.TABLE_USER;
 
 	constructor() {
-		this.client = Deta(process.env.PROJECT_KEY);
+		this.client = Deta(process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? process.env.COLLECTION_KEY : process.env.PROJECT_KEY);
 	}
 
 	async connect() {

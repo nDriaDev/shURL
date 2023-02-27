@@ -1,0 +1,52 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+app_name: "ShURL"
+micros:
+  - name: shURL
+    src: ./deta_micro
+    engine: nodejs16
+    run: node index.js
+    presets:
+      env:
+        - name: NODE_ENV
+          description: node environment
+          default: "detash"
+        - name: COLLECTION_KEY
+          description: collection key for deta base
+          default: ""
+        - name: DB
+          description: database name
+          default: "SHURL"
+        - name: TABLE_URL
+          description: url table name
+          default: "URL"
+        - name: TABLE_URL_TEMPORARY
+          description: temporary url table name
+          default: "URL_TEMPORARY"
+        - name: TABLE_USER
+          description: user table name
+          default: "USER"
+        - name: ACCESS_TOKEN_SECRET
+          description: secret for access token
+          default: ""
+        - name: REFRESH_TOKEN_KEY_PRIVATE
+          description: private key for refresh token
+          default: ""
+        - name: REFRESH_TOKEN_KEY_PUBLIC
+          description: public key for refresh token
+          default: ""
+        - name: MAIL_EMAIL_SENDER
+          description: sender email address
+          default: "info.ndria.dev@gmail.com"
+        - name: MAIL_CLIENT_ID
+          description: client mail id
+          default: ""
+        - name: MAIL_CLIENT_SECRET
+          description: client mail secret
+          default: ""
+        - name: MAIL_OAUTH_URL
+          description: url for mail authentication
+          default: ""
+        - name: MAIL_REFRESH_TOKEN
+          description: mail client refresh token
+          default: ""
