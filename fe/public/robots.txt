@@ -4,6 +4,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 User-agent: googlebot-image
 Crawl-delay: 10
@@ -11,6 +13,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 User-agent: googlebot-mobile
 Crawl-delay: 10
@@ -18,6 +22,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 User-agent: mediapartners-google
 Crawl-delay: 10
@@ -25,6 +31,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 User-agent: adsbot-google
 Crawl-delay: 10
@@ -32,6 +40,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 User-agent: MSNBot
 Crawl-delay: 10
@@ -39,6 +49,8 @@ Disallow: /error
 Disallow: /forgotPassword
 Disallow: /login
 Disallow: /activate
+Disallow: /signIn
+Disallow: /signUp
 
 
 Sitemap: https://shurl.ndria.dev/sitemap.xml

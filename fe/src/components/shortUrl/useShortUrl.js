@@ -96,9 +96,10 @@ const useShortUrl = () => {
                 bodyType: "json"
             });
             setShurl(data);
-            setSpinner(false);
         } catch (error) {
             MessageUtil.resolveErrorMessage(error);
+        } finally {
+            setSpinner(false);
         }
     }, [url, qrCode, expireIn, urlCode]);
 
