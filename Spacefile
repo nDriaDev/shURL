@@ -6,6 +6,8 @@ micros:
     src: ./deta_micro
     engine: nodejs16
     run: node index.js
+    public_routes:
+      - "/*"
     presets:
       env:
         - name: NODE_ENV
