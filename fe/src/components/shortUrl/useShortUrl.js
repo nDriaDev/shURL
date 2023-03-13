@@ -97,7 +97,7 @@ const useShortUrl = () => {
             });
             setShurl(data);
         } catch (error) {
-            MessageUtil.resolveErrorMessage(error);
+            setMessage(MessageUtil.resolveErrorMessage(error));
         } finally {
             setSpinner(false);
         }
@@ -125,7 +125,7 @@ const useShortUrl = () => {
                 setSpinner(false);
             } catch (e) {
                 // ErrorUtil.handlingError(e, setMessage, setSpinner);
-                MessageUtil.resolveErrorMessage(e);
+                setMessage(MessageUtil.resolveErrorMessage(e));
             }
         }
         me();
