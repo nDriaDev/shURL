@@ -17,12 +17,16 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
+const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
+
 const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? new DetaDbClient() : null;
 const dbClient = new DbClient(dbClientImpl);
 
 const app = express();
 
 LogUtil.init(app);
+
+process.env.NODE_ENV !== DEV && app.set('trust proxy', true);
 app.use(compression());
 app.use(express.json({type: [
 		'application/json',
@@ -39,7 +43,6 @@ app.use(helmet({
 	}
 }));
 
-const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
 const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
 app.use(express.static(path.join(__dirname, pathStaticFile), {
 	setHeaders: HeadersUtils.setRelAndReportToHeaders
