@@ -9,8 +9,9 @@ Easily shorten and track links for sharing on social media, video, email, print,
 ## Features
 
 - Shorten any type of url.
-- Create shorten url QrCode.
-- Create temporary shorten url (**Work in progress**)
+- Signup with email verification link.
+- Create shorten url and QrCode permanently for authenticated users.
+- Create temporary shorten url.
 - Track the effectiveness of your links with comprehensive analytics. (**Work in progress**)
 
 ## Try demo locally
@@ -19,8 +20,8 @@ shURL requires [Node.js](https://nodejs.org/) v18+ and [MongoDB](https://www.mon
 
 I used pnpm as package manager, so if you don't have it, you will need to change the run scripts in the package.json of the be and fe folders.
 
-Install the dependencies in _be_ and _fe_ directory, build and start the server.
-
+Steps:
+- Install the dependencies in _be_ and _fe_ directory.
 - go into be folder.
 - create public/private key for refresh token and access token.
 - generate base64 from keys.
