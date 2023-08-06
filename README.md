@@ -19,6 +19,7 @@ Easily shorten and track links for sharing on social media, video, email, print,
 - Create shorten url and QrCode permanently for authenticated users.
 - Create temporary shorten url.
 - Track the effectiveness of your links with comprehensive analytics. (**Work in progress**)
+- Cache implementation to serve original url (**Work in progress**)
 
 ## Try demo locally
 
