@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --watch app.js",
+    "dev:debug": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --inspect --watch app.js",
     "prod": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node app.js",
     "build:fe": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deta_micro/fe) && mkdir ./../deta_micro/fe && cp -r ./../fe/dist ./../deta_micro/fe/dist && cd ./../be",
     "build:be": "rm -rf $(find ./../deta_micro/ -maxdepth 1 -name '*' ! -name '.deta' ! -name '.' ! -name '..' ! -name 'deta_micro' ! -name 'fe') && node ./../script_detash.js",

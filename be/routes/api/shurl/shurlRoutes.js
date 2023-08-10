@@ -16,12 +16,10 @@ export default function shurlRoutes(primaryRouter, router, dbClient) {
 		.post(
 			'/generate',
 			sanitizerMiddleware({
-				fields: ["url", "expireIn", "urlCode"],
+				fields: ["expireIn", "urlCode"],
 				type: "body",
 				customFunc: (property, value) => {
-					if(property === "url") {
-						return value.toLowerCase();
-					} else if(property === "expireIn") {
+					if(property === "expireIn") {
 						return value === "-1" ? null : value;
 					} else {
 						return value === "" ? false : value;

@@ -26,7 +26,7 @@ const useProfileButton = () => {
 			});
 			sessionStorage.removeItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN);
 			setMe(null);
-			navigate(CONSTANTS.ROUTES.SIGNIN, {replace: true});
+			navigate(CONSTANTS.ROUTES.INITIAL, {replace: true});
 		} catch (e) {
 			setMessage(MessageUtil.resolveErrorMessage(e))
 		} finally {

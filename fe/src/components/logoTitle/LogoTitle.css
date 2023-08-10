@@ -126,3 +126,17 @@
     display: flex;
     gap: .3em;
 }
+
+a.logo {
+    font-weight: unset;
+    color: unset;
+    text-decoration: unset;
+}
+
+a.logo:hover,
+a.logo:active,
+a.logo:focus {
+    font-weight: unset;
+    color: unset;
+    text-decoration: unset;
+}

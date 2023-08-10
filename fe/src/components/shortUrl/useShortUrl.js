@@ -54,17 +54,17 @@ const useShortUrl = () => {
     }, [shurl]);
 
     const shareQrCode = useCallback(async e => {
-       try {
-           const blob = await (await fetch(shurl.qrCode)).blob();
-           const file = new File([blob], 'qrCode.png', { type: blob.type });
-           navigator.share({
-               title: 'ShortUrl',
-               text: 'Check out this image!',
-               files: [file],
-           })
-       } catch (e) {
-           setMessage(MessageUtil.resolveErrorMessage(e));
-       }
+        try {
+            const blob = await (await fetch(shurl.qrCode)).blob();
+            const file = new File([blob], 'qrCode.png', { type: blob.type });
+            navigator.share({
+                title: 'ShortUrl',
+                text: 'Check out this image!',
+                files: [file],
+            })
+        } catch (e) {
+            setMessage(MessageUtil.resolveErrorMessage(e));
+        }
     }, [shurl]);
 
     const shareShortUrl = useCallback(e => {
@@ -122,10 +122,16 @@ const useShortUrl = () => {
                 });
                 setMe(data);
                 setMount(false);
-                setSpinner(false);
             } catch (e) {
                 // ErrorUtil.handlingError(e, setMessage, setSpinner);
+                if(e.message === CONSTANTS.HTTP_CODE.UNAUTHORIZED.toString()) {
+                    sessionStorage.removeItem(CONSTANTS.STORAGE_VARS.ACCESS_TOKEN);
+                    setMount(false);
+                } else {
                 setMessage(MessageUtil.resolveErrorMessage(e));
+                }
+            } finally {
+                setSpinner(false);
             }
         }
         me();
