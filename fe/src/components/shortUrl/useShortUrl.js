@@ -4,7 +4,6 @@ import {useAtom, useSetAtom} from "jotai";
 import messagesAtom from "../../store/messagesStore.js";
 import useFetch from "../common/useFetch.js";
 import ApiUtil from "../../utils/apiUtil.js";
-import {ErrorUtil} from "../../utils/errorUtil.js";
 import CONSTANTS from "../../utils/constants.js";
 import {authAtom} from "../../store/authStore.js";
 import {MessageUtil} from "../../utils/messagesUtil.js";
