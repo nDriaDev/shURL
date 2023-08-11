@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import CONSTANTS from "./constants.js";
 
-const NODE_ENV = (process.env.NODE_ENV || "").trim();
-const ACCESS_TOKEN_SECRET = (process.env.ACCESS_TOKEN_SECRET || "").trim();
-const REFRESH_TOKEN_KEY_PRIVATE = (process.env.REFRESH_TOKEN_KEY_PRIVATE || "").trim();
+const NODE_ENV = process.env.NODE_ENV;
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_TOKEN_KEY_PRIVATE = process.env.REFRESH_TOKEN_KEY_PRIVATE;
 
 const authUtil = {
     accessTokenCookieOptions: {

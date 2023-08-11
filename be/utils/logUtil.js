@@ -1,7 +1,7 @@
 import morgan from 'morgan';
 import CONSTANTS from "./constants.js";
 
-const NODE_ENV = (process.env.NODE_ENV || "").trim();
+const NODE_ENV = process.env.NODE_ENV;
 
 const LogUtil = {
 	init: app => {

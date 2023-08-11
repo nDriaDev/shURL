@@ -1,8 +1,8 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
 micros:
-  - name: deploy
-    src: deploy
+  - name: shURL
+    src: ./deploy
     engine: nodejs16
     run: node app.js
     public_routes:

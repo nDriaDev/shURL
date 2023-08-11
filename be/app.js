@@ -16,8 +16,7 @@ import helmet from "helmet";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const NODE_ENV = (process.env.NODE_ENV || "").trim();
-const PORT = (process.env.PORT || "").trim();
+const {NODE_ENV, PORT} = process.env;
 
 const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
 const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;

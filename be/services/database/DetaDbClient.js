@@ -8,13 +8,13 @@ import CONSTANTS from "../../utils/constants.js";
 
 export default class DetaDbClient {
 	client;
-	DB = (process.env.DB || "").trim();
-	URLS = (process.env.TABLE_URL || "").trim();
-	URLS_TEMP = (process.env.TABLE_URL_TEMPORARY || "").trim();
-	USER = (process.env.TABLE_USER || "").trim();
+	DB = process.env.DB;
+	URLS = process.env.TABLE_URL;
+	URLS_TEMP = process.env.TABLE_URL_TEMPORARY;
+	USER = process.env.TABLE_USER;
 
 	constructor() {
-		this.client = Deta((process.env.COLLECTION_KEY || "").trim());
+		this.client = Deta(process.env.COLLECTION_KEY);
 	}
 
 	async connect() {

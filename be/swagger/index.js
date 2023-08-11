@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const swaggerJSON = require('./swagger.json');
 export default function configSwagger(app) {
-	(process.env.NODE_ENV || "").trim() === CONSTANTS.ENVIRONMENT.DEV && app.use(
+	process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV && app.use(
 		CONSTANTS.PATHS.SWAGGER,
 		swaggerUi.serve,
 		swaggerUi.setup(

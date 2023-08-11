@@ -5,7 +5,7 @@ import LogUtil from "../utils/logUtil.js";
 import HeadersUtils from "../utils/headersUtils.js";
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const NODE_ENV = (process.env.NODE_ENV || "").trim();
+const {NODE_ENV} = process.env;
 
 export default function feController(req, res, next) {
 	try {
