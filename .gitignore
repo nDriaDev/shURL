@@ -2,9 +2,11 @@
 .idea
 .history
 .vscode
-deta_micro/
+deploy/
 node_modules
-.env.*
+.env.dev
+.env.detash
+.env.prod
 *.code-workspace
 
 .space

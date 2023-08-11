@@ -1,11 +1,10 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
-app_name: "ShURL"
 micros:
-  - name: shURL
-    src: ./deta_micro
+  - name: deploy
+    src: deploy
     engine: nodejs16
-    run: node index.js
+    run: node app.js
     public_routes:
       - "/*"
     presets:

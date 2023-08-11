@@ -20,12 +20,12 @@ const CONSTANTS = {
 		FE_ROOT_TO_SERVE: {
 			DEV: './../../fe/dist',
 			PROD: './../../fe/dist',
-			DETA_SH: './../fe/dist',
+			DETA_SH: './../client',
 		},
 		FE_ROOT_STATIC_FILE: {
 			DEV: './../fe/dist',
 			PROD: './../fe/dist',
-			DETA_SH: './fe/dist',
+			DETA_SH: './client',
 		},
 		SHURL_LINK: '/:code',
 		API: '/api',
