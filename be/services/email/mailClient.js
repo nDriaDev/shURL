@@ -2,11 +2,11 @@ import {google} from "googleapis";
 import {createTransport} from "nodemailer";
 
 export default class MailClient {
-	CLIENT_ID = process.env.MAIL_CLIENT_ID;
-	CLIENT_SECRET = process.env.MAIL_CLIENT_SECRET;
-	OAUTH_URL = process.env.MAIL_OAUTH_URL;
-	REFRESH_TOKEN = process.env.MAIL_REFRESH_TOKEN;
-	EMAIL_SENDER = process.env.MAIL_EMAIL_SENDER;
+	CLIENT_ID = (process.env.MAIL_CLIENT_ID || "").trim();
+	CLIENT_SECRET = (process.env.MAIL_CLIENT_SECRET || "").trim();
+	OAUTH_URL = (process.env.MAIL_OAUTH_URL || "").trim();
+	REFRESH_TOKEN = (process.env.MAIL_REFRESH_TOKEN || "").trim();
+	EMAIL_SENDER = (process.env.MAIL_EMAIL_SENDER || "").trim();
 	transport = null;
 
 	constructor() {

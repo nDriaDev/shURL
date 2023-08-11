@@ -1,43 +1,43 @@
 {
-  "name": "url_shortner_be",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "type": "module",
-  "engine": {
-    "node": "19.4.0",
-    "pnpm": "7.25.0"
-  },
-  "scripts": {
-    "dev": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --watch app.js",
-    "dev:debug": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --inspect --watch app.js",
-    "prod": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node app.js",
-    "build:fe": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deta_micro/fe) && mkdir ./../deta_micro/fe && cp -r ./../fe/dist ./../deta_micro/fe/dist && cd ./../be",
-    "build:fe:space": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deploy/client) && mkdir ./../deploy/client && cp -R ./../fe/dist/* ./../deploy/client && cd ./../be",
-    "build:be:space": "cp -R ./* ./../deploy",
-    "start": "pnpm run build:fe && pnpm run dev",
-    "deploy:deta": "pnpm run build:fe && pnpm run build:be && cd ./../deta_micro && deta update -e config/.env.detash && deta deploy",
-    "space:deploy": "pnpm run build:fe:space && pnpm run build:be:space && cd ../ && rm -rf ./deploy/config && rm -rf ./deploy/node_modules && space push",
-    "space:push": "pnpm run build:fe && pnpm run build:be && cd ./../ && rm -rf ./deta_micro/config && space push",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.0",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.6",
-    "deta": "^1.1.0",
-    "express": "^4.18.2",
-    "express-validator": "^6.14.2",
-    "googleapis": "^110.0.0",
-    "helmet": "^6.0.1",
-    "jsonwebtoken": "^9.0.0",
-    "mongodb": "^4.13.0",
-    "morgan": "^1.10.0",
-    "nodemailer": "^6.9.1",
-    "qrcode": "^1.5.1",
-    "swagger-ui-express": "^4.6.0"
-  }
+	"name": "url_shortner_be",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"type": "module",
+	"engine": {
+		"node": "19.4.0",
+		"pnpm": "7.25.0"
+	},
+	"scripts": {
+		"dev": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --watch app.js",
+		"dev:debug": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node --inspect --watch app.js",
+		"prod": "env $(cat ./config/.env.dev | grep -v \\\"#\\\" | xargs) node app.js",
+		"build-fe": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deploy) && mkdir ./../deploy && cp -r ./../fe/dist ./../deploy/client && cd ./../be",
+		"build-fe-space": "cd ./../fe && pnpm run build:prod && rm -rf $(find ./../deploy/client) && mkdir ./../deploy/client && cp -R ./../fe/dist/* ./../deploy/client && cd ./../be",
+		"build-be-space": "rm -rf $(find ./../deploy/* ! -name \"client\") && cp -R ./* ./../deploy",
+		"start": "pnpm run build-fe && pnpm run dev",
+		"deta-deploy": "pnpm run build-fe && pnpm run build-be && cd ./../deploy && deta update -e config/.env.detash && deta deploy",
+		"space-push": "pnpm run build-fe-space && pnpm run build-be-space && cd ../ && rm -rf ./deploy/config && rm -rf ./deploy/node_modules && node ./scripts/spacefile_edit.js && space push && node ./scripts/spacefile_reset.js",
+		"space-push-retry": "cd .. && node ./scripts/spacefile_edit.js && space push && node ./scripts/spacefile_reset.js",
+		"update-env": "cp -r ./config/. ./../../shURL-env/ && cd ./../../shURL-env && git add . && git -c user.name=\"nDriaDev\" -c user.email=\"andreacosentino.work@gmail.com\" commit -m \"[UPDATE] env files\" && git push origin main --force && cd ../shURL/be"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^5.1.0",
+		"compression": "^1.7.4",
+		"cookie-parser": "^1.4.6",
+		"deta": "^1.1.0",
+		"express": "^4.18.2",
+		"express-validator": "^6.14.2",
+		"googleapis": "^110.0.0",
+		"helmet": "^6.0.1",
+		"jsonwebtoken": "^9.0.0",
+		"mongodb": "^4.13.0",
+		"morgan": "^1.10.0",
+		"nodemailer": "^6.9.1",
+		"qrcode": "^1.5.1",
+		"swagger-ui-express": "^4.6.0"
+	}
 }

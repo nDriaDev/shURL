@@ -8,11 +8,11 @@ import URLTempRecord from "../../models/URLTempRecord.js";
 
 export default class MongoDbClient {
     client;
-    uri = process.env.MONGO_DB_URI;
-    DB = process.env.DB;
-    URLS = process.env.TABLE_URL;
-    URLS_TEMP = process.env.TABLE_URL_TEMPORARY;
-    USER = process.env.TABLE_USER;
+    uri = (process.env.MONGO_DB_URI || "").trim();
+    DB = (process.env.DB || "").trim();
+    URLS = (process.env.TABLE_URL || "").trim();
+    URLS_TEMP = (process.env.TABLE_URL_TEMPORARY || "").trim();
+    USER = (process.env.TABLE_USER || "").trim();
 
     constructor() {
         // Create a new MongoClient

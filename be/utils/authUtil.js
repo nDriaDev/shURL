@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import CONSTANTS from "./constants.js";
 
+const NODE_ENV = (process.env.NODE_ENV || "").trim();
+const ACCESS_TOKEN_SECRET = (process.env.ACCESS_TOKEN_SECRET || "").trim();
+const REFRESH_TOKEN_KEY_PRIVATE = (process.env.REFRESH_TOKEN_KEY_PRIVATE || "").trim();
+
 const authUtil = {
     accessTokenCookieOptions: {
         expires: new Date(Date.now()+CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.ACCESS_TOKEN),
@@ -12,7 +16,7 @@ const authUtil = {
         maxAge: CONSTANTS.EXPIRE_COOKIE_TOKEN_IN.REFRESH_TOKEN,
         httpOnly: true,
         sameSite: 'lax',
-        ...([CONSTANTS.ENVIRONMENT.PROD, CONSTANTS.ENVIRONMENT.DETA_SH].includes(process.env.NODE_ENV) ? {secure: true} : {})
+        ...([CONSTANTS.ENVIRONMENT.PROD, CONSTANTS.ENVIRONMENT.DETA_SH].includes(NODE_ENV) ? {secure: true} : {})
     },
     /**
      * @param {Object} obj
@@ -25,8 +29,8 @@ const authUtil = {
         return jwt.sign(
             payload,
             ["access_token", "activation_token"].includes(type) ?
-                process.env.ACCESS_TOKEN_SECRET:
-                Buffer.from(process.env.REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii'),
+                ACCESS_TOKEN_SECRET:
+                Buffer.from(REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii'),
             {
                 expiresIn: expire ?? type === "activation_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACTIVATE_TOKEN : type === "access_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN : CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN,
                 ...(["access_token", "activation_token"].includes(type) ? {} : {algorithm: 'RS256'})
@@ -40,8 +44,8 @@ const authUtil = {
     verifyToken: ({token, type}) => {
         try {
             const key = ["access_token", "activation_token"].includes(type) ?
-                process.env.ACCESS_TOKEN_SECRET:
-                Buffer.from(process.env.REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii');
+                ACCESS_TOKEN_SECRET:
+                Buffer.from(REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii');
             let payload = jwt.verify(token, key);
             return {
                 isValid: true,
