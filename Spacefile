@@ -2,7 +2,7 @@
 v: 0
 micros:
   - name: shURL
-    src: ./deploy
+    src: deploy
     engine: nodejs16
     run: node app.js
     public_routes:

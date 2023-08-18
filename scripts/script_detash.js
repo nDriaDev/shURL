@@ -20,8 +20,8 @@ const EXPORT = {
 	REGEX: /export default (?<var>.+)/gm,
 	REPLACE: "module.exports = $<var>"
 };
-const BE_PATH = './';
-const OUTPUT_PATH= './../deta_micro/';
+const BE_PATH = './../be';
+const OUTPUT_PATH= './../deploy/';
 
 const EXCLUDE_REGEX = /(.+\.(prod|env|dev))|(node_modules)/g;
 

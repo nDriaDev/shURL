@@ -4,6 +4,7 @@ import CONSTANTS from "./constants.js";
 const NODE_ENV = process.env.NODE_ENV;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_KEY_PRIVATE = process.env.REFRESH_TOKEN_KEY_PRIVATE;
+const ALGORITHM = "ES256";
 
 const authUtil = {
     accessTokenCookieOptions: {
@@ -33,7 +34,7 @@ const authUtil = {
                 Buffer.from(REFRESH_TOKEN_KEY_PRIVATE, 'base64').toString('ascii'),
             {
                 expiresIn: expire ?? type === "activation_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACTIVATE_TOKEN : type === "access_token" ? CONSTANTS.EXPIRES_TOKEN_IN.ACCESS_TOKEN : CONSTANTS.EXPIRES_TOKEN_IN.REFRESH_TOKEN,
-                ...(["access_token", "activation_token"].includes(type) ? {} : {algorithm: 'RS256'})
+                ...(["access_token", "activation_token"].includes(type) ? {} : {algorithm: ALGORITHM})
             }
         )
     },
