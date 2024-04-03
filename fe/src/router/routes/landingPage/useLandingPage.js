@@ -12,6 +12,7 @@ export default function useLandingPage() {
 		const animationClass = sessionStorage.getItem(CONSTANTS.STORAGE_VARS.TITLE_VIEWED) ? '' : 'landing-animation';
 		return {
 			h2: 'landing-description ' + animationClass,
+			h3: 'landing-description h2 ' + animationClass, 
 			actionContainer: 'action-container ' + animationClass
 		}
 	}, [sessionStorage.getItem(CONSTANTS.STORAGE_VARS.TITLE_VIEWED)]);

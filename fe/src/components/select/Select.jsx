@@ -1,7 +1,7 @@
 import {memo, useCallback, useId, useMemo} from "react";
 import {arrayOf, shape, any, bool, func, object, string, oneOfType} from "prop-types";
 
-const Select = ({className, style, value, disabled, onChange, list, firstEmptyOption, placeholder}) => {
+const Select = ({className, style, value, disabled, onChange, list, firstEmptyOption, placeholder, ...rest}) => {
 	const id = useId();
 
 	const firstEmpOpt = useMemo(() => (
@@ -67,6 +67,7 @@ const Select = ({className, style, value, disabled, onChange, list, firstEmptyOp
 			value={value}
 			disabled={disabled || false}
 			onChange={onChangeSelect}
+			{...rest}
 		>
 			{options}
 		</select>

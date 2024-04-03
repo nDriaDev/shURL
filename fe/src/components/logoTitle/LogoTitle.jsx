@@ -10,14 +10,14 @@ const LogoTitle = () => {
 
 	return (
 		<div className='logo-container'>
-			<div className={classes.containerText}>
+			<h1 className={classes.containerText}>
 				<Link to={CONSTANTS.ROUTES.INITIAL} className="logo">
 					<span className={classes.translateText1}>Sh</span>
 					<span className={classes.hideText}>ort</span>
 					<span className={classes.translateText2}>URL</span>
 					<img alt="Logo" fetchpriority="high" src={logo} className="logo"/>
 				</Link>
-			</div>
+			</h1>
             <div className="nav-about">
                 <a href="https://github.com/nDriaDev/shURL" target="_blank">Source</a>
                 /

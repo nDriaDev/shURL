@@ -13,9 +13,9 @@ const LandingPage = ({}) => {
 		<h2 className={classes.h2}>
 			Create short URL easily
 		</h2>
-		<h2 className={classes.h2}>
+		<h3 className={classes.h3}>
 			with qrcode!
-		</h2>
+		</h3>
 		<div className={classes.actionContainer}>
 			<Link to={CONSTANTS.ROUTES.SIGNIN} onClick={clearMessages}>
 				<button type="button">

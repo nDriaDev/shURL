@@ -16,6 +16,7 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                     onChange={insertUrl}
                     type="text"
                     placeholder='https://www.example.com or https://example.com'
+                    aria-label='Url'
                 />
             </div>
             <div className="opt-container">
@@ -27,6 +28,7 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                         value={urlCode}
                         onChange={insertUrlCode}
                         disabled={url===""}
+                        aria-label="Url code"
                     />
                 </div>
                 <div className="qr-container">
@@ -37,10 +39,11 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                         onCheck={toggleQrCode}
                         type="squared"
                         disabled={url===""}
+                        aria-label="Qr code"
                     />
                 </div>
                 <div className="timer-container">
-                    <CiTimer title="Durata" size="1.5em" style={{ verticalAlign: 'middle' }}/>
+                    <CiTimer title="Period" size="1.5em" style={{ verticalAlign: 'middle' }}/>
                     <Select
                         className="timer-select"
                         value={expireIn}
@@ -49,6 +52,7 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                         firstEmptyOption={true}
                         placeholder="Period"
                         disabled={url===""}
+                        aria-label="Period"
                     />
                 </div>
             </div>
@@ -70,9 +74,9 @@ const ShortUrl = ({url, insertUrl, urlCode, insertUrlCode, generateUrl, btnDisab
                     <VscClose title="Chiudi" size="1.5em" style={{ verticalAlign: 'middle' }}/>
                 </button>
                 <div className="short-url-inner-container">
-                    <span className="short-url-label">Short URL</span>
+                    <label htmlFor="short-url" className="short-url-label">Short URL</label>
                     <div className="short-url-link-container">
-                        <input type="text" value={shurl.shortUrl} disabled />
+                        <input id="short-url" type="text" value={shurl.shortUrl} disabled />
                         <button type="button" onClick={copyShortUrl}>
                             <BiCopy title="Copia" size="1.5em" style={{ verticalAlign: 'middle' }}/>
                         </button>

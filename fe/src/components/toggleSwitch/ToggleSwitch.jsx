@@ -2,13 +2,13 @@ import { memo } from "react";
 import { bool, func, oneOf, string } from 'prop-types';
 import './ToggleSwitch.css';
 
-const ToggleSwitch = ({ id, checked, onCheck, disabled, type }) => {
+const ToggleSwitch = ({ id, checked, onCheck, disabled, type, ...rest }) => {
     const sliderClasses = type === 'rounded' ? "slider round" : "slider";
 
     return (
         <label className="switch">
-            <input id={id} type="checkbox" role="switch" checked={checked} onChange={onCheck} disabled={disabled} />
-            <span tabIndex="0" className={sliderClasses} aria-hidden="true"/>
+            <input id={id} type="checkbox" role="switch" checked={checked} onChange={onCheck} disabled={disabled} {...rest}/>
+            <span tabIndex="0" className={sliderClasses}/>
         </label>
     )
 }
