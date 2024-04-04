@@ -81,11 +81,11 @@ async function reset() {
  * Function that gets param from command line to know which method executing: _set_ or _reset_.
  */
 async function run() {
-	// const mode = process.argv[2];
-	// if(!mode) {
-	// 	console.error("No mode param provided.");
-	// 	process.exit();
-	// }
+	const mode = process.argv[2];
+	if(!mode) {
+		console.error("No mode param provided.");
+		process.exit();
+	}
 
 	const envs = await fs.readFile(PATHS.ENV_SPACE, {encoding: "utf8"});
 	envs.split("\n").forEach(line => {
@@ -93,8 +93,6 @@ async function run() {
 		lineSplitted[0] && (ENV_VARS[lineSplitted[0]] = lineSplitted[1]);
 	});
 
-	await set();
-	return;
 	mode === "set"
 		? await set()
 		: await reset();
