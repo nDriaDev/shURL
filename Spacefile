@@ -36,18 +36,39 @@ micros:
         - name: REFRESH_TOKEN_KEY_PUBLIC
           description: public key for refresh token
           default: ""
-        - name: MAIL_EMAIL_SENDER
-          description: sender email address
-          default: "info.ndria.dev@gmail.com"
         - name: MAIL_CLIENT_ID
           description: client mail id
           default: ""
         - name: MAIL_CLIENT_SECRET
           description: client mail secret
           default: ""
-        - name: MAIL_OAUTH_URL
-          description: url for mail authentication
+        - name: MAIL_ACCESS_TOKEN
+          description: gmail credentials access token
           default: ""
         - name: MAIL_REFRESH_TOKEN
-          description: mail client refresh token
+          description: client mail refresh token
+          default: ""
+        - name: MAIL_PROJECT_ID
+          description: client mail project id
+          default: ""
+        - name: MAIL_AUTH_URI
+          description: client mail auth uri
+          default: ""
+        - name: MAIL_TOKEN_URI
+          description: client mail token uri
+          default: ""
+        - name: MAIL_REDIRECT_URI
+          description: client mail redirect uri
+          default: ""
+        - name: MAIL_AUTH_PROVIDER_X509_CERT_URL
+          description: client mail auth provider x509 cert url 
+          default: ""
+        - name: MAIL_TOKEN_EXPIRY_DATE
+          description: client mail token expiri date
+          default: ""
+        - name: MAIL_TOKEN_SCOPE
+          description: client mail token scope
+          default: ""
+        - name: MAIL_TOKEN_TYPE
+          description: client mail token type
           default: ""
