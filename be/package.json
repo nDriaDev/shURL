@@ -18,7 +18,7 @@
 		"start": "pnpm run build-fe && pnpm run dev",
 		"deta-deploy": "pnpm run build-fe && pnpm run build-be && cd ./../deploy && deta update -e config/.env.detash && deta deploy",
 		"prespace-push": "pnpm run build-fe-space && pnpm run build-be-space",
-		"space-push": "cd .. && node ./scripts/spacefile_edit.js && space push && node ./scripts/spacefile_reset.js",
+		"space-push": "cd .. && node ./scripts/spacefile_setter_env_vars.js && space push",
 		"update-env": "cp -r ./config/. ./../../shURL-env/ && cd ./../../shURL-env && git add . && git -c user.name=\"nDriaDev\" -c user.email=\"andreacosentino.work@gmail.com\" commit -m \"[UPDATE] env files\" && git push origin main --force && cd ../shURL/be"
 	},
 	"keywords": [],
