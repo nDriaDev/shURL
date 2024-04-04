@@ -36,7 +36,7 @@ async function set() {
 	const FILES_PATH = [];
 	await internalSet(null, FILES_PATH);
 	for(const filePath of FILES_PATH) {
-		const readFile = await fs.readFile(filePath, {encoding: "utf8"});
+		let readFile = await fs.readFile(filePath, {encoding: "utf8"});
 		let hasChange = false;
 		for(const keyVar in ENV_VARS) {
 			if(readFile.includes(`process.env.${keyVar}`)) {
@@ -68,7 +68,7 @@ async function set() {
 async function reset() {
 	const TEMP_FILE = JSON.parse(await fs.readFile(PATHS.TEMP_FILE, {encoding: "utf8"}));
 	for (const file of TEMP_FILE) {
-		const readFile = await fs.readFile(file.path, {encoding: "utf8"});
+		let readFile = await fs.readFile(file.path, {encoding: "utf8"});
 		for(const varValue of file.varsValues) {
 			readFile = readFile.replaceAll(varValue.value, varValue.env);
 		}
