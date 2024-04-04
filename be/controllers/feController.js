@@ -5,7 +5,6 @@ import LogUtil from "../utils/logUtil.js";
 import HeadersUtils from "../utils/headersUtils.js";
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const {NODE_ENV} = process.env;
 
 export default function feController(req, res, next) {
 	try {
@@ -14,7 +13,7 @@ export default function feController(req, res, next) {
 			next();
 		} else {
 			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
-			let pathFE = NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
+			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
 			const {INITIAL, GENERATE} = CONSTANTS.PATHS.FE;
 
 			HeadersUtils.setRelAndReportToHeaders(res, req.originalUrl, null, req);

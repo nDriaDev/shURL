@@ -16,19 +16,17 @@ import helmet from "helmet";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const {NODE_ENV, PORT} = process.env;
-
 const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
 const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
 
-const dbClientImpl = NODE_ENV === DEV ? new MongoDbClient() : NODE_ENV === DETA_SH ? new DetaDbClient() : null;
+const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? new DetaDbClient() : null;
 const dbClient = new DbClient(dbClientImpl);
 
 const app = express();
 
 LogUtil.init(app);
 
-NODE_ENV !== DEV && app.set('trust proxy', true);
+process.env.NODE_ENV !== DEV && app.set('trust proxy', true);
 app.use(compression());
 app.use(express.json({type: [
 		'application/json',
@@ -45,17 +43,17 @@ app.use(helmet({
 	}
 }));
 
-const pathStaticFile = NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
+const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
 app.use(express.static(path.join(__dirname, pathStaticFile), {
 	setHeaders: HeadersUtils.setRelAndReportToHeaders
 }));
 
 routing(app, express, dbClient);
 
-if(NODE_ENV === DEV) {
+if(process.env.NODE_ENV === DEV) {
 	const Processor = new Process();
 
-	app.listen(PORT, () =>
+	app.listen(process.env.PORT, () =>
 		dbClient.connect()
 			.then(()=>
 				Processor.schedule(()=>
@@ -63,13 +61,13 @@ if(NODE_ENV === DEV) {
 				))
 			.catch(LogUtil.error)
 			.finally(()=>
-				LogUtil.log(`RUNNING on ${PORT}...`)
+				LogUtil.log(`RUNNING on ${process.env.PORT}...`)
 			)
 	);
 }
 
-if(NODE_ENV === DETA_SH) {
-	app.listen(PORT || 3000, () =>
-		LogUtil.log(`RUNNING on ${PORT}...`)
+if(process.env.NODE_ENV === DETA_SH) {
+	app.listen(process.env.PORT || 3000, () =>
+		LogUtil.log(`RUNNING on ${process.env.PORT}...`)
 	)
 }
