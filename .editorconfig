@@ -27,3 +27,7 @@ indent_style = tab
 
 [{*.htm,*.html,*.ng,*.sht,*.shtm,*.shtml}]
 indent_style = tab
+
+[Spacefile]
+indent_style = space
+indent_size = 2

@@ -1,22 +1,20 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
+icon: fe/icon.png
 micros:
   - name: shURL
-    src: deploy
+    src: ./deploy
     engine: nodejs16
-    run: node app.js
-    public_routes:
-      - "/*"
+    commands:
+      - node app.js
+    public: true
     presets:
       env:
         - name: NODE_ENV
           description: node environment
           default: "detash"
-        - name: COLLECTION_KEY
-          description: collection key for deta base
-          default: ""
         - name: DB
-          description: database name
+          description: detabase name
           default: "SHURL"
         - name: TABLE_URL
           description: url table name
@@ -27,6 +25,9 @@ micros:
         - name: TABLE_USER
           description: user table name
           default: "USER"
+        - name: COLLECTION_KEY
+          description: collection key for deta base
+          default: ""
         - name: ACCESS_TOKEN_SECRET
           description: secret for access token
           default: ""
@@ -61,13 +62,10 @@ micros:
           description: client mail redirect uri
           default: ""
         - name: MAIL_AUTH_PROVIDER_X509_CERT_URL
-          description: client mail auth provider x509 cert url 
+          description: client mail auth provider x509 cert url
           default: ""
         - name: MAIL_TOKEN_EXPIRY_DATE
-          description: client mail token expiri date
-          default: ""
-        - name: MAIL_TOKEN_SCOPE
-          description: client mail token scope
+          description: client mail token expiry date
           default: ""
         - name: MAIL_TOKEN_TYPE
           description: client mail token type
