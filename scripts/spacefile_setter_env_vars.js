@@ -54,7 +54,7 @@ async function set() {
 						varsValues: [varValue]
 					})
 				}
-				readFile.replaceAll(`process.env.${keyVar}`, ENV_VARS[keyVar]);
+				readFile = readFile.replaceAll(`process.env.${keyVar}`, ENV_VARS[keyVar]);
 			}
 		}
 		hasChange && await fs.writeFile(filePath, readFile, {encoding: "utf8"});
@@ -70,7 +70,7 @@ async function reset() {
 	for (const file of TEMP_FILE) {
 		const readFile = await fs.readFile(file.path, {encoding: "utf8"});
 		for(const varValue of file.varsValues) {
-			readFile.replaceAll(varValue.value, varValue.env);
+			readFile = readFile.replaceAll(varValue.value, varValue.env);
 		}
 		await fs.writeFile(file.path, readFile, {encoding: "utf8"});
 	}
@@ -81,11 +81,11 @@ async function reset() {
  * Function that gets param from command line to know which method executing: _set_ or _reset_.
  */
 async function run() {
-	const mode = process.argv[2];
-	if(!mode) {
-		console.error("No mode param provided.");
-		process.exit();
-	}
+	// const mode = process.argv[2];
+	// if(!mode) {
+	// 	console.error("No mode param provided.");
+	// 	process.exit();
+	// }
 
 	const envs = await fs.readFile(PATHS.ENV_SPACE, {encoding: "utf8"});
 	envs.split("\n").forEach(line => {
@@ -93,6 +93,8 @@ async function run() {
 		lineSplitted[0] && (ENV_VARS[lineSplitted[0]] = lineSplitted[1]);
 	});
 
+	await set();
+	return;
 	mode === "set"
 		? await set()
 		: await reset();
