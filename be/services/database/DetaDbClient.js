@@ -10,7 +10,7 @@ export default class DetaDbClient {
 	client;
 	DB = process.env.DB;
 	URLS = process.env.TABLE_URL;
-	URLS_TEMP = process.env.TABLE_URL_TEMPORARY;
+	URLS_TEMP = process.env.TABLE_TEMPORARY_URL;
 	USER = process.env.TABLE_USER;
 
 	constructor() {
