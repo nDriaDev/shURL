@@ -5,6 +5,5 @@ micros:
   - name: shURL
     src: ./deploy
     engine: nodejs16
-    commands:
-      - node app.js
+    run: node app.js
     public: true

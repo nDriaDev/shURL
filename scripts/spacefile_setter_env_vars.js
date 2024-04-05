@@ -39,7 +39,7 @@ async function set() {
 		for(const keyVar in ENV_VARS) {
 			if(readFile.includes(`process.env.${keyVar}`)) {
 				hasChange = true;
-				readFile = readFile.replaceAll(`process.env.${keyVar}`, `"${ENV_VARS[keyVar]}"`);
+				readFile = readFile.replaceAll(`process.env.${keyVar}`, `'${ENV_VARS[keyVar]}'`);
 			}
 		}
 		hasChange && await fs.writeFile(filePath, readFile, {encoding: "utf8"});
@@ -50,7 +50,7 @@ async function run() {
 	const envs = await fs.readFile(PATHS.ENV_SPACE, {encoding: "utf8"});
 	envs.split("\n").forEach(line => {
 		const lineSplitted = line.split("=");
-		lineSplitted[0] && (ENV_VARS[lineSplitted[0]] = lineSplitted[1]);
+		lineSplitted[0].trim() && (ENV_VARS[lineSplitted[0].trim()] = lineSplitted[1].trim());
 	});
 	await set();
 	process.exit();
