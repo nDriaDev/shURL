@@ -5,17 +5,17 @@ export default class MailClient {
 	CLIENT_ID = process.env.MAIL_CLIENT_ID;
 	CLIENT_SECRET = process.env.MAIL_CLIENT_SECRET;
 	MAIL_REDIRECT_URI = process.env.MAIL_REDIRECT_URI;
-	ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-	EXPIRY_DATE = process.env.EXPIRY_DATE;
-	SCOPE = process.env.SCOPE;
-	TOKEN_TYPE = process.env.TOKEN_TYPE;
+	ACCESS_TOKEN = process.env.MAIL_ACCESS_TOKEN;
+	EXPIRY_DATE = process.env.MAIL_TOKEN_EXPIRY_DATE;
+	SCOPE = process.env.MAIL_TOKEN_SCOPE;
+	TOKEN_TYPE = process.env.MAIL_TOKEN_TYPE;
 	REFRESH_TOKEN = process.env.MAIL_REFRESH_TOKEN;
 	oAuth2Client = null;
 
 	constructor() {
 	}
 
-	#initGmailService() {
+	async #initGmailService() {
 		try {
 			this.oAuth2Client = new google.auth.OAuth2(this.CLIENT_ID, this.CLIENT_SECRET, this.MAIL_REDIRECT_URI);
 			this.oAuth2Client.setCredentials({
@@ -25,6 +25,8 @@ export default class MailClient {
 				scope: this.SCOPE,
 				token_type: this.TOKEN_TYPE
 			});
+			// const token = await this.oAuth2Client.refreshToken(this.REFRESH_TOKEN);
+			// const accessToken = await this.oAuth2Client.refreshAccessTokenAsync();
 			return google.gmail({
 				version: "v1",
 				auth: this.oAuth2Client
@@ -35,7 +37,7 @@ export default class MailClient {
 	}
 	async sendMail({to, subject=null, html = null, text=null, textEncoding="base64"}={}) {
 		try {
-			const gmail = this.#initGmailService();
+			const gmail = await this.#initGmailService();
 			const mailOptions = {
 				to, // receiver
 				subject: subject || "", // Subject
