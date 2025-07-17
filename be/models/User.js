@@ -30,7 +30,7 @@ export default class User {
 
     static mappingUserDBToUser(obj) {
         let user = new User();
-        user.id = obj.key || obj?._id?.toString() || "";
+        user.id = obj?._id?.toString() || "";
         user.createdAt = obj.createdAt || null;
         user.updateAt = obj.updateAt || null;
         user.email = obj.email || "";

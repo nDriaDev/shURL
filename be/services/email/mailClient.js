@@ -1,59 +1,38 @@
 import {google} from "googleapis";
-import MailComposer from 'nodemailer/lib/mail-composer/index.js';
+import nodemailer from 'nodemailer';
 
 export default class MailClient {
-	CLIENT_ID = process.env.MAIL_CLIENT_ID;
-	CLIENT_SECRET = process.env.MAIL_CLIENT_SECRET;
-	MAIL_REDIRECT_URI = process.env.MAIL_REDIRECT_URI;
-	ACCESS_TOKEN = process.env.MAIL_ACCESS_TOKEN;
-	EXPIRY_DATE = process.env.MAIL_TOKEN_EXPIRY_DATE;
-	SCOPE = process.env.MAIL_TOKEN_SCOPE;
-	TOKEN_TYPE = process.env.MAIL_TOKEN_TYPE;
-	REFRESH_TOKEN = process.env.MAIL_REFRESH_TOKEN;
-	oAuth2Client = null;
+	transporter;
+	EMAIL_SENDER = process.env.MAIL_SENDER;
+	EMAIL_APP_HOST = process.env.MAIL_APP_HOST;
+	EMAIL_APP_USER = process.env.MAIL_APP_USER;
+	EMAIL_APP_PASS = process.env.MAIL_APP_PASS;
+	EMAIL_APP_HOST = process.env.MAIL_APP_HOST;
 
 	constructor() {
+		this.transporter = nodemailer.createTransport({
+			host: this.EMAIL_APP_HOST,
+			port: 587,
+			secure: false, // use false for STARTTLS; true for SSL on port 465
+			auth: {
+				user: this.EMAIL_APP_USER,
+				pass: this.EMAIL_APP_PASS
+			}
+		});
 	}
 
-	async #initGmailService() {
-		try {
-			this.oAuth2Client = new google.auth.OAuth2(this.CLIENT_ID, this.CLIENT_SECRET, this.MAIL_REDIRECT_URI);
-			this.oAuth2Client.setCredentials({
-				access_token: this.ACCESS_TOKEN,
-				expiry_date: this.EXPIRY_DATE,
-				refresh_token: this.REFRESH_TOKEN,
-				scope: this.SCOPE,
-				token_type: this.TOKEN_TYPE
-			});
-			// const token = await this.oAuth2Client.refreshToken(this.REFRESH_TOKEN);
-			// const accessToken = await this.oAuth2Client.refreshAccessTokenAsync();
-			return google.gmail({
-				version: "v1",
-				auth: this.oAuth2Client
-			})
-		} catch (e) {
-			throw e;
-		}
-	}
 	async sendMail({to, subject=null, html = null, text=null, textEncoding="base64"}={}) {
 		try {
-			const gmail = await this.#initGmailService();
 			const mailOptions = {
+				from: this.EMAIL_SENDER,
 				to, // receiver
 				subject: subject || "", // Subject
 				...(text && {text}),
 				...(html && {html}),
 				textEncoding
 			}
-			const composer = new MailComposer(mailOptions);
-			const message = Buffer.from(await composer.compile().build()).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-			const {data: {id} = {}} = await gmail.users.messages.send({
-				userId: "me",
-				resource: {
-					raw: message
-				}
-			});
-			return id;
+			const info = await this.transporter.sendMail(mailOptions);
+			return info.messageId;
 		} catch (e) {
 			throw e;
 		}

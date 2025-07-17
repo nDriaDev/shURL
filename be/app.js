@@ -9,30 +9,32 @@ import Process from "./common/Process.js";
 import routing from "./routes/routes.js";
 import CONSTANTS from "./utils/constants.js";
 import LogUtil from "./utils/logUtil.js";
-import DetaDbClient from "./services/database/DetaDbClient.js";
 import HeadersUtils from "./utils/headersUtils.js";
 import helmet from "helmet";
 
-const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const {DEV, DETA_SH, PROD} = CONSTANTS.ENVIRONMENT;
-const {DEV: DEV_PATH, PROD:PROD_PATH, DETA_SH:DETA_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
+const {DEV: DEV_PATH, PROD:PROD_PATH} = CONSTANTS.PATHS.FE_ROOT_STATIC_FILE;
+const IS_DEV = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV;
 
-const dbClientImpl = process.env.NODE_ENV === DEV ? new MongoDbClient() : process.env.NODE_ENV === DETA_SH ? new DetaDbClient() : null;
-const dbClient = new DbClient(dbClientImpl);
+const pathStaticFile = IS_DEV ? DEV_PATH : PROD_PATH;
 
+const dbClient = new DbClient(new MongoDbClient(IS_DEV));
 const app = express();
 
 LogUtil.init(app);
 
-process.env.NODE_ENV !== DEV && app.set('trust proxy', true);
+!IS_DEV && app.set('trust proxy', true);
+!IS_DEV && app.disable('x-powered-by');
+
 app.use(compression());
-app.use(express.json({type: [
+app.use(express.json({
+	type: [
 		'application/json',
 		'application/csp-report',
 		'application/reports+json',
-	]}));
+	]
+}));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(helmet({
@@ -43,31 +45,24 @@ app.use(helmet({
 	}
 }));
 
-const pathStaticFile = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV_PATH : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_PATH : PROD_PATH;
-app.use(express.static(path.join(__dirname, pathStaticFile), {
-	setHeaders: HeadersUtils.setRelAndReportToHeaders
-}));
+app.use(express.static(
+	path.join(__dirname, pathStaticFile), {
+		setHeaders: HeadersUtils.setRelAndReportToHeaders
+	}
+));
 
 routing(app, express, dbClient);
 
-if(process.env.NODE_ENV === DEV) {
-	const Processor = new Process();
+const Processor = new Process();
 
-	app.listen(process.env.PORT, () =>
-		dbClient.connect()
-			.then(()=>
-				Processor.schedule(()=>
-					dbClient.disconnect()
-				))
-			.catch(LogUtil.error)
-			.finally(()=>
-				LogUtil.log(`RUNNING on ${process.env.PORT}...`)
-			)
-	);
-}
-
-if(process.env.NODE_ENV === DETA_SH) {
-	app.listen(process.env.PORT || 3000, () =>
-		LogUtil.log(`RUNNING on ${process.env.PORT}...`)
-	)
-}
+app.listen(process.env.PORT || 3000, () =>
+	dbClient.connect()
+		.then(()=>
+			Processor.schedule(()=>
+				dbClient.disconnect()
+			))
+		.catch(LogUtil.error)
+		.finally(()=>
+			LogUtil.log(`RUNNING on ${process.env.PORT}...`)
+		)
+);

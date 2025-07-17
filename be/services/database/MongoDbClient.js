@@ -1,4 +1,4 @@
-import {MongoClient, ObjectId} from "mongodb";
+import {MongoClient, ObjectId, ServerApiVersion} from "mongodb";
 import DBError from "../../models/errors/DBError.js";
 import CONSTANTS from "../../utils/constants.js";
 import LogUtil from "../../utils/logUtil.js";
@@ -13,12 +13,29 @@ export default class MongoDbClient {
     URLS = process.env.TABLE_URL;
     URLS_TEMP = process.env.TABLE_TEMPORARY_URL;
     USER = process.env.TABLE_USER;
+    IS_DEV;
 
-    constructor() {
+    constructor(IS_DEV) {
         // Create a new MongoClient
-        this.client = new MongoClient(this.uri);
+        this.IS_DEV = IS_DEV;
+        this.client = new MongoClient(
+            this.uri, 
+            {
+                ...(
+                    IS_DEV 
+                    ? {}
+                    : {
+                        serverApi: {
+                            version: ServerApiVersion.v1,
+                            strict: true,
+                            deprecationErrors: true
+                        }
+                    }
+                )
+            }
+        );
     }
-await
+
     async handlingTTLIndex(table) {
         try {
             let indxs = await table.indexes();
@@ -232,7 +249,7 @@ await
         try {
             const USER = this.client.db(this.DB).collection(this.USER);
             const result = await USER.findOne({
-                ...(id ? {_id: ObjectId(id)}: {}),
+                ...(id ? {_id: ObjectId(id)} : {}),
                 ...(email ? { email} : {}),
                 ...(password ? {password} : {}),
                 active
@@ -262,7 +279,7 @@ await
         try {
             const USERS = this.client.db(this.DB).collection(this.USER);
             const { matchedCount, modifiedCount } = await USERS.updateOne({
-                id: user.id,
+                _id: ObjectId(user.id),
             }, {
                 $set: {
                     active: user.active,
@@ -288,6 +305,7 @@ await
             const USERS = this.client.db(this.DB).collection(this.USER);
             const { matchedCount, modifiedCount } = await USERS.updateOne({
                 email,
+                active: true
             }, {
                 $set: {
                     password,

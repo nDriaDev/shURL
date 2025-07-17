@@ -9,6 +9,7 @@ export default function errorController(err, req, res, next) {
 			code: err.code && !isNaN(err.code) && err.code || code,
 			message: err.message || text
 		}
+		LogUtil.log("errorController: ERROR: ", JSON.stringify(error));
 		return res.status(Number(error.code)).send(error);
 	} catch (e) {
 		next(e);

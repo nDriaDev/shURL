@@ -193,7 +193,7 @@ const authController = {
 			})
 			return res.status(CONSTANTS.HTTP_CODE.SUCCESS.OK.code).send('ok');
 		} catch (e) {
-			 next(e);
+			next(e);
 		} finally {
 			LogUtil.log("authController forgotPassword: FINISH");
 		}

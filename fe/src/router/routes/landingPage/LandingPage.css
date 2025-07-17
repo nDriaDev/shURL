@@ -8,6 +8,11 @@
 	justify-content: space-between;
 }
 
+.action-container-center {
+	display: flex;
+	justify-content: center;
+}
+
 .landing-animation {
 	opacity: 0;
 	animation: land-description 1s 1 ease-out forwards;

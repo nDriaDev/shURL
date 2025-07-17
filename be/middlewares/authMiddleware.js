@@ -71,6 +71,7 @@ export default function authMiddleware(dbClient, execute=null) {
                 res.locals.user = user;
                 return next();
             } else {
+                LogUtil.log("AuthMiddleware UNAUTHORIZED ERROR: ", req.originalUrl);
                 return next(unauthorizedError);
             }
         } catch (e) {

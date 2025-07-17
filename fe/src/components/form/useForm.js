@@ -63,10 +63,11 @@ export default function useForm(formType) {
 		setMessage();
 		try {
 			const {PATH: path, METHOD: method} = formType === CONSTANTS.FORM_TYPE.SIGN_IN ? ApiUtil.URLS.AUTH.SIGNIN : formType === CONSTANTS.FORM_TYPE.SIGN_UP ? ApiUtil.URLS.AUTH.SIGNUP : formType === CONSTANTS.FORM_TYPE.FORGOT_PWD ? ApiUtil.URLS.AUTH.FRG_PWD : ApiUtil.URLS.AUTH.RESET_PWD;
+			const token = searchParams.get("token");
 			const response = await useFetch({
 				path,
 				method,
-				body: formType === CONSTANTS.FORM_TYPE.RESET_PWD ? {token: searchParams.get("token"), password: form.current.email, confirmPassword: form.current.password} : formType === CONSTANTS.FORM_TYPE.FORGOT_PWD ? {email: form.current.email} : form.current,
+				body: formType === CONSTANTS.FORM_TYPE.RESET_PWD ? {token, password: form.current.email, confirmPassword: form.current.password} : formType === CONSTANTS.FORM_TYPE.FORGOT_PWD ? {email: form.current.email} : form.current,
 				bodyType: "json",
 				...([CONSTANTS.FORM_TYPE.RESET_PWD, CONSTANTS.FORM_TYPE.FORGOT_PWD].includes(formType) ? {authenticated:false} : {})
 			})
@@ -77,6 +78,8 @@ export default function useForm(formType) {
 			} else if(formType === CONSTANTS.FORM_TYPE.FORGOT_PWD) {
 				setMessage(MessageUtil.resolveSuccessMessage(CONSTANTS.MESSAGES.FORGOT_PWD));
 			} else {
+				const email = !!token ? JSON.parse(atob(token.split(".")[1])).email : ""; 
+				navigate(CONSTANTS.ROUTES.SIGNIN, {state: { email }});
 				setMessage(MessageUtil.resolveSuccessMessage(CONSTANTS.MESSAGES.RESET_PWD));
 			}
 		} catch (e) {
@@ -87,6 +90,9 @@ export default function useForm(formType) {
 	}, [formType]);
 
 	useEffect(() => {
+		if(formType === CONSTANTS.FORM_TYPE.SIGN_IN && location?.state?.email) {
+			emailRef.current.value = location.state.email;
+		}
 		if(formType === CONSTANTS.FORM_TYPE.FORGOT_PWD && location?.state?.email) {
 			emailRef.current.value = location.state.email;
 		}

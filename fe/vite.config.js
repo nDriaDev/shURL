@@ -14,14 +14,28 @@ function renderChunks(deps) {
 	});
 	return chunks;
 }
-
+console.log(process.env.NODE_ENV);
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		react(),
 		process.env.NODE_ENV === "development" ? basicSsl() : null
 	],
+	mode: process.env.NODE_ENV,
 	...(process.env.NODE_ENV === "development" && {
+		build: {
+			minify: false,
+			manifest: false,
+			sourcemap: true,
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						vendor: ['react', 'react-router-dom', 'react-dom', 'jotai', 'react-icons'],
+						...renderChunks(dependencies),
+					},
+				},
+			}
+		},
 		server: {
 			host: true,
 			proxy: {

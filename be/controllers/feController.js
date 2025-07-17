@@ -12,8 +12,8 @@ export default function feController(req, res, next) {
 		if (req.originalUrl.startsWith(CONSTANTS.PATHS.API)) {
 			next();
 		} else {
-			const {DEV, PROD, DETA_SH} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
-			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DETA_SH ? DETA_SH : PROD;
+			const {DEV, PROD} = CONSTANTS.PATHS.FE_ROOT_TO_SERVE;
+			let pathFE = process.env.NODE_ENV === CONSTANTS.ENVIRONMENT.DEV ? DEV : PROD;
 			const {INITIAL, GENERATE} = CONSTANTS.PATHS.FE;
 
 			HeadersUtils.setRelAndReportToHeaders(res, req.originalUrl, null, req);

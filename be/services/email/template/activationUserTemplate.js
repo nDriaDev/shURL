@@ -524,7 +524,7 @@ export default function activationUserTemplate({linkRef}) {
                         
                         <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
                         
-                            <h2 class="mc-toc-title" style="text-align: center;"><span style="font-size:45px"><span style="color:#FFFFFF"><span style="font-family:trebuchet ms,lucida grande,lucida sans unicode,lucida sans,tahoma,sans-serif">ShURL</span></span><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><img alt="Logo" data-file-id="44101" height="20" src="https://mcusercontent.com/213f0f44c1dd311ca4563bed1/images/5bef55b0-e104-cddc-b1d6-0307b684bd20.png" style="border: 0px  ; width: 80px; height: 80px; position:absolute;" width="80"></span></span></h2>
+                            <h2 class="mc-toc-title" style="text-align: center;"><span style="font-size:45px"><span style="color:#FFFFFF"><span style="font-family:trebuchet ms,lucida grande,lucida sans unicode,lucida sans,tahoma,sans-serif">ShURL</span></span><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><img alt="Logo" data-file-id="44101" height="20" src="https://postimg.cc/bGMt9qbP" style="border: 0px  ; width: 80px; height: 80px; position:absolute;" width="80"></span></span></h2>
 
                         </td>
                     </tr>

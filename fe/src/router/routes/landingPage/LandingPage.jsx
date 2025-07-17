@@ -7,17 +7,17 @@ import useLandingPage from "./useLandingPage.js";
 import useTitle from "../../../components/common/useTitle.js";
 
 const LandingPage = ({}) => {
-	const {classes, clearMessages} = useLandingPage();
+	const {props, clearMessages} = useLandingPage();
 
 	return (<>
-		<h2 className={classes.h2}>
+		<h2 className={props.classes.h2}>
 			Create short URL easily
 		</h2>
-		<h3 className={classes.h3}>
+		<h3 className={props.classes.h3}>
 			with qrcode!
 		</h3>
-		<div className={classes.actionContainer}>
-			<Link to={CONSTANTS.ROUTES.SIGNIN} onClick={clearMessages}>
+		<div className={props.classes.actionContainer}>
+			<Link to={CONSTANTS.ROUTES.SIGNIN} onClick={clearMessages} hidden={props.hiddenSigns}>
 				<button type="button">
 					<IoMdLogIn size="1.2em" style={{ verticalAlign: 'sub', paddingRight: 4 }}/>
 					Sign in
@@ -29,7 +29,7 @@ const LandingPage = ({}) => {
 					Create
 				</button>
 			</Link>
-			<Link to={CONSTANTS.ROUTES.SIGNUP} onClick={clearMessages}>
+			<Link to={CONSTANTS.ROUTES.SIGNUP} onClick={clearMessages} hidden={props.hiddenSigns}>
 				<button type="button">
 					<RiGradienterLine size="1.2em" style={{ verticalAlign: 'sub', paddingRight: 4 }}/>
 					Sign up

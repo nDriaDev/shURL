@@ -1,9 +1,0 @@
-# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
-v: 0
-icon: fe/icon.png
-micros:
-  - name: shURL
-    src: ./deploy
-    engine: nodejs16
-    run: node app.js
-    public: true
